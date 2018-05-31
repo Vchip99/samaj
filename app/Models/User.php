@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'family_id', 'is_contact_private', 'password', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'blood_group', 'education','website', 'address', 'state', 'city', 'pin', 'admin_relation'
+        'f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'family_id', 'is_contact_private', 'password', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'blood_group', 'education','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary', 'facebook_profile', 'google_profile', 'linkedin_profile'
     ];
 
     /**
@@ -51,7 +51,7 @@ class User extends Authenticatable
         return $result->get();
     }
 
-    protected static function addMember(Request $request){
+    protected static function addMember(Request $request, $isUpdate=false){
         $fName = $request->get('f_name');
         $mName = $request->get('m_name');
         $lName = $request->get('l_name');
@@ -76,23 +76,37 @@ class User extends Authenticatable
         $state =  $request->get('state');
         $city =  $request->get('city');
         $pin =  $request->get('pin');
+        $anniversary =  $request->get('anniversary');
+        $facebookProfile =  $request->get('facebook_profile');
+        $googleProfile =  $request->get('google_profile');
+        $linkedinProfile =  $request->get('linkedin_profile');
         $adminRelation =  $request->get('admin_relation');
         $isSameAddress =  $request->get('is_same_address');
         $loginUser = Auth::user();
         $familyId = $loginUser->family_id;
+        $memberId =  $request->get('member_id');
 
+        if($isUpdate && $memberId > 0){
+            $member = static::find($memberId);
+            if(!is_object($member)){
+                return Redirect::to('home')->withErrors('something went wrong.');
+            }
+        } else {
+            $member = new static;
+        }
 
-        $member = new static;
         $member->f_name = $fName;
         $member->m_name = $mName;
         $member->l_name = $lName;
-        $member->user_id =$userId;
-        $member->email = $email;
         $member->mobile = $mobile;
-        $member->is_admin = 0;
+        if(false == $isUpdate && empty($memberId)){
+            $member->email = $email;
+            $member->user_id =$userId;
+            $member->is_admin = 0;
+            $member->password = bcrypt($password);
+        }
         $member->family_id = $familyId;
-        $member->is_contact_private = $isContactPrivate;
-        $member->password = bcrypt($password);
+        $member->is_contact_private = (empty($isContactPrivate))?0:$isContactPrivate;
         $member->land_line_no = $landLineNo;
         $member->fax = $fax;
         $member->dob = $dob;
@@ -116,6 +130,10 @@ class User extends Authenticatable
             $member->pin = $pin;
         }
         $member->admin_relation = $adminRelation;
+        $member->anniversary = $anniversary;
+        $member->facebook_profile = $facebookProfile;
+        $member->google_profile = $googleProfile;
+        $member->linkedin_profile = $linkedinProfile;
         $member->save();
 
         $path = 'user-documents/'.$member->id;
@@ -124,11 +142,21 @@ class User extends Authenticatable
         }
 
         if($request->exists('photo')){
+            if($isUpdate && $memberId > 0){
+                if(!empty($member->photo) && is_file($member->photo)){
+                    unlink($member->photo);
+                }
+            }
             $applicantPhoto = str_replace(' ', '_', $request->file('photo')->getClientOriginalName());
             $request->file('photo')->move($path, $applicantPhoto);
             $member->photo = $path."/".$applicantPhoto;
         }
         if($request->exists('bio_data')){
+            if($isUpdate && $memberId > 0){
+                if(!empty($member->bio_data) && is_file($member->bio_data)){
+                    unlink($member->bio_data);
+                }
+            }
             $applicantBioData = str_replace(' ', '_', $request->file('bio_data')->getClientOriginalName());
             $request->file('bio_data')->move($path, $applicantBioData);
             $member->bio_data = $path."/".$applicantBioData;
@@ -138,4 +166,12 @@ class User extends Authenticatable
         }
         return $member;
     }
+
+    /**
+     * get members by family id
+     */
+    protected static function getMembersByFamilyId($familyId){
+        return static::where('family_id', $familyId)->get();
+    }
+
 }

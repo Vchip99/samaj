@@ -54,7 +54,6 @@ class RegisterController extends Controller
             'user_id' => 'required|unique:users',
             'email' => 'sometimes|nullable|email|unique:users',
             'mobile' => 'required|regex:/[0-9]{10}/',
-            'is_contact_private' => 'required',
             'password' => 'required',
             'password_confirmation' => 'required|same:password',
         ]);
@@ -78,7 +77,7 @@ class RegisterController extends Controller
             'mobile' => $data['mobile'],
             'is_admin' => 1,
             'family_id' => $nextAdminFamilyId,
-            'is_contact_private' => $data['is_contact_private'],
+            'is_contact_private' => 0,
             'password' => bcrypt($data['password']),
         ]);
     }

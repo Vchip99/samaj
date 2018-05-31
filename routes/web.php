@@ -12,7 +12,8 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    // return view('welcome');
+    return Redirect::to('login');
 });
 
 Auth::routes();
@@ -20,3 +21,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/add-member', 'MemberController@create');
 Route::post('/add-member', 'MemberController@store');
+Route::get('/member/{id}/edit', 'MemberController@edit');
+Route::put('/update-member', 'MemberController@update');
+Route::delete('/delete-member', 'MemberController@delete');
+Route::get('/members', 'MemberController@members');
+Route::get('/member/{id}', 'MemberController@showMember');

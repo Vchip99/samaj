@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('land_line_no')->nullable();
             $table->string('fax')->nullable();
-            $table->string('dob')->nullable();
+            $table->date('dob')->nullable();
             $table->string('gender')->nullable();
             $table->string('photo')->nullable();
             $table->tinyInteger('married_status')->nullable();
@@ -43,6 +43,10 @@ class CreateUsersTable extends Migration
             $table->string('city')->nullable();
             $table->string('pin')->nullable();
             $table->string('admin_relation')->nullable();
+            $table->date('anniversary')->nullable();
+            $table->string('facebook_profile')->nullable();
+            $table->string('google_profile')->nullable();
+            $table->string('linkedin_profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

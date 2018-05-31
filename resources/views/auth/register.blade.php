@@ -88,15 +88,6 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('phone') ? ' has-error' : '' }}">
-                            <label for="phone" class="col-md-3 control-label">Show Email & Mobile On Profile <sup>*</sup></label>
-                            <div class="col-md-1">
-                                <input type="radio" name="is_contact_private" value="1" checked="true"> Yes
-                            </div>
-                            <div class="col-md-1">
-                                <input type="radio" name="is_contact_private" value="0"> No
-                            </div>
-                        </div>
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-3 control-label">Password <sup>*</sup></label>
                             <div class="col-md-6">
@@ -116,9 +107,8 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Register
-                                </button>
+                                <button type="submit" class="btn btn-primary">Register</button>
+                                <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
                             </div>
                         </div>
                     </form>

@@ -11,7 +11,15 @@
     <title>{{ config('app.name', 'Maheshwari Samaj') }}</title>
 
     <!-- Styles -->
+    <!-- <link href="{{ asset('css/bootstrap.min.css?ver=1.0')}}" rel="stylesheet"> -->
+    <link href="{{ asset('css/home.css') }}" rel="stylesheet">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- <link href="{{ asset('css/jquery-confirm.min.css?ver=1.0')}}" rel="stylesheet"/> -->
+
+    <script src="{{ asset('js/jquery.min.js?ver=1.0')}}"></script>
+    <!-- <script src="{{ asset('js/bootstrap.min.js?ver=1.0')}}"></script> -->
+    <!-- <script src="{{ asset('js/jquery-confirm.min.js?ver=1.0')}}"></script> -->
+
     @yield('header-css')
     @yield('header-js')
 </head>
@@ -30,7 +38,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
+                    <a class="navbar-brand" href="{{ route('login') }}">
                         {{ config('app.name', 'Maheshwari Samaj') }}
                     </a>
                 </div>
@@ -45,10 +53,17 @@
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
                         @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
+                            <!-- <li><a href="{{ route('login') }}">Login</a></li> -->
                             <li><a href="{{ route('register') }}">Register</a></li>
                         @else
-                            <li><a href="{{ url('add-member') }}">Add Member</a></li>
+                            @php
+                                $loginUser = Auth::user();
+                            @endphp
+                            <li><a href="{{ url('home') }}">Home</a></li>
+                            @if(1 == $loginUser->is_admin)
+                                <li><a href="{{ url('add-member') }}">Add Member</a></li>
+                            @endif
+                            <li><a href="{{ url('members') }}">Members</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                                     {{ Auth::user()->f_name }} <span class="caret"></span>
@@ -73,7 +88,6 @@
                 </div>
             </div>
         </nav>
-
         @yield('content')
     </div>
 

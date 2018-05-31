@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Auth;
+use App\Models\User;
 
 class HomeController extends Controller
 {
@@ -23,7 +25,13 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $loginUser = Auth::user();
+        if(1 == $loginUser->is_admin){
+            $otherMembers = User::where('family_id', $loginUser->family_id)->where('id' ,'!=', $loginUser->id)->get();
+        } else {
+            $otherMembers = [];
+        }
+        return view('layouts.home', compact('loginUser', 'otherMembers'));
     }
 
 }
