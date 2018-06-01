@@ -26,11 +26,7 @@ class HomeController extends Controller
     public function index()
     {
         $loginUser = Auth::user();
-        if(1 == $loginUser->is_admin){
-            $otherMembers = User::where('family_id', $loginUser->family_id)->where('id' ,'!=', $loginUser->id)->get();
-        } else {
-            $otherMembers = [];
-        }
+        $otherMembers = User::where('family_id', $loginUser->family_id)->where('id' ,'!=', $loginUser->id)->get();
         return view('layouts.home', compact('loginUser', 'otherMembers'));
     }
 

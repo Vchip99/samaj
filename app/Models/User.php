@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'family_id', 'is_contact_private', 'password', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'blood_group', 'education','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary', 'facebook_profile', 'google_profile', 'linkedin_profile'
+        'gotra','f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'family_id', 'is_contact_private', 'password', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'blood_group', 'education','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary', 'facebook_profile', 'google_profile', 'linkedin_profile'
     ];
 
     /**
@@ -35,7 +35,7 @@ class User extends Authenticatable
     protected static function getNextAdminFamilyId(){
         $lastAdminUser = static::where('is_admin', 1)->orderBy('id', 'desc')->first();
         if(is_object($lastAdminUser)){
-            return $lastAdminUser->family_id++;
+            return $lastAdminUser->family_id + 1;
         } else {
             return '1';
         }
@@ -58,7 +58,7 @@ class User extends Authenticatable
         $userId = $request->get('user_id');
         $email = $request->get('email');
         $mobile = $request->get('mobile');
-
+        $gotra = $request->get('gotra');
         $isContactPrivate = $request->get('is_contact_private');
         $password = $request->get('password');
         $landLineNo = $request->get('land_line_no');
@@ -95,6 +95,7 @@ class User extends Authenticatable
             $member = new static;
         }
 
+        $member->gotra = $gotra;
         $member->f_name = $fName;
         $member->m_name = $mName;
         $member->l_name = $lName;
@@ -104,6 +105,10 @@ class User extends Authenticatable
             $member->user_id =$userId;
             $member->is_admin = 0;
             $member->password = bcrypt($password);
+        } else {
+            if(!empty($email)){
+                $member->email = $email;
+            }
         }
         $member->family_id = $familyId;
         $member->is_contact_private = (empty($isContactPrivate))?0:$isContactPrivate;
@@ -172,6 +177,39 @@ class User extends Authenticatable
      */
     protected static function getMembersByFamilyId($familyId){
         return static::where('family_id', $familyId)->get();
+    }
+
+    /**
+     * search user
+     */
+    protected static function searchMember(Request $request){
+        $gotra = $request->get('gotra');
+        $member = $request->member;
+        $result = static::where(function ($query) use ($member) {
+                            $query->where('f_name', 'like', '%'.$member.'%')
+                                  ->orWhere('l_name', 'like', '%'.$member.'%');
+                        });
+        if(!empty($gotra) && 'All' != $gotra){
+            $result->where('gotra', $gotra);
+        }
+        return $result->get();
+    }
+
+    protected static function changeAdmin(Request $request){
+        $otherMembers = $request->except('_token');
+        if(count($otherMembers) > 0){
+            foreach($otherMembers as  $memberId => $relation){
+                $member = static::find($memberId);
+                if('Admin' == $relation){
+                    $member->is_admin = 1;
+                } else {
+                    $member->is_admin = 0;
+                }
+                $member->admin_relation = $relation;
+                $member->save();
+            }
+        }
+        return;
     }
 
 }

@@ -41,7 +41,7 @@
                     @if(count($otherMembers) > 0)
                     <hr>
                     <div class="row">
-                        <div class="panel-heading">Family Members</div>
+                        <div class="panel-heading" >Family Members</div>
                         @foreach($otherMembers as $otherMember)
                         <div class="col-md-2">
                             @if(!empty($otherMember->photo))

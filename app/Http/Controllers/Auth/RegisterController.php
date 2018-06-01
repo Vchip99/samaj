@@ -48,8 +48,8 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
+            'gotra' => 'required',
             'f_name' => 'required',
-            'm_name' => 'required',
             'l_name' => 'required',
             'user_id' => 'required|unique:users',
             'email' => 'sometimes|nullable|email|unique:users',
@@ -69,8 +69,9 @@ class RegisterController extends Controller
     {
         $nextAdminFamilyId = User::getNextAdminFamilyId();
         return User::create([
+            'gotra' => $data['gotra'],
             'f_name' => $data['f_name'],
-            'm_name' => $data['m_name'],
+            'm_name' => ' ',
             'l_name' => $data['l_name'],
             'user_id' => $data['user_id'],
             'email' => $data['email'],
@@ -79,6 +80,7 @@ class RegisterController extends Controller
             'family_id' => $nextAdminFamilyId,
             'is_contact_private' => 0,
             'password' => bcrypt($data['password']),
+            'admin_relation' => 'Admin',
         ]);
     }
 }

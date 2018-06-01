@@ -24,6 +24,7 @@ class MemberController extends Controller
      * the controller to reuse the rules.
      */
     protected $validateRegistration = [
+            'gotra' => 'required',
             'f_name' => 'required',
             'm_name' => 'required',
             'l_name' => 'required',
@@ -34,6 +35,7 @@ class MemberController extends Controller
             'password_confirmation' => 'required|same:password',
         ];
     protected $validateUpdateRegistration = [
+            'gotra' => 'required',
             'f_name' => 'required',
             'm_name' => 'required',
             'l_name' => 'required',
@@ -82,7 +84,7 @@ class MemberController extends Controller
         $memberId = json_decode($id);
         $member = User::find($memberId);
         $loginUser = Auth::user();
-        if(is_object($member)){
+        if(is_object($member) && ($loginUser->id == $member->id || $loginUser->family_id == $member->family_id )){
             return view('layouts.add_member', compact('member', 'loginUser'));
         }
         return Redirect::to('home');
@@ -97,7 +99,11 @@ class MemberController extends Controller
         {
             return redirect()->back()->withErrors($v->errors())->withInput();
         }
-
+        $loginUser = Auth::user();
+        $memberId =  $request->get('member_id');
+        if(0 == $loginUser->is_admin && $memberId != $loginUser->id ){
+            return Redirect::to('home');
+        }
         DB::beginTransaction();
         try
         {
@@ -178,6 +184,41 @@ class MemberController extends Controller
         $member = User::find($memberId);
         if(is_object($member)){
             return view('layouts.show_member', compact('member'));
+        }
+        return Redirect::to('home');
+    }
+
+    /**
+     * search member
+     */
+    protected function searchMember(Request $request){
+        return User::searchMember($request);
+    }
+
+    /**
+     * show change admin ui
+     */
+    protected function showChangeAdmin(){
+        $loginUser = Auth::user();
+        $members = User::getMembersByFamilyId($loginUser->family_id);
+        return view('layouts.change_admin', compact('members', 'loginUser'));
+    }
+
+    /**
+     * change admin
+     */
+    protected function changeAdmin(Request $request){
+        DB::beginTransaction();
+        try
+        {
+            User::changeAdmin($request);
+            DB::commit();
+            return Redirect::to('home')->with('message', 'Admin changed successfully.');
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return back()->withErrors('something went wrong.');
         }
         return Redirect::to('home');
     }

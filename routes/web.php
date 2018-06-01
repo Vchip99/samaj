@@ -26,3 +26,6 @@ Route::put('/update-member', 'MemberController@update');
 Route::delete('/delete-member', 'MemberController@delete');
 Route::get('/members', 'MemberController@members');
 Route::get('/member/{id}', 'MemberController@showMember');
+Route::post('/search-member', 'MemberController@searchMember');
+Route::get('/change-admin', 'MemberController@showChangeAdmin');
+Route::post('/change-admin', 'MemberController@changeAdmin');

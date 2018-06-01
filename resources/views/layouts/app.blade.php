@@ -19,7 +19,18 @@
     <script src="{{ asset('js/jquery.min.js?ver=1.0')}}"></script>
     <!-- <script src="{{ asset('js/bootstrap.min.js?ver=1.0')}}"></script> -->
     <!-- <script src="{{ asset('js/jquery-confirm.min.js?ver=1.0')}}"></script> -->
-
+    <script>
+        window.Laravel = <?php echo json_encode([
+            'csrfToken' => csrf_token(),
+        ]); ?>
+    </script>
+    <script type="text/javascript">
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+    </script>
     @yield('header-css')
     @yield('header-js')
 </head>
@@ -60,10 +71,11 @@
                                 $loginUser = Auth::user();
                             @endphp
                             <li><a href="{{ url('home') }}">Home</a></li>
+                            <li><a href="{{ url('members') }}">Members</a></li>
                             @if(1 == $loginUser->is_admin)
                                 <li><a href="{{ url('add-member') }}">Add Member</a></li>
+                                <li><a href="{{ url('change-admin') }}">Change Admin</a></li>
                             @endif
-                            <li><a href="{{ url('members') }}">Members</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                                     {{ Auth::user()->f_name }} <span class="caret"></span>
