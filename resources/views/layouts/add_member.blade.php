@@ -515,8 +515,11 @@
                             <div class="col-md-6">
                                 <select class="form-control" name="occupation"  @if(!empty($member->id)) disabled @endif>
                                     <option  value=""> Select Occupation</option>
-                                    <option value="Business" @if('Business' == $member->occupation)selected="true" @endif>Business</option>
-                                    <option value="Service" @if('Service' == $member->occupation)selected="true" @endif>Service</option>
+                                    <option value="Farmer" @if('Farmer' == $member->occupation)selected="true" @endif>Farmer</option>
+                                    <option value="Businessman" @if('Businessman' == $member->occupation)selected="true" @endif>Businessman</option>
+                                    <option value="Self employee" @if('Self employee' == $member->occupation)selected="true" @endif>Self employee</option>
+                                    <option value="Government Job" @if('Government Job' == $member->occupation)selected="true" @endif>Government Job</option>
+                                    <option value="Private Job" @if('Private Job' == $member->occupation)selected="true" @endif>Private Job</option>
                                     <option value="Other" @if('Other' == $member->occupation)selected="true" @endif>Other</option>
                                 </select>
                             </div>

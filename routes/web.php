@@ -29,3 +29,5 @@ Route::get('/member/{id}', 'MemberController@showMember');
 Route::post('/search-member', 'MemberController@searchMember');
 Route::get('/change-admin', 'MemberController@showChangeAdmin');
 Route::post('/change-admin', 'MemberController@changeAdmin');
+Route::get('/blood-group', 'MemberController@showBloodGroup');
+Route::post('/search-blood', 'MemberController@searchBlood');

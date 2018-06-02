@@ -212,4 +212,12 @@ class User extends Authenticatable
         return;
     }
 
+    /**
+     * search blood
+     */
+    protected static function searchBlood(Request $request){
+        $bloodgroup = $request->blood_group;
+        return static::where('blood_group', $bloodgroup)->get();
+    }
+
 }

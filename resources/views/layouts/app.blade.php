@@ -72,6 +72,7 @@
                             @endphp
                             <li><a href="{{ url('home') }}">Home</a></li>
                             <li><a href="{{ url('members') }}">Members</a></li>
+                            <li><a href="{{ url('blood-group') }}">Blood Group</a></li>
                             @if(1 == $loginUser->is_admin)
                                 <li><a href="{{ url('add-member') }}">Add Member</a></li>
                                 <li><a href="{{ url('change-admin') }}">Change Admin</a></li>

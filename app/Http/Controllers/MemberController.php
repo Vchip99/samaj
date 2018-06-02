@@ -47,7 +47,8 @@ class MemberController extends Controller
      */
     protected function create(){
         $member = new User;
-        return view('layouts.add_member', compact('member'));
+        $loginUser = Auth::user();
+        return view('layouts.add_member', compact('member', 'loginUser'));
     }
 
     /**
@@ -221,5 +222,20 @@ class MemberController extends Controller
             return back()->withErrors('something went wrong.');
         }
         return Redirect::to('home');
+    }
+
+    /**
+     * show blood group members
+     */
+    protected function showBloodGroup(){
+        $members = User::where('blood_group', '=', 'A+')->get();
+        return view('layouts.show_blood_group', compact('members'));
+    }
+
+    /**
+     * search blood
+     */
+    protected function searchBlood(Request $request){
+        return User::searchBlood($request);
     }
 }
