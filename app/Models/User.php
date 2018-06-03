@@ -33,7 +33,7 @@ class User extends Authenticatable
      * get next admin family id
      */
     protected static function getNextAdminFamilyId(){
-        $lastAdminUser = static::where('is_admin', 1)->orderBy('id', 'desc')->first();
+        $lastAdminUser = static::orderBy('id', 'desc')->first();
         if(is_object($lastAdminUser)){
             return $lastAdminUser->family_id + 1;
         } else {
@@ -99,15 +99,13 @@ class User extends Authenticatable
         $member->f_name = $fName;
         $member->m_name = $mName;
         $member->l_name = $lName;
-        $member->mobile = $mobile;
+        $member->email = $email;
+        $member->is_admin = 0;
         if(false == $isUpdate && empty($memberId)){
-            $member->email = $email;
-            $member->user_id =$userId;
-            $member->is_admin = 0;
-            $member->password = bcrypt($password);
+            $member->mobile = $mobile;
         } else {
-            if(!empty($email)){
-                $member->email = $email;
+            if(!empty($mobile)){
+                $member->mobile = $mobile;
             }
         }
         $member->family_id = $familyId;

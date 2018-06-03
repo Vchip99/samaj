@@ -34,26 +34,14 @@
                     <div class="panel-heading">Add Member</div>
                 @else
                     <div class="panel-heading" style="height: 55px;">Member
-                        @if(1 == $loginUser->is_admin)
-                            <button class="btn btn-default" style="float: right;margin-left: 5px;" onClick="deleteMember({{$member->is_admin}},{{$member->id}});">Delete</button>
-                            <form id="deleteMember_{{$member->id}}" method="POST" action="{{ url('delete-member') }}">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE')}}
-                                <input type="hidden" name="member_id" value="{{$member->id}}">
-                            </form>
-                        @elseif($loginUser->id == $member->id)
-                            <button class="btn btn-default" style="float: right;margin-left: 5px;" onClick="deleteMember({{$member->is_admin}},{{$member->id}});">Delete</button>
-                            <form id="deleteMember_{{$member->id}}" method="POST" action="{{ url('delete-member') }}">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE')}}
-                                <input type="hidden" name="member_id" value="{{$member->id}}">
-                            </form>
-                        @endif
-                        @if(1 == $loginUser->is_admin || $loginUser->id == $member->id)
-                            <button class="btn btn-primary" style="float: right;margin-left: 5px;margin-top: -21px;" onClick="toggleReadonly(this);">Edit </button>
-                        @else
-                            <a href="{{ url('home')}}" class="btn btn-primary" style="float: right;margin-left: 5px;">Back </a>
-                        @endif
+                        <button class="btn btn-default" style="float: right;margin-left: 5px;" onClick="deleteMember({{$member->id}});">Delete</button>
+                        <form id="deleteMember_{{$member->id}}" method="POST" action="{{ url('delete-member') }}">
+                            {{ csrf_field() }}
+                            {{ method_field('DELETE')}}
+                            <input type="hidden" name="member_id" value="{{$member->id}}">
+                        </form>
+                        <button class="btn btn-primary" style="float: right;margin-left: 5px;margin-top: -21px;" onClick="toggleReadonly(this);">Edit </button>
+
                     </div>
                 @endif
                 <div class="panel-body">
@@ -66,7 +54,7 @@
                         {{ method_field('PUT')}}
                     @endif
                         <div class="form-group ">
-                            <label for="gotra" class="col-md-3 control-label">Gotra <sup>*</sup></label>
+                            <label for="gotra" class="col-md-3 control-label">Gotra </label>
                             <div class="col-md-6">
                                 <select class="form-control" name="gotra"  @if(!empty($member->id)) disabled @endif>
                                     <option value="">Select Gotra</option>
@@ -132,9 +120,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="name" class="col-md-3 control-label">Name <sup>*</sup></label>
+                            <label for="name" class="col-md-3 control-label">Name </label>
                             <div class="col-md-3">
-                                <input id="f_name" type="text" class="form-control" name="f_name" value="{{ (!empty($member->id))?$member->f_name:old('f_name') }}" required placeholder="first name" @if(!empty($member->id)) readonly @endif>
+                                <input id="f_name" type="text" class="form-control" name="f_name" value="{{ (!empty($member->id))?$member->f_name:old('f_name') }}"  placeholder="first name" @if(!empty($member->id)) readonly @endif>
                                 @if ($errors->has('f_name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('f_name') }}</strong>
@@ -142,7 +130,7 @@
                                 @endif
                             </div>
                             <div class="col-md-3">
-                                <input id="m_name" type="text" class="form-control" name="m_name" value="{{ (!empty($member->id))?$member->m_name:old('m_name') }}" required placeholder="middle name" @if(!empty($member->id)) readonly @endif>
+                                <input id="m_name" type="text" class="form-control" name="m_name" value="{{ (!empty($member->id))?$member->m_name:old('m_name') }}"  placeholder="middle name" @if(!empty($member->id)) readonly @endif>
                                 @if ($errors->has('m_name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('m_name') }}</strong>
@@ -150,7 +138,7 @@
                                 @endif
                             </div>
                             <div class="col-md-3">
-                                <input id="l_name" type="text" class="form-control" name="l_name" value="{{ (!empty($member->id))?$member->l_name:old('l_name') }}" required placeholder="last name" @if(!empty($member->id)) readonly @endif>
+                                <input id="l_name" type="text" class="form-control" name="l_name" value="{{ (!empty($member->id))?$member->l_name:old('l_name') }}"  placeholder="last name" @if(!empty($member->id)) readonly @endif>
                                 @if ($errors->has('l_name'))
                                     <span class="help-block">
                                         <strong>{{ $errors->first('l_name') }}</strong>
@@ -158,27 +146,11 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('user_id') ? ' has-error' : '' }}">
-                            <label for="user_id" class="col-md-3 control-label">UserId <sup>*</sup></label>
-                            <div class="col-md-6">
-                                @if(!empty($member->id))
-                                    {{ $member->user_id}}
-                                    <input type="hidden" class="form-control" name="user_id" value="{{ $member->user_id}}" required placeholder="User id" readonly>
-                                @else
-                                    <input id="user_id" type="text" class="form-control" name="user_id" value="{{ old('user_id') }}" required placeholder="User id" >
-                                    @if ($errors->has('user_id'))
-                                        <span class="help-block">
-                                            <strong>{{ $errors->first('user_id') }}</strong>
-                                        </span>
-                                    @endif
-                                @endif
-                            </div>
-                        </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-3 control-label">E-mail</label>
                             <div class="col-md-6">
                                 @if(!empty($member->id))
-                                    @if(0 == $loginUser->is_admin && $loginUser->id != $member->id && 1 == $member->is_contact_private)
+                                    @if($loginUser->id != $member->id && 1 == $member->is_contact_private)
                                         **********
                                     @else
                                         @if(!empty($member->email))
@@ -201,7 +173,7 @@
                         <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
                             <label for="mobile" class="col-md-3 control-label">Mobile <sup>*</sup></label>
                             <div class="col-md-6">
-                                @if(0 == $loginUser->is_admin && $loginUser->id != $member->id && 1 == $member->is_contact_private)
+                                @if($loginUser->id != $member->id && 1 == $member->is_contact_private)
                                     **********
                                 @else
                                     <input id="mobile" type="phone" class="form-control" name="mobile" value="{{ (!empty($member->id))?$member->mobile:old('mobile') }}" required placeholder="10 digit mobile number" pattern="[0-9]{10}" @if(!empty($member->id)) readonly @endif>
@@ -231,29 +203,10 @@
                                 </div>
                             @endif
                         </div>
-                        @if(empty($member->id))
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-3 control-label">Password <sup>*</sup></label>
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="password-confirm" class="col-md-3 control-label">Confirm Password <sup>*</sup></label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-                            </div>
-                        </div>
-                        @endif
                         <div class="form-group">
                             <label for="land_line_no" class="col-md-3 control-label">Land Line No</label>
                             <div class="col-md-6">
-                                @if(0 == $loginUser->is_admin && $loginUser->id != $member->id && 1 == $member->is_contact_private)
+                                @if($loginUser->id != $member->id && 1 == $member->is_contact_private)
                                     **********
                                 @else
                                     <input id="land_line_no" type="text" class="form-control" name="land_line_no" value="{{ (!empty($member->id))?$member->land_line_no:old('land_line_no') }}" placeholder="land line number" @if(!empty($member->id)) readonly @endif>
@@ -648,11 +601,11 @@
         if(0 == $(ele).val()){
             document.getElementById('spouseDiv').classList.add('hide');
             document.getElementById('UnMarriedDiv').classList.remove('hide');
-            document.getElementById('bioDataDiv').classList.remove('hide');
+            document.getElementById('bioDataDiv').classList.add('hide');
         } else {
             document.getElementById('spouseDiv').classList.remove('hide');
             document.getElementById('UnMarriedDiv').classList.add('hide');
-            document.getElementById('bioDataDiv').classList.add('hide');
+            document.getElementById('bioDataDiv').classList.remove('hide');
         }
     }
 
@@ -689,12 +642,8 @@
         window.location.reload();
     }
 
-    function deleteMember(isAdmin, memberId){
-        if(1 == isAdmin){
-            var message = 'Yor are a Admin. so if you delete your self, all members in your family will be deleted. If you want to delete your self as a member, please assign Admin to another member and then delete. '
-        } else {
-            var message = 'Are you sure you want to delete.';
-        }
+    function deleteMember(memberId){
+        var message = 'Are you sure you want to delete.';
         if(confirm(message)){
             formId = 'deleteMember_'+memberId;
             document.getElementById(formId).submit();

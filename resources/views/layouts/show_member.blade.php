@@ -98,16 +98,6 @@
                                 <input id="l_name" type="text" class="form-control" name="l_name" value="{{ (!empty($member->id))?$member->l_name:old('l_name') }}" required placeholder="last name" readonly>
                             </div>
                         </div>
-                        <div class="form-group{{ $errors->has('user_id') ? ' has-error' : '' }}">
-                            <label for="user_id" class="col-md-3 control-label">UserId </label>
-                            <div class="col-md-6">
-                                @if(!empty($member->id))
-                                    {{ $member->user_id}}
-                                @else
-                                    <input id="user_id" type="text" class="form-control" name="user_id" value="{{ old('user_id') }}" required placeholder="User id" >
-                                @endif
-                            </div>
-                        </div>
                         <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-3 control-label">E-mail</label>
                             <div class="col-md-6">
@@ -115,7 +105,7 @@
                                     @if(1 == $member->is_contact_private)
                                         **********
                                     @else
-                                        {{ $member->email }}
+                                        <input id="email" type="email" class="form-control" name="email" value="{{ (!empty($member->id))?$member->email:old('email') }}" placeholder="email" readonly>
                                     @endif
                                 @else
                                     <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="email">
@@ -128,7 +118,7 @@
                                 @if(1 == $member->is_contact_private)
                                     **********
                                 @else
-                                    <input id="mobile" type="phone" class="form-control" name="mobile" value="{{ (!empty($member->id))?$member->mobile:old('mobile') }}" required placeholder="10 digit mobile number" pattern="[0-9]{10}" readonly>
+                                    {{ $member->mobile }}
                                 @endif
                             </div>
                         </div>

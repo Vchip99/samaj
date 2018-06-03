@@ -37,7 +37,13 @@
                         @foreach($members as $member)
                         <div class="row form-group">
                             <div class="col-md-12">
-                                <label for="occupation" class="col-md-2 control-label">{{$member->f_name}}</label>
+                                <label for="occupation" class="col-md-2 control-label">
+                                    @if(@empty($member->f_name))
+                                        {{$member->mobile}}
+                                    @else
+                                        {{$member->f_name}}
+                                    @endif
+                                </label>
                                 <div class="col-md-3">
                                     <select class="form-control" name="{{$member->id}}" required="">
                                         <option value="">Select Relation</option>

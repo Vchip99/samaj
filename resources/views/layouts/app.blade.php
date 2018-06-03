@@ -49,7 +49,7 @@
                     </button>
 
                     <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ route('login') }}">
+                    <a class="navbar-brand" href="{{ url('login') }}">
                         {{ config('app.name', 'Maheshwari Samaj') }}
                     </a>
                 </div>
@@ -63,20 +63,15 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <!-- Authentication Links -->
-                        @guest
-                            <!-- <li><a href="{{ route('login') }}">Login</a></li> -->
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
                             @php
                                 $loginUser = Auth::user();
                             @endphp
+                        @if(is_object($loginUser))
                             <li><a href="{{ url('home') }}">Home</a></li>
                             <li><a href="{{ url('members') }}">Members</a></li>
                             <li><a href="{{ url('blood-group') }}">Blood Group</a></li>
-                            @if(1 == $loginUser->is_admin)
-                                <li><a href="{{ url('add-member') }}">Add Member</a></li>
-                                <li><a href="{{ url('change-admin') }}">Change Admin</a></li>
-                            @endif
+                            <li><a href="{{ url('add-member') }}">Add Member</a></li>
+                            <li><a href="{{ url('change-admin') }}">Change Admin</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                                     {{ Auth::user()->f_name }} <span class="caret"></span>
@@ -84,19 +79,19 @@
 
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="{{ route('logout') }}"
+                                        <a href="{{ url('logout') }}"
                                             onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
                                             Logout
                                         </a>
 
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        <form id="logout-form" action="{{ url('logout') }}" method="POST" style="display: none;">
                                             {{ csrf_field() }}
                                         </form>
                                     </li>
                                 </ul>
                             </li>
-                        @endguest
+                        @endif
                     </ul>
                 </div>
             </div>

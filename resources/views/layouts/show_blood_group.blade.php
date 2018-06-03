@@ -41,7 +41,11 @@
                                     <a href="{{url('member')}}/{{$member->id}}" ><img src="{{ asset('images/user.png')}}" class="user-photo"></a>
                                 @endif
                             </div>
-                          <label class="col-md-3 control-label member-label"> <a href="{{url('member')}}/{{$member->id}}" >{{$member->f_name}} {{$member->l_name}}</a></label>
+                            @if(!empty($member->f_name) || !empty($member->l_name))
+                                <label class="col-md-3 control-label member-label"> <a href="{{url('member')}}/{{$member->id}}" >{{$member->f_name}} {{$member->l_name}}</a></label>
+                            @else
+                                <label class="col-md-3 control-label member-label"> <a href="{{url('member')}}/{{$member->id}}" >{{$member->mobile}}</a></label>
+                            @endif
                         </div>
                         @endforeach
                         </div>
@@ -76,7 +80,12 @@
                         } else {
                             firstDivInnerHTML += '<a href="'+urlStr+'" ><img src="'+defaultImgStr+'" class="user-photo"></a></div>';
                         }
-                        firstDivInnerHTML += '<label class="col-md-3 control-label member-label"> <a href="'+urlStr+'" >'+obj.f_name+' '+obj.l_name+'</a></label>';
+                        if(obj.f_name || obj.l_name){
+                            firstDivInnerHTML += '<label class="col-md-3 control-label member-label"> <a href="'+urlStr+'" >'+obj.f_name+' '+obj.l_name+'</a></label>';
+                        } else {
+                            firstDivInnerHTML += '<label class="col-md-3 control-label member-label"> <a href="'+urlStr+'" >'+obj.mobile+'</a></label>';
+                        }
+
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);
                     })

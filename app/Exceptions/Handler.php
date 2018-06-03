@@ -48,7 +48,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        // dd($exception);
+        if($exception) {
+            return redirect()->to('login');
+        }
         return parent::render($request, $exception);
     }
 }

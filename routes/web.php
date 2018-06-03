@@ -11,14 +11,21 @@
 |
 */
 
-Route::get('/', function () {
-    // return view('welcome');
-    return Redirect::to('login');
-});
+// Route::get('/', function () {
+//     // return view('welcome');
+//     return Redirect::to('login');
+// });
 
-Auth::routes();
+// Auth::routes();
+Route::get('/', 'Auth\LoginController@showLoginForm');
+Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'HomeController@sendOtp');
+Route::post('logout', 'Auth\LoginController@logout');
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'MemberHomeController@index')->name('home');
+Route::get('get-otp', 'HomeController@getOtp');
+Route::post('check-otp', 'HomeController@checkOtp');
+
 Route::get('/add-member', 'MemberController@create');
 Route::post('/add-member', 'MemberController@store');
 Route::get('/member/{id}/edit', 'MemberController@edit');

@@ -24,22 +24,10 @@ class MemberController extends Controller
      * the controller to reuse the rules.
      */
     protected $validateRegistration = [
-            'gotra' => 'required',
-            'f_name' => 'required',
-            'm_name' => 'required',
-            'l_name' => 'required',
-            'user_id' => 'required|unique:users',
-            'email' => 'sometimes|nullable|email|unique:users',
-            'mobile' => 'required|regex:/[0-9]{10}/',
-            'password' => 'required',
-            'password_confirmation' => 'required|same:password',
+            'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
         ];
     protected $validateUpdateRegistration = [
-            'gotra' => 'required',
-            'f_name' => 'required',
-            'm_name' => 'required',
-            'l_name' => 'required',
-            'mobile' => 'required|regex:/[0-9]{10}/',
+            'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
         ];
 
     /**
@@ -100,11 +88,7 @@ class MemberController extends Controller
         {
             return redirect()->back()->withErrors($v->errors())->withInput();
         }
-        $loginUser = Auth::user();
-        $memberId =  $request->get('member_id');
-        if(0 == $loginUser->is_admin && $memberId != $loginUser->id ){
-            return Redirect::to('home');
-        }
+
         DB::beginTransaction();
         try
         {
@@ -128,37 +112,37 @@ class MemberController extends Controller
     protected function delete(Request $request){
         $memberId = json_decode($request->get('member_id'));
         $member = User::find($memberId);
-        $isLoginAdmin = Auth::user()->is_admin;
+        $loginUser = Auth::user();
         DB::beginTransaction();
         try
         {
             if(is_object($member)){
-                if(1 == $member->is_admin){
-                    $familyMembers = User::getMembersByFamilyId($member->family_id);
-                    if(is_object($familyMembers) && false == $familyMembers->isEmpty()){
-                        foreach($familyMembers as $familyMember){
-                            $path = 'user-documents/'.$familyMember->id;
-                            InputSanitise::delFolder($path);
-                            $familyMember->delete();
-                        }
-                        DB::commit();
-                        Auth::guard()->logout();
-                        $request->session()->invalidate();
-                        return redirect('/');
-                    }
-                } else {
+                // if(1 == $member->is_admin){
+                //     $familyMembers = User::getMembersByFamilyId($member->family_id);
+                //     if(is_object($familyMembers) && false == $familyMembers->isEmpty()){
+                //         foreach($familyMembers as $familyMember){
+                //             $path = 'user-documents/'.$familyMember->id;
+                //             InputSanitise::delFolder($path);
+                //             $familyMember->delete();
+                //         }
+                //         DB::commit();
+                //         Auth::guard()->logout();
+                //         $request->session()->invalidate();
+                //         return redirect('/');
+                //     }
+                // } else {
                     $path = 'user-documents/'.$member->id;
                     InputSanitise::delFolder($path);
                     $member->delete();
                     DB::commit();
-                    if(1 == $isLoginAdmin){
+                    if($loginUser != $memberId){
                         return Redirect::to('home')->with('message', 'Member deleted successfully.');
                     } else {
                         Auth::guard()->logout();
                         $request->session()->invalidate();
                         return redirect('/');
                     }
-                }
+                // }
             }
         }
         catch(\Exception $e)
@@ -238,4 +222,5 @@ class MemberController extends Controller
     protected function searchBlood(Request $request){
         return User::searchBlood($request);
     }
+
 }
