@@ -61,7 +61,7 @@ class MemberController extends Controller
         catch(\Exception $e)
         {
             DB::rollback();
-            return back()->withErrors('something went wrong.');
+            return back()->withErrors('something went wrong for store member.');
         }
         return Redirect::to('add-member');
     }
@@ -101,7 +101,7 @@ class MemberController extends Controller
         catch(\Exception $e)
         {
             DB::rollback();
-            return back()->withErrors('something went wrong.');
+            return back()->withErrors('something went wrong for update member');
         }
         return Redirect::to('home');
     }
@@ -148,7 +148,7 @@ class MemberController extends Controller
         catch(\Exception $e)
         {
             DB::rollback();
-            return back()->withErrors('something went wrong.');
+            return back()->withErrors('something went wrong for delete member.');
         }
         return Redirect::to('home');
     }

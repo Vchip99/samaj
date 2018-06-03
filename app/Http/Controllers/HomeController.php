@@ -44,7 +44,7 @@ class HomeController extends Controller
         if(is_object(json_decode($response)) && 'success' == json_decode($response)->status){
            return Redirect::to('get-otp')->with('message', 'Otp send successfully to your mobile no.');
         } else {
-            return back()->withErrors('something went wrong.');
+            return back()->withErrors('something went wrong while sendOtp.');
         }
     }
 
@@ -86,7 +86,7 @@ class HomeController extends Controller
                 return Redirect::to('login')->withErrors('Entered otp is wrong.');
             }
         } else {
-            return Redirect::to('login')->withErrors('Something went wrong.');
+            return Redirect::to('login')->withErrors('Something went wrong while checkOtp.');
         }
     }
 }
