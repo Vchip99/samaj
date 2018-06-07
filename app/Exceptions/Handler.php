@@ -49,7 +49,7 @@ class Handler extends ExceptionHandler
     public function render($request, Exception $exception)
     {
         if($exception) {
-            dd($exception);
+            // dd($exception);
             return redirect()->to('login');
         }
         return parent::render($request, $exception);

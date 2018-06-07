@@ -15,15 +15,11 @@
             <div class="panel panel-default">
                 <div class="panel-heading " style="height: 55px;">
                     <div class="col-md-3">
-                        <select class="form-control" name="profession" id="profession">
-                            <option value="">Select Profession</option>
+                        <select class="form-control" name="gender" id="gender">
+                            <option value="">Select</option>
                             <option value="All">All</option>
-                            <option value="Farmer">Farmer</option>
-                            <option value="Businessman">Businessman</option>
-                            <option value="Self employee">Self employee</option>
-                            <option value="Government Job">Government Job</option>
-                            <option value="Private Job">Private Job</option>
-                            <option value="Other">Other</option>
+                            <option value="F">Bride</option>
+                            <option value="M">Groom</option>
                         </select>
                     </div>
                     <div class="col-md-3">
@@ -33,7 +29,7 @@
                 <div class="panel-body">
                     @if(count($members) > 0)
                     <div class="row">
-                        <div class="panel-heading">All Members</div>
+                        <div class="panel-heading">Marriage Members</div>
                         <div id="allMember">
                         @foreach($members as $member)
                         <div class="col-md-6">
@@ -60,12 +56,12 @@
 <script type="text/javascript">
     function searchMember(member){
         var currentToken = $('meta[name="csrf-token"]').attr('content');
-        var profession = document.getElementById('profession').value;
+        var gender = document.getElementById('gender').value;
         if(member.length > 2){
             $.ajax({
                 method:'POST',
-                url: "{{url('search-member')}}",
-                data:{_token:currentToken,member:member,profession:profession}
+                url: "{{url('search-marriage-member')}}",
+                data:{_token:currentToken,member:member,gender:gender}
             }).done(function( members ) {
                 var allMember = document.getElementById('allMember');
                 allMember.innerHTML = '';

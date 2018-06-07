@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Validator,DB,Redirect,Auth;
 use App\Libraries\InputSanitise;
 use App\Models\User;
+use App\Models\BusinessDetails;
 
 class MemberController extends Controller
 {
@@ -17,18 +18,19 @@ class MemberController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        // Auth::onceUsingId(4);
     }
 
     /**
      * Define your validation rules in a property in
      * the controller to reuse the rules.
      */
-    protected $validateRegistration = [
-            'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
-        ];
-    protected $validateUpdateRegistration = [
-            'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
-        ];
+    // protected $validateRegistration = [
+    //         'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
+    //     ];
+    // protected $validateUpdateRegistration = [
+    //         'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
+    //     ];
 
     /**
      * add member
@@ -43,11 +45,11 @@ class MemberController extends Controller
      * store member
      */
     protected function store( Request $request){
-        $v = Validator::make($request->all(), $this->validateRegistration);
-        if ($v->fails())
-        {
-            return redirect()->back()->withErrors($v->errors())->withInput();
-        }
+        // $v = Validator::make($request->all(), $this->validateRegistration);
+        // if ($v->fails())
+        // {
+        //     return redirect()->back()->withErrors($v->errors())->withInput();
+        // }
 
         DB::beginTransaction();
         try
@@ -83,11 +85,11 @@ class MemberController extends Controller
      * update member
      */
     protected function update( Request $request){
-        $v = Validator::make($request->all(), $this->validateUpdateRegistration);
-        if ($v->fails())
-        {
-            return redirect()->back()->withErrors($v->errors())->withInput();
-        }
+        // $v = Validator::make($request->all(), $this->validateUpdateRegistration);
+        // if ($v->fails())
+        // {
+        //     return redirect()->back()->withErrors($v->errors())->withInput();
+        // }
 
         DB::beginTransaction();
         try
@@ -117,20 +119,21 @@ class MemberController extends Controller
         try
         {
             if(is_object($member)){
-                // if(1 == $member->is_admin){
-                //     $familyMembers = User::getMembersByFamilyId($member->family_id);
-                //     if(is_object($familyMembers) && false == $familyMembers->isEmpty()){
-                //         foreach($familyMembers as $familyMember){
-                //             $path = 'user-documents/'.$familyMember->id;
-                //             InputSanitise::delFolder($path);
-                //             $familyMember->delete();
-                //         }
-                //         DB::commit();
-                //         Auth::guard()->logout();
-                //         $request->session()->invalidate();
-                //         return redirect('/');
-                //     }
-                // } else {
+                if(1 == $member->is_admin && 1 == $member->is_member){
+                    $familyMembers = User::getMembersByFamilyId($member->family_id);
+                    if(is_object($familyMembers) && false == $familyMembers->isEmpty()){
+                        foreach($familyMembers as $familyMember){
+                            $path = 'user-documents/'.$familyMember->id;
+                            InputSanitise::delFolder($path);
+                            $familyMember->delete();
+                        }
+                        BusinessDetails::deleteBusinessByFamilyId($member->family_id);
+                        DB::commit();
+                        Auth::guard()->logout();
+                        $request->session()->invalidate();
+                        return redirect('/');
+                    }
+                } else {
                     $path = 'user-documents/'.$member->id;
                     InputSanitise::delFolder($path);
                     $member->delete();
@@ -142,7 +145,7 @@ class MemberController extends Controller
                         $request->session()->invalidate();
                         return redirect('/');
                     }
-                // }
+                }
             }
         }
         catch(\Exception $e)
@@ -157,7 +160,7 @@ class MemberController extends Controller
      * all members
      */
     protected function members(){
-        $members = User::where('id', '!=', Auth::user()->id)->get();
+        $members = User::where('is_member', 1)->where('id', '!=', Auth::user()->id)->get();
         return view('layouts.members', compact('members'));
     }
 
@@ -168,7 +171,8 @@ class MemberController extends Controller
         $memberId = json_decode($id);
         $member = User::find($memberId);
         if(is_object($member)){
-            return view('layouts.show_member', compact('member'));
+            $previousUrl = array_reverse(explode('/', url()->previous()))[0];
+            return view('layouts.show_member', compact('member', 'previousUrl'));
         }
         return Redirect::to('home');
     }
@@ -221,6 +225,13 @@ class MemberController extends Controller
      */
     protected function searchBlood(Request $request){
         return User::searchBlood($request);
+    }
+
+    /**
+     * search marriage member
+     */
+    protected function searchMarriageMember(Request $request){
+        return User::searchMarriageMember($request);
     }
 
 }

@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'gotra','f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'family_id', 'is_contact_private', 'password', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'blood_group', 'education','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary', 'facebook_profile', 'google_profile', 'linkedin_profile'
+        'gotra','f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'is_super_admin', 'is_member', 'family_id', 'is_contact_private', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'kundali', 'blood_group', 'education','profession', 'other_profession', 'designation','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary','group_1','group_2','group_3','group_4','group_5','group_6', 'facebook_profile', 'google_profile', 'linkedin_profile'
     ];
 
     /**
@@ -33,7 +33,7 @@ class User extends Authenticatable
      * get next admin family id
      */
     protected static function getNextAdminFamilyId(){
-        $lastAdminUser = static::orderBy('id', 'desc')->first();
+        $lastAdminUser = static::where('is_admin', 1)->where('is_member', 1)->orderBy('id', 'desc')->first();
         if(is_object($lastAdminUser)){
             return $lastAdminUser->family_id + 1;
         } else {
@@ -52,6 +52,16 @@ class User extends Authenticatable
     }
 
     protected static function addMember(Request $request, $isUpdate=false){
+        $otherInputs = $request->except('_token', 'is_contact_private', 'married_status', 'is_marriage_candidate', 'is_same_address', 'gender');
+        $inputCount = 0;
+        foreach($otherInputs as $otherInput){
+            if(!empty($otherInput)){
+                $inputCount = $inputCount + 1;
+            }
+        }
+        if( 0 == $inputCount){
+            return false;
+        }
         $fName = $request->get('f_name');
         $mName = $request->get('m_name');
         $lName = $request->get('l_name');
@@ -70,7 +80,9 @@ class User extends Authenticatable
         $isMarriageCandidate =  $request->get('is_marriage_candidate');
         $bloodGroup =  $request->get('blood_group');
         $education =  $request->get('education');
-        $occupation =  $request->get('occupation');
+        $profession =  $request->get('profession');
+        $otherProfession =  $request->get('other_profession');
+        $designation =  $request->get('designation');
         $website =  $request->get('website');
         $address =  $request->get('address');
         $state =  $request->get('state');
@@ -93,6 +105,8 @@ class User extends Authenticatable
             }
         } else {
             $member = new static;
+            $member->is_admin = 0;
+            $member->is_member = 1;
         }
 
         $member->gotra = $gotra;
@@ -100,26 +114,30 @@ class User extends Authenticatable
         $member->m_name = $mName;
         $member->l_name = $lName;
         $member->email = $email;
-        $member->is_admin = 0;
-        if(false == $isUpdate && empty($memberId)){
+
+        if( 0 ==$member->is_admin ){
+            $member->admin_relation = $adminRelation;
             $member->mobile = $mobile;
-        } else {
-            if(!empty($mobile)){
-                $member->mobile = $mobile;
-            }
         }
+        $member->is_super_admin = 0;
         $member->family_id = $familyId;
         $member->is_contact_private = (empty($isContactPrivate))?0:$isContactPrivate;
         $member->land_line_no = $landLineNo;
         $member->fax = $fax;
         $member->dob = $dob;
         $member->gender = $gender;
-        $member->married_status = $marriedStatus;
+        if( 1 ==$member->is_member && !empty($marriedStatus)){
+            $member->married_status = $marriedStatus;
+        }
         $member->spouse = $spouse;
-        $member->is_marriage_candidate = $isMarriageCandidate;
+        if( 1 ==$member->is_member && !empty($isMarriageCandidate)){
+            $member->is_marriage_candidate = $isMarriageCandidate;
+        }
         $member->blood_group = $bloodGroup;
         $member->education = $education;
-        $member->occupation = $occupation;
+        $member->profession = $profession;
+        $member->other_profession = $otherProfession;
+        $member->designation = $designation;
         $member->website = $website;
         if(1 == $isSameAddress){
             $member->address = $loginUser->address;
@@ -128,11 +146,14 @@ class User extends Authenticatable
             $member->pin = $loginUser->pin;
         } else {
             $member->address = $address;
-            $member->state = $state;
-            $member->city = $city;
+            $member->state = 'Maharashtra';
+            if( 1 ==$member->is_member){
+                $member->city = 'Amravati';
+            } else {
+                $member->city = $city;
+            }
             $member->pin = $pin;
         }
-        $member->admin_relation = $adminRelation;
         $member->anniversary = $anniversary;
         $member->facebook_profile = $facebookProfile;
         $member->google_profile = $googleProfile;
@@ -164,7 +185,17 @@ class User extends Authenticatable
             $request->file('bio_data')->move($path, $applicantBioData);
             $member->bio_data = $path."/".$applicantBioData;
         }
-        if($request->exists('photo') || $request->exists('photo')){
+        if($request->exists('kundali')){
+            if($isUpdate && $memberId > 0){
+                if(!empty($member->kundali) && is_file($member->kundali)){
+                    unlink($member->kundali);
+                }
+            }
+            $applicantKundali = str_replace(' ', '_', $request->file('kundali')->getClientOriginalName());
+            $request->file('kundali')->move($path, $applicantKundali);
+            $member->kundali = $path."/".$applicantKundali;
+        }
+        if($request->exists('photo') || $request->exists('photo') || $request->exists('kundali')){
             $member->save();
         }
         return $member;
@@ -174,23 +205,39 @@ class User extends Authenticatable
      * get members by family id
      */
     protected static function getMembersByFamilyId($familyId){
-        return static::where('family_id', $familyId)->get();
+        return static::where('family_id', $familyId)->where('is_member', 1)->get();
     }
 
     /**
-     * search user
+     * search member
      */
     protected static function searchMember(Request $request){
-        $gotra = $request->get('gotra');
-        $member = $request->member;
+        $profession = $request->get('profession');
+        $member = $request->get('member');
         $result = static::where(function ($query) use ($member) {
                             $query->where('f_name', 'like', '%'.$member.'%')
                                   ->orWhere('l_name', 'like', '%'.$member.'%');
                         });
-        if(!empty($gotra) && 'All' != $gotra){
-            $result->where('gotra', $gotra);
+        if(!empty($profession) && 'All' != $profession){
+            $result->where('profession', $profession);
         }
-        return $result->get();
+        return $result->where('is_member', 1)->get();
+    }
+
+    /**
+     * search marriage member
+     */
+    protected static function searchMarriageMember(Request $request){
+        $gender = $request->get('gender');
+        $member = $request->get('member');
+        $result = static::where('is_marriage_candidate', 1);
+        if(!empty($gender) && 'All' != $gender){
+            $result->where('gender', $gender);
+        }
+        return $result->where(function ($query) use ($member) {
+                $query->where('f_name', 'like', '%'.$member.'%')
+                      ->orWhere('l_name', 'like', '%'.$member.'%');
+            })->select('id', 'f_name','l_name','photo')->get();
     }
 
     protected static function changeAdmin(Request $request){
@@ -215,7 +262,32 @@ class User extends Authenticatable
      */
     protected static function searchBlood(Request $request){
         $bloodgroup = $request->blood_group;
-        return static::where('blood_group', $bloodgroup)->get();
+        return static::where('blood_group', $bloodgroup)->where('is_member', 1)->get();
+    }
+
+    protected static function associateGroupToMember($request){
+        $group = $request->get('group');
+        $subgroup = $request->get('subgroup');
+        $position = $request->get('position');
+        $memberIds = $request->get('members');
+        foreach($memberIds as $memberId) {
+            $user = static::find($memberId);
+            if(1 == $group){
+                $user->group_1 = $subgroup.'|'.$position;
+            } else if(2 == $group){
+                $user->group_2 = $subgroup.'|'.$position;
+            } else if(3 == $group){
+                $user->group_3 = $subgroup.'|'.$position;
+            } else if(4 == $group){
+                $user->group_4 = $subgroup.'|'.$position;
+            } else if(5 == $group){
+                $user->group_5 = $subgroup.'|'.$position;
+            } else if(6 == $group){
+                $user->group_6 = $subgroup.'|'.$position;
+            }
+            $user->save();
+        }
+        return;
     }
 
 }

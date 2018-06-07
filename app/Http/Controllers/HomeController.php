@@ -25,33 +25,54 @@ class HomeController extends Controller
      * the controller to reuse the rules.
      */
     protected $validateMobile = [
-            'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
-        ];
+        'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
+    ];
 
      /**
      * show opt to mobile number
      */
     protected function sendOtp(Request $request){
+
         $v = Validator::make($request->all(), $this->validateMobile);
         if ($v->fails())
         {
             return redirect()->back()->withErrors($v->errors())->withInput();
         }
+        $memberType = $request->get('member_type');
         $mobile = InputSanitise::inputInt($request->get('mobile'));
-        $message = new MessageController;
-        $response = $message->sendOtp($mobile);
-        // dd(is_object(json_decode($response)));
-        if(is_object(json_decode($response)) && 'success' == json_decode($response)->status){
-           return Redirect::to('get-otp')->with('message', 'Otp send successfully to your mobile no.');
+        $adminLogin = User::where('is_admin', 1)->where('mobile', $mobile)->first();
+        if(!is_object($adminLogin)){
+            $memberLogin = User::where('is_admin', 0)->where('mobile', $mobile)->first();
+            if(is_object($memberLogin)){
+                return back()->withErrors('Only admin can login. please use admin mobile no.');
+            }
         } else {
-            return back()->withErrors('something went wrong while sendOtp.');
+            if('non-member' == $memberType && 1 == $adminLogin->is_member){
+                return back()->withErrors('Given mobile no is registered as member. So please select type as a member while login.');
+            } else if('member' == $memberType && 0 == $adminLogin->is_member){
+                return back()->withErrors('Given mobile no is registered as non-member. So please select type as a non-member while login.');
+            }
         }
+        Cache::put('mobile', $mobile, 5);
+        Cache::put('selected_type', $memberType, 5);
+        // dd($request->all());
+        // $message = new MessageController;
+        // $response = $message->sendOtp($mobile,$memberType);
+        // if(is_object(json_decode($response)) && 'success' == json_decode($response)->status){
+        //    return Redirect::to('get-otp')->with('message', 'Otp send successfully to your mobile no.');
+        // } else {
+        //     return back()->withErrors('something went wrong while sendOtp.');
+        // }
+        return Redirect::to('get-otp')->with('message', 'Please enter otp:123456.');
     }
 
     /**
      * show ui for otp
      */
     protected function getOtp(){
+        // $mobile = Cache::get('mobile');
+        // $serverOtp = Cache::get($mobile);
+        // dd($serverOtp);
         return view('layouts.otp');
     }
 
@@ -59,34 +80,53 @@ class HomeController extends Controller
      * check otp
      */
     protected function checkOtp(Request $request){
-
-        // dd(Cache::get('mobile'));
         $mobile = Cache::get('mobile');
-        $serverOtp = Cache::get($mobile);
-        if(!empty($mobile) && !empty($serverOtp)){
+        // $serverOtp = Cache::get($mobile);
+        $memberType = Cache::get('selected_type');
+        // if(!empty($mobile) && !empty($serverOtp) && !empty($memberType)){
             $userOtp = $request->get('otp');
-            if($userOtp == $serverOtp){
+
+            // if($userOtp == $serverOtp){
+            if('123456' == $userOtp){
                 // login
                 $user = User::where('mobile', $mobile)->first();
                 if(!is_object($user)){
-                    $nextAdminFamilyId = User::getNextAdminFamilyId();
-                    $user = User::create([
-                        'mobile' => $mobile,
-                        'is_admin' => 0,
-                        'family_id' => $nextAdminFamilyId,
-                        'is_contact_private' => 0,
-                        'admin_relation' => 'Admin',
-                    ]);
+                    if('member' == $memberType){
+                        $nextAdminFamilyId = User::getNextAdminFamilyId();
+                        $user = User::create([
+                            'mobile' => $mobile,
+                            'is_admin' => 1,
+                            'is_super_admin' => 0,
+                            'is_member' => 1,
+                            'family_id' => $nextAdminFamilyId,
+                            'is_contact_private' => 0,
+                            'admin_relation' => 'Admin',
+                        ]);
+                    } else {
+                        $user = User::create([
+                            'mobile' => $mobile,
+                            'is_admin' => 1,
+                            'is_super_admin' => 0,
+                            'is_member' => 0,
+                            'family_id' => 0,
+                            'is_contact_private' => 0,
+                            'is_marriage_candidate' => 1,
+                            'married_status' => 0,
+                            'admin_relation' => 'Admin',
+                        ]);
+                    }
                 }
-                // dd($user);
                 Auth::login($user);
-                // $request->session()->regenerate();
+                Cache::forget($mobile);
+                Cache::forget('selected_type');
+                Cache::forget('mobile');
+
                 return Redirect::to('home')->with('message', 'Welcome Dear');
             } else {
                 return Redirect::to('login')->withErrors('Entered otp is wrong.');
             }
-        } else {
-            return Redirect::to('login')->withErrors('Something went wrong while checkOtp.');
-        }
+        // } else {
+        //     return Redirect::to('login')->withErrors('Something went wrong while checkOtp.');
+        // }
     }
 }

@@ -22,10 +22,19 @@ Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
 Route::post('login', 'HomeController@sendOtp');
 Route::post('logout', 'Auth\LoginController@logout');
 
-Route::get('/home', 'MemberHomeController@index')->name('home');
 Route::get('get-otp', 'HomeController@getOtp');
 Route::post('check-otp', 'HomeController@checkOtp');
 
+Route::get('/home', 'MemberHomeController@index')->name('home');
+Route::get('/marriage', 'MemberHomeController@marriage');
+
+// super admin group member
+Route::get('/group-member', 'MemberHomeController@groupMember');
+Route::post('/get-sub-groups-by-group-id', 'MemberHomeController@getSubGroupsByGroupId');
+Route::post('/get-position-by-group-id-by-sub-group-id', 'MemberHomeController@getPositionByGroupIdBySubGroupId');
+Route::post('/associate-group', 'MemberHomeController@associateGroup');
+
+//member
 Route::get('/add-member', 'MemberController@create');
 Route::post('/add-member', 'MemberController@store');
 Route::get('/member/{id}/edit', 'MemberController@edit');
@@ -38,3 +47,16 @@ Route::get('/change-admin', 'MemberController@showChangeAdmin');
 Route::post('/change-admin', 'MemberController@changeAdmin');
 Route::get('/blood-group', 'MemberController@showBloodGroup');
 Route::post('/search-blood', 'MemberController@searchBlood');
+Route::post('/search-marriage-member', 'MemberController@searchMarriageMember');
+
+// business
+Route::get('/add-business', 'BusinessController@show');
+Route::get('/create-business', 'BusinessController@create');
+Route::post('/get-sub-category-by-category-id', 'BusinessController@getSubCategoryByCategoryId');
+Route::post('/create-business', 'BusinessController@store');
+Route::get('/business/{id}/edit', 'BusinessController@edit');
+Route::put('/update-business', 'BusinessController@update');
+Route::delete('/delete-business', 'BusinessController@delete');
+Route::get('/search-business', 'BusinessController@showAllBusiness');
+Route::post('/search-business', 'BusinessController@searchBusiness');
+Route::get('/business/{id}', 'BusinessController@showBusiness');

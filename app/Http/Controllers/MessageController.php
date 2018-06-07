@@ -23,7 +23,7 @@ class MessageController extends Controller
      *
      * @return send otp
      */
-    public function sendOtp($mobile)
+    public function sendOtp($mobile,$memberType)
     {
         // Account details
         $apiKey = urlencode(config('custom.sms_key'));
@@ -36,6 +36,7 @@ class MessageController extends Controller
         $userMessage = 'Your OTP: '.$otp;
         Cache::put($mobile, $otp, 5);
         Cache::put('mobile', $mobile, 5);
+        Cache::put('selected_type', $memberType, 5);
         $message = rawurlencode($userMessage);
         $numbers = implode(',', $numbers);
 

@@ -68,15 +68,33 @@
                             @endphp
                         @if(is_object($loginUser))
                             <li><a href="{{ url('home') }}">Home</a></li>
+                            @if(1 == $loginUser->is_member)
                             <li><a href="{{ url('members') }}">Members</a></li>
+                            @endif
+                            <li><a href="{{ url('marriage') }}">Marriage</a></li>
+                            @if(1 == $loginUser->is_member)
                             <li><a href="{{ url('blood-group') }}">Blood Group</a></li>
                             <li><a href="{{ url('add-member') }}">Add Member</a></li>
-                            <li><a href="{{ url('change-admin') }}">Change Admin</a></li>
+                            <!-- <li><a href="{{ url('change-admin') }}">Change Admin</a></li> -->
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
+                                    Business <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="{{ url('search-business') }}">Search Business</a>
+                                        <a href="{{ url('add-business') }}">Add Business</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            @endif
+                            @if(1 == $loginUser->is_super_admin)
+                            <li><a href="{{ url('group-member') }}">Group Member</a></li>
+                            @endif
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                                     {{ Auth::user()->f_name }} <span class="caret"></span>
                                 </a>
-
                                 <ul class="dropdown-menu">
                                     <li>
                                         <a href="{{ url('logout') }}"
