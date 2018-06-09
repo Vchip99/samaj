@@ -5,7 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Libraries\InputSanitise;
-use Auth,File;
+use App\Models\BusinessCategory;
+use App\Models\BusinessSubCategory;
+use Auth,File,Redirect;
 
 class BusinessDetails extends Model
 {
@@ -38,7 +40,7 @@ class BusinessDetails extends Model
         if($isUpdate && $businessId > 0){
             $business = static::find($businessId);
             if(!is_object($business)){
-                return Redirect::to('home')->withErrors('something went wrong.');
+                return false;
             }
         } else {
             $business = new static;
@@ -82,11 +84,11 @@ class BusinessDetails extends Model
     protected static function searchBusiness($request){
     	$name = $request->get('business');
         $businessCategoryId = $request->get('business_category');
-    	$result = static::where('name', 'like', '%'.$name.'%');
+    	$result = static::join('business_categories', 'business_categories.id', '=', 'business_details.business_category_id')->where('business_details.name', 'like', '%'.$name.'%');
         if($businessCategoryId > 0){
-            $result->where('business_category_id', $businessCategoryId);
+            $result->where('business_details.business_category_id', $businessCategoryId);
         }
-        return $result->get();
+        return $result->select('business_details.id','business_details.logo','business_details.name', 'business_categories.name as category_name')->get();
     }
 
     protected static function deleteBusinessByFamilyId($familyId){
@@ -99,5 +101,16 @@ class BusinessDetails extends Model
             }
         }
         return;
+    }
+
+    protected static function getBusinessByFamilyId($familyId){
+        return static::where('family_id', $familyId)->get();
+    }
+
+    public function businessCategory(){
+        return $this->belongsTo(BusinessCategory::class, 'business_category_id');
+    }
+    public function businessSubcategory(){
+        return $this->belongsTo(BusinessSubCategory::class, 'business_sub_category_id');
     }
 }

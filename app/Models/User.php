@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
-use Auth,File;
+use Auth,File,Redirect;
 
 class User extends Authenticatable
 {
@@ -101,7 +101,7 @@ class User extends Authenticatable
         if($isUpdate && $memberId > 0){
             $member = static::find($memberId);
             if(!is_object($member)){
-                return Redirect::to('home')->withErrors('something went wrong.');
+                return false;
             }
         } else {
             $member = new static;
@@ -119,7 +119,9 @@ class User extends Authenticatable
             $member->admin_relation = $adminRelation;
             $member->mobile = $mobile;
         }
-        $member->is_super_admin = 0;
+        if( 0 ==$member->is_super_admin ){
+            $member->is_super_admin = 0;
+        }
         $member->family_id = $familyId;
         $member->is_contact_private = (empty($isContactPrivate))?0:$isContactPrivate;
         $member->land_line_no = $landLineNo;
@@ -290,4 +292,27 @@ class User extends Authenticatable
         return;
     }
 
+    /**
+     * search member
+     */
+    protected static function searchMemberByProfession(Request $request){
+        $profession = $request->get('profession');
+        $result = static::where('is_member', 1);
+        if(!empty($profession) && 'All' != $profession){
+            $result->where('profession', $profession);
+        }
+        return $result->get();
+    }
+
+    /**
+     * search marriage member
+     */
+    protected static function searchMarriageMemberByGender(Request $request){
+        $gender = $request->get('gender');
+        $result = static::where('is_marriage_candidate', 1);
+        if(!empty($gender) && 'All' != $gender){
+            $result->where('gender', $gender);
+        }
+        return $result->select('id', 'f_name','l_name','photo')->get();
+    }
 }

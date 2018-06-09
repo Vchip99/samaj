@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container top-margin">
     <div class="row">
         <div class="">
             <div class="panel panel-default">
-
                 <div class="panel-body">
+                    <div class="form-group row">
                     @if(count($errors) > 0)
                       <div class="alert alert-danger">
                           <ul>
@@ -22,13 +22,13 @@
                             {{ Session::get('message') }}
                         </div>
                     @endif
-                    <div class="form-group row">
+
                         <div id="addCategoryDiv">
-                            <a id="addCategory" href="{{url('create-business')}}" type="button" class="btn btn-primary" style="float: right;" title="Add New Course Receipt">Add Business</a>&nbsp;&nbsp;
+                            <a id="addCategory" href="{{url('create-business')}}" type="button" class="btn btn-primary" style="float: right;" title="Add Business">Add Business</a>&nbsp;&nbsp;
                         </div>
                     </div>
                     <div class="row">
-                        <table class="table" border="1">
+                        <table class="table table-bordered" border="1">
                             <thead class="">
                               <tr>
                                 <th>#</th>

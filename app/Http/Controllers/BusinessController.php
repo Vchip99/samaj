@@ -20,7 +20,6 @@ class BusinessController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // Auth::onceUsingId(4);
     }
 
     /**
@@ -36,7 +35,7 @@ class BusinessController extends Controller
      * show business
      */
     protected function show(){
-        $businesses = BusinessDetails::all();
+        $businesses = BusinessDetails::where('family_id', Auth::user()->family_id)->get();
         return view('business.list', compact('businesses'));
     }
 
@@ -182,7 +181,8 @@ class BusinessController extends Controller
             } else {
                 $subCategories = [];
             }
-            return view('business.show_business', compact('businessCategories', 'business', 'subCategories'));
+            $previousUrl = url()->previous();
+            return view('business.show_business', compact('businessCategories', 'business', 'subCategories', 'previousUrl'));
         }
         return Redirect::to('search-business');
     }

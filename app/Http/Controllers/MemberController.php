@@ -18,19 +18,7 @@ class MemberController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        // Auth::onceUsingId(4);
     }
-
-    /**
-     * Define your validation rules in a property in
-     * the controller to reuse the rules.
-     */
-    // protected $validateRegistration = [
-    //         'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
-    //     ];
-    // protected $validateUpdateRegistration = [
-    //         'mobile' => 'required|regex:/[0-9]{10}/|digits:10',
-    //     ];
 
     /**
      * add member
@@ -45,12 +33,6 @@ class MemberController extends Controller
      * store member
      */
     protected function store( Request $request){
-        // $v = Validator::make($request->all(), $this->validateRegistration);
-        // if ($v->fails())
-        // {
-        //     return redirect()->back()->withErrors($v->errors())->withInput();
-        // }
-
         DB::beginTransaction();
         try
         {
@@ -85,12 +67,6 @@ class MemberController extends Controller
      * update member
      */
     protected function update( Request $request){
-        // $v = Validator::make($request->all(), $this->validateUpdateRegistration);
-        // if ($v->fails())
-        // {
-        //     return redirect()->back()->withErrors($v->errors())->withInput();
-        // }
-
         DB::beginTransaction();
         try
         {
@@ -171,8 +147,11 @@ class MemberController extends Controller
         $memberId = json_decode($id);
         $member = User::find($memberId);
         if(is_object($member)){
-            $previousUrl = array_reverse(explode('/', url()->previous()))[0];
-            return view('layouts.show_member', compact('member', 'previousUrl'));
+            // $previousUrl = array_reverse(explode('/', url()->previous()))[0];
+            $previousUrl = url()->previous();
+            $familyMembers = User::getMembersByFamilyId($member->family_id);
+            $familyBusinesses = BusinessDetails::getBusinessByFamilyId($member->family_id);
+            return view('layouts.show_member', compact('member', 'previousUrl', 'familyMembers', 'familyBusinesses'));
         }
         return Redirect::to('home');
     }
@@ -234,4 +213,11 @@ class MemberController extends Controller
         return User::searchMarriageMember($request);
     }
 
+    protected function searchMemberByProfession(Request $request){
+        return User::searchMemberByProfession($request);
+    }
+
+    protected function searchMarriageMemberByGender(Request $request){
+        return User::searchMarriageMemberByGender($request);
+    }
 }

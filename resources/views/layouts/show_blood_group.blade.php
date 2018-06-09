@@ -1,55 +1,61 @@
 @extends('layouts.app')
 @section('header-css')
     <style type="text/css">
-        .member-label{
-          margin-left: 5%;
-          margin-top: 10%;
-          padding: 0px;
+        .bloodGroup{
+            height:80%;
+            margin-top: 70px;
+        }
+        .top{
+            margin-top: 40px;
         }
     </style>
 @endsection
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="">
-            <div class="panel panel-default">
-                <div class="panel-heading "style="height: 55px;">
-                    <div class="col-md-3">
-                        <select class="form-control" name="blood_group" onChange="searchBloodMember(this.value);">
-                            <option value="">Select Blood Group</option>
-                            <option value="A+" selected>A+</option>
-                            <option value="A-">A-</option>
-                            <option value="B+">B+</option>
-                            <option value="B-">B-</option>
-                            <option value="AB+" >AB+</option>
-                            <option value="AB-" >AB-</option>
-                            <option value="O+">O+</option>
-                            <option value="O-">O-</option>
-                        </select>
+        <div class="col-md-10 ">
+            <div class="container bloodGroup">
+                <div class="row">
+                    <div class="col-md-4 top">
+                        <div class="form-group">
+                            <label class="control-label">Blood Group</label>
+                            <select class="form-control" name="blood_group" onChange="searchBloodMember(this.value);">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+" selected>A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-                <div class="panel-body">
+                <div class="row">
+                    <hr>
+                </div>
+                <div class="row" id="allMember">
                     @if(count($members) > 0)
-                    <div class="row">
-                        <div id="allMember">
                         @foreach($members as $member)
-                        <div class="col-md-6">
-                            <div class="col-md-3">
-                                @if(!empty($member->photo))
-                                    <a href="{{url('member')}}/{{$member->id}}" ><img src="{{ asset($member->photo)}}" class="user-photo"></a>
-                                @else
-                                    <a href="{{url('member')}}/{{$member->id}}" ><img src="{{ asset('images/user.png')}}" class="user-photo"></a>
-                                @endif
+                        <div class="col-md-4 col-sm-6 col-xs-6 col-1 text-center" >
+                            <div class="member1 text-center">
+                                <a href="{{url('member')}}/{{$member->id}}" >
+                                    @if(!empty($member->photo))
+                                        <img src="{{ asset($member->photo)}}" alt="member1 image" class="image img-circle" >
+                                    @else
+                                        <img src="{{ asset('images/user.png')}}" alt="member1 image" class="image img-circle" >
+                                    @endif
+                                    @if(!empty($member->f_name) || !empty($member->l_name))
+                                        <h3><strong>{{$member->f_name}} {{$member->l_name}}</strong></h3>
+                                    @else
+                                        <h3><strong>{{$member->mobile}}</strong></h3>
+                                    @endif
+                                </a>
                             </div>
-                            @if(!empty($member->f_name) || !empty($member->l_name))
-                                <label class="col-md-3 control-label member-label"> <a href="{{url('member')}}/{{$member->id}}" >{{$member->f_name}} {{$member->l_name}}</a></label>
-                            @else
-                                <label class="col-md-3 control-label member-label"> <a href="{{url('member')}}/{{$member->id}}" >{{$member->mobile}}</a></label>
-                            @endif
                         </div>
                         @endforeach
-                        </div>
-                    </div>
                     @else
                         No Member
                     @endif
@@ -72,22 +78,38 @@
                 if(members.length > 0){
                     $.each(members, function(idx,obj){
                         var firstDiv = document.createElement('div');
-                        firstDiv.className = 'col-md-6';
-                        firstDivInnerHTML = '<div class="col-md-3">';
+                        firstDiv.className = 'col-md-4 col-sm-6 col-xs-6 col-1 text-center';
+                        firstDivInnerHTML = '<div class="member1 text-center">';
                         var urlStr = "{{url('member')}}/"+obj.id;
                         var imgStr = "{{ asset('')}}"+obj.photo;
                         var defaultImgStr = "{{ asset('images/user.png')}}";
+                        firstDivInnerHTML += '<a href="'+urlStr+'" >';
                         if(obj.photo){
-                            firstDivInnerHTML += '<a href="'+urlStr+'" ><img src="'+imgStr+'" class="user-photo"></a></div>';
+                            firstDivInnerHTML += '<img src="'+imgStr+'" alt="member1 image" class="image img-circle" >';
                         } else {
-                            firstDivInnerHTML += '<a href="'+urlStr+'" ><img src="'+defaultImgStr+'" class="user-photo"></a></div>';
+                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" alt="member1 image" class="image img-circle" >';
                         }
-                        if(obj.f_name || obj.l_name){
-                            firstDivInnerHTML += '<label class="col-md-3 control-label member-label"> <a href="'+urlStr+'" >'+obj.f_name+' '+obj.l_name+'</a></label>';
+                        if(obj.f_name){
+                          var firstName = obj.f_name;
                         } else {
-                            firstDivInnerHTML += '<label class="col-md-3 control-label member-label"> <a href="'+urlStr+'" >'+obj.mobile+'</a></label>';
+                          var firstName = '';
                         }
-
+                        if(obj.l_name){
+                          var lastName = obj.l_name;
+                        } else {
+                          var lastName = '';
+                        }
+                        if(obj.mobile){
+                          var mobile = obj.mobile;
+                        } else {
+                          var mobile = '';
+                        }
+                        if(firstName || lastName){
+                            firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3>';
+                        } else {
+                            firstDivInnerHTML += '<h3><strong>'+mobile+'</strong></h3>';
+                        }
+                        firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);
                     })
