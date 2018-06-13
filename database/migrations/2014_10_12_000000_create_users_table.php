@@ -54,8 +54,8 @@ class CreateUsersTable extends Migration
             $table->string('group_4')->nullable();
             $table->string('group_5')->nullable();
             $table->string('group_6')->nullable();
-            $table->string('facebook_profile')->nullable();
-            $table->string('google_profile')->nullable();
+            $table->string('group_7')->nullable();
+            $table->string('job_location')->nullable();
             $table->string('linkedin_profile')->nullable();
             $table->rememberToken();
             $table->timestamps();
