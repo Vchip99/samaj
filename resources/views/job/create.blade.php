@@ -88,5 +88,7 @@
             </form>
         </div>
     </div>
+    <div style="min-height: 371px !important"></div>
 </div>
+@include('layouts.footer')
 @endsection

@@ -13,7 +13,7 @@
 @endsection
 @section('content')
 <div class="container top-margin">
-    <div class="row">
+    <div class="row" style="min-height: 700px !important;">
         <div class="">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -47,4 +47,5 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
 @endsection

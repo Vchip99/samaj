@@ -66,7 +66,7 @@
                 {{ method_field('PUT')}}
             @endif
                 <div class="form-group">
-                    <label for="name" class="col-md-3 control-label">Name </label>
+                    <label for="name" class="col-md-3 control-label">Name <sup>*</sup></label>
                     <div class="col-md-3">
                         <input id="f_name" type="text" class="form-control" name="f_name" value="{{ (!empty($member->id))?$member->f_name:old('f_name') }}"  placeholder="first name" @if(!empty($member->id)) readonly @endif>
                         @if ($errors->has('f_name'))
@@ -335,6 +335,12 @@
                             </div>
                         </div>
                     @endif
+                    <div id="jobLocation" class="form-group  ">
+                        <label for="job_location" class="col-md-3 control-label">Job Location</label>
+                        <div class="col-md-6">
+                            <input type="text" name="job_location" class="form-control" value="{{$member->job_location}}" placeholder="Job Location" readonly>
+                        </div>
+                    </div>
                 @else
                     <div id="bioDataDiv" class="form-group hide ">
                         <label for="bio_data" class="col-md-3 control-label">Bio-Data</label>
@@ -348,8 +354,14 @@
                             <input id="kundali" type="file" class="form-control" name="kundali">
                         </div>
                     </div>
+                    <div id="jobLocation" class="form-group  hide">
+                        <label for="job_location" class="col-md-3 control-label">Job Location</label>
+                        <div class="col-md-6">
+                            <input type="text" name="job_location" class="form-control" value="" placeholder="Job Location">
+                        </div>
+                    </div>
                 @endif
-                <div class="form-group ">
+                <!-- <div class="form-group ">
                     <label for="gotra" class="col-md-3 control-label">Gotra </label>
                     <div class="col-md-6">
                         <select class="form-control" name="gotra"  @if(!empty($member->id)) disabled @endif>
@@ -414,7 +426,7 @@
                             <option value="Vachans" @if('Vachans' == $member->gotra)selected="true" @endif> Vachans </option>
                         </select>
                     </div>
-                </div>
+                </div> -->
                 <div class="form-group ">
                     <label for="blood_group" class="col-md-3 control-label">Blood Group</label>
                     <div class="col-md-6">
@@ -434,80 +446,83 @@
                 <div class="form-group">
                     <label for="education" class="col-md-3 control-label">Education</label>
                     <div class="col-md-6">
-                        <select class="form-control" name="education"  @if(!empty($member->id)) disabled @endif>
+                        <select class="form-control" name="education[]" multiple @if(!empty($member->id)) disabled @endif >
                             <option value="">Select Education</option>
+                            @php
+                                $educations = explode('|', $member->education);
+                            @endphp
                             <optgroup label="Engineering">
-                                <option value="B.Arch" @if('B.Arch' == $member->education)selected="true" @endif>B.Arch</option>
-                                <option value="B.E" @if('B.E' == $member->education)selected="true" @endif>B.E</option>
-                                <option value="B.S(Engg)" @if('B.S(Engg)' == $member->education)selected="true" @endif>B.S(Engg)</option>
-                                <option value="B.Tech" @if('B.Tech' == $member->education)selected="true" @endif>B.Tech</option>
-                                <option value="M.S(Engg)" @if('M.S(Engg)' == $member->education)selected="true" @endif>M.S(Engg)</option>
-                                <option value="M.E/M.Tech" @if('M.E/M.Tech' == $member->education)selected="true" @endif>M.E/M.Tech</option>
+                                <option value="B.Arch" @if(in_array('B.Arch', $educations))selected="true" @endif>B.Arch</option>
+                                <option value="B.E" @if(in_array('B.E', $educations))selected="true" @endif>B.E</option>
+                                <option value="B.S(Engg)" @if(in_array('B.S(Engg)', $educations))selected="true" @endif>B.S(Engg)</option>
+                                <option value="B.Tech" @if(in_array('B.Tech', $educations))selected="true" @endif>B.Tech</option>
+                                <option value="M.S(Engg)" @if(in_array('M.S(Engg)', $educations))selected="true" @endif>M.S(Engg)</option>
+                                <option value="M.E/M.Tech" @if(in_array('M.E/M.Tech', $educations))selected="true" @endif>M.E/M.Tech</option>
                             </optgroup>
                             <optgroup label="Finance / Commerce">
-                                <option value="B.Com" @if('B.Com' == $member->education)selected="true" @endif>B.Com</option>
-                                <option value="CA" @if('CA' == $member->education)selected="true" @endif>CA</option>
-                                <option value="CFA" @if('CFA' == $member->education)selected="true" @endif>CFA</option>
-                                <option value="CPA" @if('CPA' == $member->education)selected="true" @endif>CPA</option>
-                                <option value="CS" @if('CS' == $member->education)selected="true" @endif>CS</option>
-                                <option value="ICWAI" @if('ICWAI' == $member->education)selected="true" @endif>ICWAI</option>
-                                <option value="M.Com" @if('M.Com' == $member->education)selected="true" @endif>M.Com</option>
+                                <option value="B.Com" @if(in_array('B.Com', $educations))selected="true" @endif>B.Com</option>
+                                <option value="CA" @if(in_array('CA', $educations))selected="true" @endif>CA</option>
+                                <option value="CFA" @if(in_array('CFA', $educations))selected="true" @endif>CFA</option>
+                                <option value="CPA" @if(in_array('CPA', $educations))selected="true" @endif>CPA</option>
+                                <option value="CS" @if(in_array('CS', $educations))selected="true" @endif>CS</option>
+                                <option value="ICWAI" @if(in_array('ICWAI', $educations))selected="true" @endif>ICWAI</option>
+                                <option value="M.Com" @if(in_array('M.Com', $educations))selected="true" @endif>M.Com</option>
                             </optgroup>
                             <optgroup label="Computers">
-                                <option value="BCA" @if('BCA' == $member->education)selected="true" @endif>BCA</option>
-                                <option value="MCS" @if('MCS' == $member->education)selected="true" @endif>MCS</option>
-                                <option value="MCA/PGDCA" @if('MCA/PGDCA' == $member->education)selected="true" @endif>MCA/PGDCA</option>
+                                <option value="BCA" @if(in_array('BCA', $educations))selected="true" @endif>BCA</option>
+                                <option value="MCS" @if(in_array('MCS', $educations))selected="true" @endif>MCS</option>
+                                <option value="MCA/PGDCA" @if(in_array('MCA/PGDCA', $educations))selected="true" @endif>MCA/PGDCA</option>
                             </optgroup>
                             <optgroup label="Law">
-                                <option value="BL" @if('BL' == $member->education)selected="true" @endif>BL</option>
-                                <option value="LLB" @if('LLB' == $member->education)selected="true" @endif>LLB</option>
-                                <option value="ML/LLM" @if('ML/LLM' == $member->education)selected="true" @endif>ML/LLM</option>
+                                <option value="BL" @if(in_array('BL', $educations))selected="true" @endif>BL</option>
+                                <option value="LLB" @if(in_array('LLB', $educations))selected="true" @endif>LLB</option>
+                                <option value="ML/LLM" @if(in_array('ML/LLM', $educations))selected="true" @endif>ML/LLM</option>
                             </optgroup>
                             <optgroup label="Management">
-                                <option value="BBA" @if('BBA' == $member->education)selected="true" @endif>BBA</option>
-                                <option value="MBA/PGDM" @if('MBA/PGDM' == $member->education)selected="true" @endif>MBA/PGDM</option>
-                                <option value="PGDBM" @if('PGDBM' == $member->education)selected="true" @endif>PGDBM</option>
+                                <option value="BBA" @if(in_array('BBA', $educations))selected="true" @endif>BBA</option>
+                                <option value="MBA/PGDM" @if(in_array('MBA/PGDM', $educations))selected="true" @endif>MBA/PGDM</option>
+                                <option value="PGDBM" @if(in_array('PGDBM', $educations))selected="true" @endif>PGDBM</option>
                             </optgroup>
                             <optgroup label="Medicine">
-                                <option value="BAMS" @if('BAMS' == $member->education)selected="true" @endif>BAMS</option>
-                                <option value="BDS" @if('BDS' == $member->education)selected="true" @endif>BDS</option>
-                                <option value="BHMS" @if('BHMS' == $member->education)selected="true" @endif>BHMS</option>
-                                <option value="MBBS" @if('MBBS' == $member->education)selected="true" @endif>MBBS</option>
-                                <option value="MD/MS" @if('MD/MS' == $member->education)selected="true" @endif>MD/MS</option>
-                                <option value="MDS" @if('MDS' == $member->education)selected="true" @endif>MDS</option>
+                                <option value="BAMS" @if(in_array('BAMS', $educations))selected="true" @endif>BAMS</option>
+                                <option value="BDS" @if(in_array('BDS', $educations))selected="true" @endif>BDS</option>
+                                <option value="BHMS" @if(in_array('BHMS', $educations))selected="true" @endif>BHMS</option>
+                                <option value="MBBS" @if(in_array('MBBS', $educations))selected="true" @endif>MBBS</option>
+                                <option value="MD/MS" @if(in_array('MD/MS', $educations))selected="true" @endif>MD/MS</option>
+                                <option value="MDS" @if(in_array('MDS', $educations))selected="true" @endif>MDS</option>
                             </optgroup>
                             <optgroup label="Pharamcy">
-                                <option value="B.Pharm" @if('B.Pharm' == $member->education)selected="true" @endif>B.Pharm</option>
-                                <option value="M.Pharm" @if('M.Pharm' == $member->education)selected="true" @endif>M.Pharm</option>
+                                <option value="B.Pharm" @if(in_array('B.Pharm', $educations))selected="true" @endif>B.Pharm</option>
+                                <option value="M.Pharm" @if(in_array('M.Pharm', $educations))selected="true" @endif>M.Pharm</option>
                             </optgroup>
                             <optgroup label="Arts / Science">
-                                <option value="Bachelor" @if('Bachelor' == $member->education)selected="true" @endif>Bachelor</option>
-                                <option value="B.A" @if('B.A' == $member->education)selected="true" @endif>B.A</option>
-                                <option value="B.Ed" @if('B.Ed' == $member->education)selected="true" @endif>B.Ed</option>
-                                <option value="B.S" @if('B.S' == $member->education)selected="true" @endif>B.S</option>
-                                <option value="B.Sc" @if('B.Sc' == $member->education)selected="true" @endif>B.Sc</option>
-                                <option value="Integrated PG" @if('Integrated PG' == $member->education)selected="true" @endif>Integrated PG</option>
-                                <option value="M.A" @if('M.A' == $member->education)selected="true" @endif>M.A</option>
-                                <option value="Masters" @if('Masters' == $member->education)selected="true" @endif>Masters</option>
-                                <option value="M.Ed" @if('M.Ed' == $member->education)selected="true" @endif>M.Ed</option>
-                                <option value="M.Sc" @if('M.Sc' == $member->education)selected="true" @endif>M.Sc</option>
-                                <option value="Post graduation" @if('Post graduation' == $member->education)selected="true" @endif>Post graduation</option>
+                                <option value="Bachelor" @if(in_array('Bachelor', $educations))selected="true" @endif>Bachelor</option>
+                                <option value="B.A" @if(in_array('B.A', $educations))selected="true" @endif>B.A</option>
+                                <option value="B.Ed" @if(in_array('B.Ed', $educations))selected="true" @endif>B.Ed</option>
+                                <option value="B.S" @if(in_array('B.S', $educations))selected="true" @endif>B.S</option>
+                                <option value="B.Sc" @if(in_array('B.Sc', $educations))selected="true" @endif>B.Sc</option>
+                                <option value="Integrated PG" @if(in_array('Integrated PG', $educations))selected="true" @endif>Integrated PG</option>
+                                <option value="M.A" @if(in_array('M.A', $educations))selected="true" @endif>M.A</option>
+                                <option value="Masters" @if(in_array('Masters', $educations))selected="true" @endif>Masters</option>
+                                <option value="M.Ed" @if(in_array('M.Ed', $educations))selected="true" @endif>M.Ed</option>
+                                <option value="M.Sc" @if(in_array('M.Sc', $educations))selected="true" @endif>M.Sc</option>
+                                <option value="Post graduation" @if(in_array('Post graduation', $educations))selected="true" @endif>Post graduation</option>
                             </optgroup>
                             <optgroup label="Doctorates">
-                                <option value="Doctorate" @if('Doctorate' == $member->education)selected="true" @endif>Doctorate</option>
-                                <option value="M.Phil" @if('M.Phil' == $member->education)selected="true" @endif>M.Phil</option>
-                                <option value="Ph.D" @if('Ph.D' == $member->education)selected="true" @endif>Ph.D</option>
+                                <option value="Doctorate" @if(in_array('Doctorate', $educations))selected="true" @endif>Doctorate</option>
+                                <option value="M.Phil" @if(in_array('M.Phil', $educations))selected="true" @endif>M.Phil</option>
+                                <option value="Ph.D" @if(in_array('Ph.D', $educations))selected="true" @endif>Ph.D</option>
                             </optgroup>
                             <optgroup label="Non Graduates">
-                                <option value="Trade School" @if('Trade School' == $member->education)selected="true" @endif>Trade School</option>
-                                <option value="Undergraduate" @if('Undergraduate' == $member->education)selected="true" @endif>Undergraduate</option>
-                                <option value="Polytechnic" @if('Polytechnic' == $member->education)selected="true" @endif>Polytechnic</option>
-                                <option value="High School/HSC" @if('High School/HSC' == $member->education)selected="true" @endif>High School/HSC</option>
-                                <option value="Diploma" @if('Diploma' == $member->education)selected="true" @endif>Diploma</option>
-                                <option value="Intermediate" @if('Intermediate' == $member->education)selected="true" @endif>Intermediate</option>
+                                <option value="Trade School" @if(in_array('Trade School', $educations))selected="true" @endif>Trade School</option>
+                                <option value="Undergraduate" @if(in_array('Undergraduate', $educations))selected="true" @endif>Undergraduate</option>
+                                <option value="Polytechnic" @if(in_array('Polytechnic', $educations))selected="true" @endif>Polytechnic</option>
+                                <option value="High School/HSC" @if(in_array('High School/HSC', $educations))selected="true" @endif>High School/HSC</option>
+                                <option value="Diploma" @if(in_array('Diploma', $educations))selected="true" @endif>Diploma</option>
+                                <option value="Intermediate" @if(in_array('Intermediate', $educations))selected="true" @endif>Intermediate</option>
                             </optgroup>
                             <optgroup label="Other">
-                                <option value="Other" @if('Other' == $member->education)selected="true" @endif>Other</option>
+                                <option value="Other" @if(in_array('Other', $educations))selected="true" @endif>Other</option>
                             </optgroup>
                         </select>
                     </div>
@@ -626,6 +641,7 @@
                                 <option value="Daughter" @if('Daughter' == $member->admin_relation)selected="true" @endif>Daughter</option>
                                 <option value="Daughter in Law" @if('Daughter in Law' == $member->admin_relation)selected="true" @endif>Daughter in Law</option>
                                 <option value="Grand Daughter in Law" @if('Grand Daughter in Law' == $member->admin_relation)selected="true" @endif>Grand Daughter in Law</option>
+                                <option value="Sister in Law" @if('Sister in Law' == $member->admin_relation)selected="true" @endif>Sister in Law</option>
                                 <option value="GrandFather" @if('GrandFather' == $member->admin_relation)selected="true" @endif>GrandFather</option>
                                 <option value="GrandMother" @if('GrandMother' == $member->admin_relation)selected="true" @endif>GrandMother</option>
                                 <option value="GrandSon" @if('GrandSon' == $member->admin_relation)selected="true" @endif>GrandSon</option>
@@ -679,6 +695,7 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
 <script type="text/javascript">
     function toggleSpouse(ele){
         if(0 == $(ele).val()){
@@ -686,23 +703,25 @@
             document.getElementById('UnMarriedDiv').classList.remove('hide');
             document.getElementById('bioDataDiv').classList.add('hide');
             document.getElementById('kundaliDiv').classList.add('hide');
-
+            document.getElementById('jobLocation').classList.add('hide');
         } else {
             document.getElementById('spouseDiv').classList.remove('hide');
             document.getElementById('UnMarriedDiv').classList.add('hide');
             document.getElementById('bioDataDiv').classList.add('hide');
             document.getElementById('kundaliDiv').classList.add('hide');
+            document.getElementById('jobLocation').classList.add('hide');
         }
     }
 
     function toggleMarriedCandidate(ele){
-
         if(1 == $(ele).val()){
             document.getElementById('bioDataDiv').classList.remove('hide');
             document.getElementById('kundaliDiv').classList.remove('hide');
+            document.getElementById('jobLocation').classList.remove('hide');
         } else {
             document.getElementById('bioDataDiv').classList.add('hide');
             document.getElementById('kundaliDiv').classList.add('hide');
+            document.getElementById('jobLocation').classList.add('hide');
         }
     }
 

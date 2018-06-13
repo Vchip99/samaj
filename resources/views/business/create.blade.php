@@ -62,36 +62,121 @@
                 <div class="form-group ">
                     <label for="" class="col-md-3 control-label">Business Category <sup>*</sup></label>
                     <div class="col-md-6">
-                        <select class="form-control" name="business_category" required onChange="toggleSubCategory(this);">
+                        <select class="form-control" name="business_category" required>
                             <option value="">Select Business Category</option>
-                            @if(count($businessCategories) > 0)
-                                @foreach($businessCategories as $businessCategory)
-                                    <option value="{{$businessCategory->id}}" data-have_sub_category="{{$businessCategory->have_sub_category}}" @if(!empty($business->id) && $business->business_category_id == $businessCategory->id) selected @endif>{{$businessCategory->name}}</option>
-                                @endforeach
-                            @endif
+                            <optgroup label="Accountant">
+                                <option value="Accountant" @if(!empty($business->id) && "Accountant" == $business->business_category ) selected @endif>Accountant</option>
+                            </optgroup>
+                            <optgroup label="Advocate">
+                                <option value="Advocate" @if(!empty($business->id) && "Advocate" == $business->business_category ) selected @endif>Advocate</option>
+                            </optgroup>
+                            <optgroup label="Architect">
+                                <option value="Architect" @if(!empty($business->id) && "Architect" == $business->business_category ) selected @endif>Architect</option>
+                            </optgroup>
+                            <optgroup label="Bichayat/Decoration">
+                                <option value="Bichayat/Decoration" @if(!empty($business->id) && "Bichayat/Decoration" == $business->business_category ) selected @endif>Bichayat/Decoration</option>
+                            </optgroup>
+                            <optgroup label="Broker">
+                                <option value="Cotton(Broker)" @if(!empty($business->id) && "Cotton(Broker)" == $business->business_category ) selected @endif>Cotton(Broker)</option>
+                                <option value="Finance(Broker)" @if(!empty($business->id) && "Finance(Broker)" == $business->business_category ) selected @endif>Finance(Broker)</option>
+                                <option value="Grain(Broker)" @if(!empty($business->id) && "Grain(Broker)" == $business->business_category ) selected @endif>Grain(Broker)</option>
+                                <option value="LIC Agent" @if(!empty($business->id) && "LIC Agent" == $business->business_category ) selected @endif>LIC Agent</option>
+                                <option value="Property(Broker)" @if(!empty($business->id) && "Property(Broker)" == $business->business_category ) selected @endif>Property(Broker)</option>
+                                <option value="Share(Broker)" @if(!empty($business->id) && "Share(Broker)" == $business->business_category ) selected @endif>Share(Broker)</option>
+                            </optgroup>
+                            <optgroup label="Builder & Land developer">
+                                <option value="Builder & Land developer" @if(!empty($business->id) && "Builder & Land developer" == $business->business_category ) selected @endif>Builder & Land developer</option>
+                            </optgroup>
+                            <optgroup label="CA">
+                                <option value="CA" @if(!empty($business->id) && "CA" == $business->business_category ) selected @endif>CA</option>
+                            </optgroup>
+                            <optgroup label="Catering">
+                                <option value="Catering" @if(!empty($business->id) && "Catering" == $business->business_category ) selected @endif>Catering</option>
+                            </optgroup>
+                            <optgroup label="Cloth Store">
+                                <option value="Cloth Store" @if(!empty($business->id) && "Cloth Store" == $business->business_category ) selected @endif>Cloth Store</option>
+                            </optgroup>
+                            <optgroup label="Coaching Classes">
+                                <option value="Coaching Classes" @if(!empty($business->id) && "Coaching Classes" == $business->business_category ) selected @endif>Coaching Classes</option>
+                            </optgroup>
+                            <optgroup label="Designer Graphics and Other">
+                                <option value="Designer Graphics and Other" @if(!empty($business->id) && "Designer Graphics and Other" == $business->business_category ) selected @endif>Designer Graphics and Other</option>
+                            </optgroup>
+                            <optgroup label="Dealer">
+                                <option value="Bike/Car(Dealer)" @if(!empty($business->id) && "Bike/Car(Dealer)" == $business->business_category ) selected @endif>Bike/Car(Dealer)</option>
+                                <option value="Laptop(Dealer)" @if(!empty($business->id) && "Laptop(Dealer)" == $business->business_category ) selected @endif>Laptop(Dealer)</option>
+                                <option value="Mobile(Dealer)" @if(!empty($business->id) && "Mobile(Dealer)" == $business->business_category ) selected @endif>Mobile(Dealer)</option>
+                                <option value="TV/Refrigerator(Dealer)" @if(!empty($business->id) && "TV/Refrigerator(Dealer)" == $business->business_category ) selected @endif>TV/Refrigerator(Dealer)</option>
+                            </optgroup>
+                            <optgroup label="Doctor">
+                                <option value="Doctor" @if(!empty($business->id) && "Doctor" == $business->business_category ) selected @endif>Doctor</option>
+                            </optgroup>
+                            <optgroup label="Electrical">
+                                <option value="Electrical" @if(!empty($business->id) && "Electrical" == $business->business_category ) selected @endif>Electrical</option>
+                            </optgroup>
+                            <optgroup label="Event Management">
+                                <option value="Event Management" @if(!empty($business->id) && "Event Management" == $business->business_category ) selected @endif>Event Management</option>
+                            </optgroup>
+                            <optgroup label="General Store">
+                                <option value="General Store" @if(!empty($business->id) && "General Store" == $business->business_category ) selected @endif>General Store</option>
+                            </optgroup>
+                            <optgroup label="Grain Merchant">
+                                <option value="Grain Merchant" @if(!empty($business->id) && "Grain Merchant" == $business->business_category ) selected @endif>Grain Merchant</option>
+                            </optgroup>
+                            <optgroup label="Hardware">
+                                <option value="Hardware" @if(!empty($business->id) && "Hardware" == $business->business_category ) selected @endif>Hardware</option>
+                            </optgroup>
+                            <optgroup label="Industry">
+                                <option value="Industry" @if(!empty($business->id) && "Industry" == $business->business_category ) selected @endif>Industry</option>
+                            </optgroup>
+                            <optgroup label="Kirana">
+                                <option value="Kirana" @if(!empty($business->id) && "Kirana" == $business->business_category ) selected @endif>Kirana</option>
+                            </optgroup>
+                            <optgroup label="Medical">
+                                <option value="Medical" @if(!empty($business->id) && "Medical" == $business->business_category ) selected @endif>Medical</option>
+                            </optgroup>
+                            <optgroup label="Politician">
+                                <option value="Politician" @if(!empty($business->id) && "Politician" == $business->business_category ) selected @endif>Politician</option>
+                            </optgroup>
+                            <optgroup label="Printing & Designing">
+                                <option value="Printing & Designing" @if(!empty($business->id) && "Printing & Designing" == $business->business_category ) selected @endif>Printing & Designing</option>
+                            </optgroup>
+                            <optgroup label="Related to Software Services">
+                                <option value="Related to Software Services" @if(!empty($business->id) && "Related to Software Services" == $business->business_category ) selected @endif>Related to Software Services</option>
+                            </optgroup>
+                            <optgroup label="Restaurant">
+                                <option value="Restaurant" @if(!empty($business->id) && "Restaurant" == $business->business_category ) selected @endif>Restaurant</option>
+                            </optgroup>
+                            <optgroup label="Sonaar (Work in Gold & Silver)">
+                                <option value="Sonaar (Work in Gold & Silver)" @if(!empty($business->id) && "Sonaar (Work in Gold & Silver)" == $business->business_category ) selected @endif>Sonaar (Work in Gold & Silver)</option>
+                            </optgroup>
+                            <optgroup label="Sweet Mart">
+                                <option value="Sweet Mart" @if(!empty($business->id) && "Sweet Mart" == $business->business_category ) selected @endif>Sweet Mart</option>
+                            </optgroup>
+                            <optgroup label="Trainer">
+                                <option value="Trainer" @if(!empty($business->id) && "Trainer" == $business->business_category ) selected @endif>Trainer</option>
+                            </optgroup>
+                            <optgroup label="Transport">
+                                <option value="Transport" @if(!empty($business->id) && "Transport" == $business->business_category ) selected @endif>Transport</option>
+                            </optgroup>
+                            <optgroup label="Travel Agent">
+                                <option value="Travel Agent" @if(!empty($business->id) && "Travel Agent" == $business->business_category ) selected @endif>Travel Agent</option>
+                            </optgroup>
+                            <optgroup label="Water Can">
+                                <option value="Water Can" @if(!empty($business->id) && "Water Can" == $business->business_category ) selected @endif>Water Can</option>
+                            </optgroup>
+                            <optgroup label="Wholesale Dealer">
+                                <option value="Wholesale Dealer" @if(!empty($business->id) && "Wholesale Dealer" == $business->business_category ) selected @endif>Wholesale Dealer</option>
+                            </optgroup>
+                            <optgroup label="Other">
+                                <option value="Other" @if(!empty($business->id) && "Other" == $business->business_category ) selected @endif>Other</option>
+                            </optgroup>
                         </select>
                         @if ($errors->has('business_category'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('business_category') }}</strong>
                             </span>
                         @endif
-                    </div>
-                </div>
-                @if(!empty($business->id) && $business->business_sub_category_id > 0)
-                    <div class="form-group" id="subCategoryDiv">
-                @else
-                    <div class="form-group hide" id="subCategoryDiv">
-                @endif
-                    <label for="" class="col-md-3 control-label">Business Sub Category</label>
-                    <div class="col-md-6">
-                        <select class="form-control" name="business_sub_category" id="subCategoryList">
-                            <option value="">Select Business Sub Category</option>
-                            @if(count($subCategories) > 0)
-                                @foreach($subCategories as $subCategory)
-                                    <option value="{{$subCategory->id}}" @if($business->business_sub_category_id == $subCategory->id) selected @endif>{{$subCategory->name}}</option>
-                                @endforeach
-                            @endif
-                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -154,12 +239,12 @@
                             <input id="website" type="text" class="form-control" name="website" value="{{ (!empty($business->id))?$business->website:old('website') }}" placeholder="webiste url">
                         </div>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <label for="google_location" class="col-md-3 control-label">Google Location</label>
                         <div class="col-md-6">
                             <input id="google_location" type="text" class="form-control" name="google_location" value="{{ (!empty($business->id))?$business->google_location:old('google_location') }}" placeholder="Google Location">
                         </div>
-                    </div>
+                    </div> -->
                 </div>
                 @if(empty($business->id))
                 <div class="col-md-9">
@@ -198,7 +283,9 @@
             </form>
         </div>
     </div>
+    <div style="min-height: 195px !important"></div>
 </div>
+@include('layouts.footer')
 <script type="text/javascript">
     function toggleSubCategory(ele){
         var categoryId = $(ele).val();

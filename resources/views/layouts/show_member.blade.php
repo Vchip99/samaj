@@ -2,7 +2,7 @@
 @section('header-css')
     <style type="text/css">
         .memberinfotop{
-            margin-top: 100px;
+            margin-top: 80px;
         }
         .memberinfo{
             margin:10px;
@@ -47,20 +47,32 @@
 @section('content')
 <div class="container">
     <div class="row">
+        @if(1 == Auth::user()->is_super_admin)
         <div class="col-md-8 memberinfotop col-md-offset-2">
+            <button class="btn btn-primary" style="float: right;" onClick="deleteMember({{$member->is_admin}},{{$member->id}});">Delete</button>
+            <form id="deleteMember_{{$member->id}}" method="POST" action="{{ url('delete-member') }}">
+                {{ csrf_field() }}
+                {{ method_field('DELETE')}}
+                <input type="hidden" name="member_id" value="{{$member->id}}">
+            </form>
+        </div>
+            <div class="col-md-8  col-md-offset-2">
+        @else
+            <div class="col-md-8 memberinfotop col-md-offset-2">
+        @endif
             <div style="border:1px solid black;">
                 <div class="row memberinfo" >
-                    <div class="col-md-3 text-center">
+                    <div class="col-md-4 text-center">
                         @if(!empty($member->photo))
                             <img src="{{ asset($member->photo)}}" alt="member1 image" class="image img-circle" >
                         @else
                             <img src="{{ asset('images/user.png')}}" alt="member1 image" class="image img-circle" >
                         @endif
                     </div>
-                    <div class="col-md-5 text-center topcontent">
+                    <div class="col-md-7 text-center topcontent">
                         <h4><strong>{{$member->f_name}} {{$member->l_name}}</strong></h4>
-                        <h4><strong>{{$member->designation}}</strong></h4>
-                        <h4><strong>{{$member->profession}}</strong></h4>
+                        <h5><strong>{{$member->designation}}</strong></h5>
+                        <h5><strong>{{$member->profession}}</strong></h5>
                     </div>
                 </div>
             </div>
@@ -72,45 +84,39 @@
                 <div class="row memberinfo"  >
                     <div class="col-md-6">
                         <div class="row content">
-                            <div class="col-xs-5">
-                                <p><strong>Gotra:</strong></p>
-                                <p><strong>Email:</strong></p>
-                                <p><strong>Mobile:</strong></p>
-                                <p><strong>Landline no.:</strong></p>
-                                <p><strong>DOB:</strong></p>
-
-                            </div>
-                            <div class="col-xs-7">
-                                <p>{{($member->gotra)?:'-'}}</p>
-                                <p>{{($member->email)?:'-'}}</p>
-                                <p>{{($member->mobile)?:'-'}}</p>
-                                <p>{{($member->land_line_no)?:'-'}}</p>
-                                <p>{{($member->dob)?:'-'}}</p>
-                            </div>
+                            <div style="width: 40%; float: left;"><strong>Relation with admin:</strong></div><div style="width: 60%;  float: right;">{{($member->admin_relation)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Email:</strong></div><div style="width: 60%;  float: right;">{{($member->email)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Mobile:</strong></div><div style="width: 60%;  float: right;">{{($member->mobile)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Landline no.:</strong></div><div style="width: 60%;  float: right;">{{($member->land_line_no)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>DOB:</strong></div><div style="width: 60%;  float: right;">{{($member->dob)?:'-'}}</div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="row content">
-                            <div class="col-xs-5" >
-                                <p><strong>Anniversary Date:</strong></p>
-                                <p><strong>Marital Status:</strong></p>
-                                <p><strong>Spouse Name:</strong></p>
-                                <p><strong>Blood Group:</strong></p>
-                                <p><strong>Education:</strong></p>
-                                <div style="height:60px;width:100%;">
-                                <p><strong>Address:</strong></p>
-                                </div>
-                            </div>
-                            <div class="col-xs-7" style="padding-left: 10px;"">
-                                <p>{{($member->anniversary)?:'-'}}</p>
-                                <p>{{(1 == $member->married_status)?'Married':'Un-Married'}}</p>
-                                <p>{{($member->spouse)?:'-'}}</p>
-                                <p>{{($member->blood_group)?:'-'}}</p>
-                                <p>{{($member->education)?:'-'}}</p>
-                                <div style="height:60px;width:100%;">
-                                <p>{{($member->address)?:'-'}}</p>
-                                </div>
-                            </div>
+                            <div style="width: 40%; float: left;"><strong>Anniversary Date:</strong></div><div style="width: 60%;  float: right;">{{($member->anniversary)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Marital Status:</strong></div><div style="width: 60%;  float: right;">{{(1 == $member->married_status)?'Married':'Un-Married'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Spouse Name:</strong></div><div style="width: 60%;  float: right;">{{($member->spouse)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Blood Group:</strong></div><div style="width: 60%;  float: right;">{{($member->blood_group)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Education:</strong></div><div style="width: 60%;  float: right;">{{($member->education)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Address:</strong></div><div style="width: 60%;  float: right;">{{($member->address)?:'-'}}</div>
                         </div>
                     </div>
                 </div>
@@ -119,19 +125,12 @@
                 <br>
             </div>
             <div style="border:1px solid black;">
-                <div class="row memberinfo" >
+                <div class="row memberinfo" style="min-height: 130px !important;">
                     <div class="col-md-6">
                         <h4><strong>Family</strong></h4>
                         @if(count($familyMembers) > 0)
                             @foreach($familyMembers as $familyMember)
                                 <p>
-                                    <strong>
-                                        @if('Admin' == $familyMember->admin_relation)
-                                            Family Head &nbsp;&nbsp;-
-                                        @else
-                                            {{$familyMember->admin_relation}} &nbsp;&nbsp;-
-                                        @endif
-                                    </strong>
                                     <a href="{{url('member')}}/{{$familyMember->id}}" >{{$familyMember->f_name}} {{$familyMember->l_name}}</a>
                                 </p>
                             @endforeach
@@ -143,7 +142,7 @@
                         <h4><strong>Business</strong></h4>
                         @if(count($familyBusinesses) > 0)
                             @foreach($familyBusinesses as $familyBusiness)
-                                <p><strong><a href="{{ url('business')}}/{{$familyBusiness->id}}">{{$familyBusiness->name}}</a></strong></p>
+                                <p><a href="{{ url('business')}}/{{$familyBusiness->id}}">{{$familyBusiness->name}}</a></p>
                             @endforeach
                         @else
                             <p>No Business </p>
@@ -173,4 +172,19 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
+<script type="text/javascript">
+    function deleteMember(isAdmin,memberId){
+        if(1 == isAdmin ){
+            var message = 'This is a Admin. If you delete this member, then its family members also deleted.';
+        } else {
+            var message = 'Are you sure you want to delete this member?';
+        }
+        if(confirm(message)){
+            formId = 'deleteMember_'+memberId;
+            document.getElementById(formId).submit();
+        }
+        return false;
+    }
+</script>
 @endsection

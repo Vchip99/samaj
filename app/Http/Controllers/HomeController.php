@@ -85,7 +85,7 @@ class HomeController extends Controller
         $memberType = Cache::get('selected_type');
         // if(!empty($mobile) && !empty($serverOtp) && !empty($memberType)){
             $userOtp = $request->get('otp');
-
+            $isNewRecord = false;
             // if($userOtp == $serverOtp){
             if('123456' == $userOtp){
                 // login
@@ -115,13 +115,17 @@ class HomeController extends Controller
                             'admin_relation' => 'Admin',
                         ]);
                     }
+                    $isNewRecord = true;
                 }
                 Auth::login($user);
                 Cache::forget($mobile);
                 Cache::forget('selected_type');
                 Cache::forget('mobile');
-
-                return Redirect::to('home')->with('message', 'Welcome Dear');
+                if(true == $isNewRecord){
+                    return Redirect::to('member/'.$user->id.'/edit')->with('message', 'Welcome Dear');
+                } else {
+                    return Redirect::to('home')->with('message', 'Welcome Dear');
+                }
             } else {
                 return Redirect::to('login')->withErrors('Entered otp is wrong.');
             }

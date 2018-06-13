@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'gotra','f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'is_super_admin', 'is_member', 'family_id', 'is_contact_private', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'kundali', 'blood_group', 'education','profession', 'other_profession', 'designation','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary','group_1','group_2','group_3','group_4','group_5','group_6', 'facebook_profile', 'google_profile', 'linkedin_profile'
+        'gotra','f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'is_super_admin', 'is_member', 'family_id', 'is_contact_private', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'kundali', 'blood_group', 'education','profession', 'other_profession', 'designation','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary','group_1','group_2','group_3','group_4','group_5','group_6', 'group_7', 'job_location', 'linkedin_profile'
     ];
 
     /**
@@ -79,7 +79,11 @@ class User extends Authenticatable
         $spouse =  $request->get('spouse');
         $isMarriageCandidate =  $request->get('is_marriage_candidate');
         $bloodGroup =  $request->get('blood_group');
-        $education =  $request->get('education');
+        if(is_array($request->get('education'))){
+            $education =  implode('|', $request->get('education'));
+        } else {
+            $education =  $request->get('education');
+        }
         $profession =  $request->get('profession');
         $otherProfession =  $request->get('other_profession');
         $designation =  $request->get('designation');
@@ -89,8 +93,8 @@ class User extends Authenticatable
         $city =  $request->get('city');
         $pin =  $request->get('pin');
         $anniversary =  $request->get('anniversary');
-        $facebookProfile =  $request->get('facebook_profile');
-        $googleProfile =  $request->get('google_profile');
+        $jobLocation =  $request->get('job_location');
+        // $googleProfile =  $request->get('google_profile');
         $linkedinProfile =  $request->get('linkedin_profile');
         $adminRelation =  $request->get('admin_relation');
         $isSameAddress =  $request->get('is_same_address');
@@ -157,8 +161,8 @@ class User extends Authenticatable
             $member->pin = $pin;
         }
         $member->anniversary = $anniversary;
-        $member->facebook_profile = $facebookProfile;
-        $member->google_profile = $googleProfile;
+        $member->job_location = $jobLocation;
+        // $member->google_profile = $googleProfile;
         $member->linkedin_profile = $linkedinProfile;
         $member->save();
 
@@ -238,8 +242,9 @@ class User extends Authenticatable
         }
         return $result->where(function ($query) use ($member) {
                 $query->where('f_name', 'like', '%'.$member.'%')
-                      ->orWhere('l_name', 'like', '%'.$member.'%');
-            })->select('id', 'f_name','l_name','photo')->get();
+                      ->orWhere('l_name', 'like', '%'.$member.'%')
+                      ->orWhere('job_location', 'like', '%'.$member.'%');
+            })->select('id', 'f_name','l_name','photo', 'dob')->get();
     }
 
     protected static function changeAdmin(Request $request){
@@ -286,6 +291,8 @@ class User extends Authenticatable
                 $user->group_5 = $subgroup.'|'.$position;
             } else if(6 == $group){
                 $user->group_6 = $subgroup.'|'.$position;
+            } else if(7 == $group){
+                $user->group_7 = $subgroup.'|'.$position;
             }
             $user->save();
         }
@@ -313,6 +320,6 @@ class User extends Authenticatable
         if(!empty($gender) && 'All' != $gender){
             $result->where('gender', $gender);
         }
-        return $result->select('id', 'f_name','l_name','photo')->get();
+        return $result->select('id', 'f_name','l_name','photo', 'dob')->orderBy('dob', 'desc')->get();
     }
 }

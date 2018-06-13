@@ -32,7 +32,7 @@
 <div class="container" style="overflow-x: hidden;">
     <div style="margin:10px;">
         <div class="row" id="r1">
-            <h4>Add Business</h4>
+            <h4>Add Notification</h4>
         </div>
         <div class="row" id="r2">
             @if(count($errors) > 0)
@@ -87,7 +87,9 @@
             </form>
         </div>
     </div>
+    <div style="min-height: 271px !important"></div>
 </div>
+@include('layouts.footer')
 <script type="text/javascript">
     function toggleSubCategory(ele){
         var categoryId = $(ele).val();

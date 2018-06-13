@@ -12,7 +12,7 @@
 @endsection
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row" style="min-height: 760px !important;">
         <div class="col-md-10 ">
             <div class="container bloodGroup">
                 <div class="row">
@@ -48,9 +48,9 @@
                                         <img src="{{ asset('images/user.png')}}" alt="member1 image" class="image img-circle" >
                                     @endif
                                     @if(!empty($member->f_name) || !empty($member->l_name))
-                                        <h3><strong>{{$member->f_name}} {{$member->l_name}}</strong></h3>
+                                        <h5><strong>{{$member->f_name}} {{$member->l_name}}</strong></h5>
                                     @else
-                                        <h3><strong>{{$member->mobile}}</strong></h3>
+                                        <h5><strong>{{$member->mobile}}</strong></h5>
                                     @endif
                                 </a>
                             </div>
@@ -64,6 +64,7 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
 <script type="text/javascript">
     function searchBloodMember(bloodGroup){
         var currentToken = $('meta[name="csrf-token"]').attr('content');
@@ -105,9 +106,9 @@
                           var mobile = '';
                         }
                         if(firstName || lastName){
-                            firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3>';
+                            firstDivInnerHTML += '<h5><strong>'+firstName+' '+lastName+'</strong></h5>';
                         } else {
-                            firstDivInnerHTML += '<h3><strong>'+mobile+'</strong></h3>';
+                            firstDivInnerHTML += '<h5><strong>'+mobile+'</strong></h5>';
                         }
                         firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;

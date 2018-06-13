@@ -8,7 +8,7 @@
 @endsection
 @section('content')
 <div class="container top-margin">
-    <div class="row">
+    <div class="row" style="min-height: 700px !important;">
         <div class="">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -16,11 +16,13 @@
                     <div class="row">
                         <div id="allMember">
                         @foreach($jobs as $job)
-                        <div class="row">
-                            <div class="col-md-3">
+                        <div class="container row">
+                            <div class="">
                                 <label for="title">Title:</label> {{$job->title}}
                             </div>
-                            <div class="col-md-9">
+                        </div>
+                        <div class=" container row">
+                            <div class="">
                                 <label for="title">Description:</label> {{$job->description}}
                             </div>
                         </div>
@@ -36,4 +38,5 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
 @endsection

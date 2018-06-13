@@ -39,6 +39,7 @@ Route::get('/mahila-mandal', 'MemberHomeController@mahilaMandal');
 Route::get('/varishth-nagrik', 'MemberHomeController@varishthNagrik');
 Route::get('/jilha-sangathan', 'MemberHomeController@jilhaSangathan');
 Route::get('/seva-manch', 'MemberHomeController@sevaManch');
+Route::get('/aadhar-samity', 'MemberHomeController@aadharSamity');
 Route::post('/get-group-member-by-id', 'MemberHomeController@getGroupMemberById');
 
 Route::get('/show-notification', 'NotificationController@show');
@@ -87,7 +88,7 @@ Route::post('/search-marriage-member-by-gender', 'MemberController@searchMarriag
 // business
 Route::get('/add-business', 'BusinessController@show');
 Route::get('/create-business', 'BusinessController@create');
-Route::post('/get-sub-category-by-category-id', 'BusinessController@getSubCategoryByCategoryId');
+Route::post('/get-business-by-category', 'BusinessController@getBusinessByCategory');
 Route::post('/create-business', 'BusinessController@store');
 Route::get('/business/{id}/edit', 'BusinessController@edit');
 Route::put('/update-business', 'BusinessController@update');

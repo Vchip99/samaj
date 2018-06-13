@@ -38,13 +38,13 @@
 @endsection
 @section('content')
 <div class="container">
-    <div class="row">
+    <div class="row" style="min-height: 760px !important;">
         <div class="col-md-10 col-md-offset-1">
             <div class="members">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="topcontent form-group">
-                            <select class="form-control" name="gender" id="gender"  onChange="searchMarriageionMember(this.value);">
+                            <select class="form-control" name="gender" id="gender" onChange="searchMarriageionMember(this.value);">
                                 <option value="">Select</option>
                                 <option value="All">All</option>
                                 <option value="F">Bride</option>
@@ -75,14 +75,14 @@
                                     @else
                                         <img src="{{ asset('images/user.png')}}" alt="member1 image" class="image img-circle" >
                                     @endif
-                                    <h3><strong>
+                                    <h5><strong>
                                         @if(!empty($member->f_name) || !empty($member->l_name))
                                             {{$member->f_name}} {{$member->l_name}}
                                         @else
                                             &nbsp;
                                         @endif
-                                    </strong></h3>
-                                    <h4><strong>{{($member->profession)?:'&nbsp;'}}</strong></h4>
+                                    </strong></h5>
+                                    {{($member->dob)?:'&nbsp;'}}
                                 </a>
                             </div>
                         </div>
@@ -95,6 +95,7 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
 <script type="text/javascript">
 
     function searchMarriageionMember(gender){
@@ -131,12 +132,12 @@
                         } else {
                           var lastName = '';
                         }
-                        if(obj.profession){
-                          var profession = obj.profession;
+                        if(obj.dob){
+                          var dobStr = obj.dob;
                         } else {
-                          var profession = '';
+                          var dobStr = '';
                         }
-                        firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3><h4><strong>'+profession+'</strong></h4>';
+                        firstDivInnerHTML += '<h5><strong>'+firstName+' '+lastName+'</strong></h5>'+dobStr+'';
                         firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);
@@ -185,12 +186,12 @@
                         } else {
                           var lastName = '';
                         }
-                        if(obj.profession){
-                          var profession = obj.profession;
+                        if(obj.dob){
+                          var dobStr = obj.dob;
                         } else {
-                          var profession = '';
+                          var dobStr = '';
                         }
-                        firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3><h4><strong>'+profession+'</strong></h4>';
+                        firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3><h4><strong>'+dobStr+'</strong></h4>';
                         firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);

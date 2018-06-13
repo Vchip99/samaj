@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="panel panel-default">
+                <div class="panel panel-default" style="min-height: 542px !important;">
                     @if(count($members) > 0)
                     <div class="panel-body scrollable-panel" id="allMember">
                         @foreach($members as $member)
@@ -94,6 +94,7 @@
         </form>
     </div>
 </div>
+@include('layouts.footer')
 <script type="text/javascript">
     function checkMember(ele){
         var group = document.getElementById('group').value;

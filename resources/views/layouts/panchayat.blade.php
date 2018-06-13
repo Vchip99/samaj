@@ -13,7 +13,7 @@
     <div class="row">
         <div class="">
             <div class="panel panel-default">
-                <div class="panel-body">
+                <div class="panel-body" style="min-height: 680px !important;">
                 <div align="center"  style="border-bottom: 1px solid black; text-transform:uppercase;"><label>{{$groupName}}</label></div>
                 @if(!empty($panchayatSubGroup[$groupId]) &&count($panchayatSubGroup[$groupId]) > 0)
                     @foreach($panchayatSubGroup[$groupId] as $subGroupId => $panchayatSubGroup)
@@ -50,4 +50,5 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
 @endsection

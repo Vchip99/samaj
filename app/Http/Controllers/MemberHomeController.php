@@ -50,12 +50,12 @@ class MemberHomeController extends Controller
      * show marriage members
      */
     protected function marriage(){
-        $members = User::where('is_marriage_candidate', 1)->get();
+        $members = User::where('is_marriage_candidate', 1)->orderBy('dob', 'desc')->get();
         return view('layouts.marriage', compact('members'));
     }
 
     protected function groupMember(){
-        $members = User::where('is_member', 1)->where('id', '!=', Auth::user()->id)->get();
+        $members = User::where('is_member', 1)->get();
         $groups = Group::all();
         return view('layouts.group_member', compact('members', 'groups'));
     }
@@ -185,6 +185,22 @@ class MemberHomeController extends Controller
         return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName'));
     }
 
+
+    protected function aadharSamity(Request $request){
+        $result = $this->getGroupMembers(7,'group_7');
+        $groupId = $result['groupId'];
+        $groupObj = Group::where('id',$groupId)->first();
+        if(is_object($groupObj)){
+            $groupName = $groupObj->name;
+        } else {
+            $groupName = '';
+        }
+        $memberPositions = $result['memberPositions'];
+        $panchayatSubGroup = $result['panchayatSubGroup'];
+        $groupPositions = $result['groupPositions'];
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName'));
+    }
+
     protected function getGroupMembers($groupId,$groupColumn){
         $members = User::where('is_member', 1)->whereNotNull($groupColumn)->get();
         $levels = [];
@@ -233,6 +249,7 @@ class MemberHomeController extends Controller
             '4' => 'group_4',
             '5' => 'group_5',
             '6' => 'group_6',
+            '7' => 'group_7',
         ];
         $groupId = $request->get('group');
         $subgroupId = $request->get('subgroup');

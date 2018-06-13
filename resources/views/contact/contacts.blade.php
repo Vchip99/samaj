@@ -48,36 +48,19 @@
 @endsection
 @section('content')
 <div class="container top-margin">
-    <div class="row">
+    <div class="row" style="min-height: 700px !important;">
         <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default">
+            <div class="">
                 @if(count($contacts) > 0)
                 <div class="row">
-                    <div id="allMember">
+                    <div id="allMember" style="border: 2px solid grey;">
                         @foreach($contacts as $contact)
                         <div class="row memberinfo">
-                            <div class="col-md-4">
-                                <div class="content">
-                                    <div class="col-xs-2">
-                                        <p><strong>Name:</strong></p>
-                                        <p><strong>Phone:</strong></p>
-                                    </div>
-                                    <div class="col-xs-5">
-                                        <p>{{($contact->name)?:'-'}}</p>
-                                        <p>{{($contact->phone)?:'-'}}</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="row content">
-                                    <h4><strong>Description:</strong></h4>
-                                    <div>{{($contact->description)?:'-'}}</div>
-                                </div>
-                            </div>
+                            <p><strong>Name: </strong>{{($contact->name)?:'-'}}</p>
+                            <p><strong>Phone: </strong>{{($contact->phone)?:'-'}}</p>
+                            <p><strong>Description: </strong>{{($contact->description)?:'-'}}</p>
                         </div>
-                        <div class="col-md-12">
-                            <hr>
-                        </div>
+                        <hr>
                         @endforeach
                     </div>
                 </div>
@@ -88,4 +71,5 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
 @endsection

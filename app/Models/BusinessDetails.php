@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use App\Libraries\InputSanitise;
-use App\Models\BusinessCategory;
-use App\Models\BusinessSubCategory;
 use Auth,File,Redirect;
 
 class BusinessDetails extends Model
@@ -17,12 +15,11 @@ class BusinessDetails extends Model
      * @var array
      */
     protected $fillable = [
-        'business_category_id','business_sub_category_id','name','email','phone','website','logo','address','description','facebook','linkedin','youtube','google','google_location','family_id'
+        'business_category','name','email','phone','website','logo','address','description','facebook','linkedin','youtube','google','google_location','family_id'
     ];
 
     protected static function AddOrUpdateBusinessDetails(Request $request, $isUpdate=false){
         $businessCategoryId = $request->get('business_category');
-        $businessSubCategoryId = $request->get('business_sub_category');
         $name = $request->get('name');
         $email = $request->get('email');
         $phone = $request->get('phone');
@@ -46,8 +43,7 @@ class BusinessDetails extends Model
             $business = new static;
         }
 
-        $business->business_category_id = $businessCategoryId;
-        $business->business_sub_category_id = $businessSubCategoryId;
+        $business->business_category = $businessCategoryId;
         $business->name = $name;
         $business->email = $email;
         $business->phone = $phone;
@@ -83,12 +79,12 @@ class BusinessDetails extends Model
 
     protected static function searchBusiness($request){
     	$name = $request->get('business');
-        $businessCategoryId = $request->get('business_category');
-    	$result = static::join('business_categories', 'business_categories.id', '=', 'business_details.business_category_id')->where('business_details.name', 'like', '%'.$name.'%');
-        if($businessCategoryId > 0){
-            $result->where('business_details.business_category_id', $businessCategoryId);
+        $category = $request->get('business_category');
+    	$result = static::where('name', 'like', '%'.$name.'%');
+        if('All' != $category && !empty($category)){
+            $result->where('business_category', $category);
         }
-        return $result->select('business_details.id','business_details.logo','business_details.name', 'business_categories.name as category_name')->get();
+        return $result->select('id','logo','name', 'business_category')->get();
     }
 
     protected static function deleteBusinessByFamilyId($familyId){
@@ -107,10 +103,14 @@ class BusinessDetails extends Model
         return static::where('family_id', $familyId)->get();
     }
 
-    public function businessCategory(){
-        return $this->belongsTo(BusinessCategory::class, 'business_category_id');
-    }
-    public function businessSubcategory(){
-        return $this->belongsTo(BusinessSubCategory::class, 'business_sub_category_id');
+    /**
+     *
+     */
+    protected static function getBusinessByCategory($category){
+        if('All' != $category && !empty($category)){
+            return static::where('business_category', $category)->get();
+        } else{
+            return static::select('id','logo','name', 'business_category')->get();
+        }
     }
 }

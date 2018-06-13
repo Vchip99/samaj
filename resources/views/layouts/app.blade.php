@@ -82,6 +82,7 @@
           .navbar-collapse {
               border-top: 1px solid transparent;
               box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+              max-height: 410px !important;
           }
           .navbar-fixed-top {
               top: 0;
@@ -134,7 +135,7 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="glyphicon"></span> Maheshwari<span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="margin-right: 75%;">
                         <li>
                             <a href="{{ url('panchayat') }}">Maheshwari Panchayat</a>
                             <a href="{{ url('navyuvak-mandal') }}">Navyuvak Mandal</a>
@@ -142,6 +143,7 @@
                             <a href="{{ url('varishth-nagrik') }}">Varishth Nagrik</a>
                             <a href="{{ url('jilha-sangathan') }}">Maheshwari Jilha Sangathan</a>
                             <a href="{{ url('seva-manch') }}">Maheshwari Seva Manch</a>
+                            <a href="{{ url('aadhar-samity') }}">Maheshwari Aadhar Samity</a>
                         </li>
                     </ul>
                 </li>
@@ -155,7 +157,7 @@
                   <li class="dropdown">
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">Business/Profession <span class="caret"></span>
                       </a>
-                      <ul class="dropdown-menu">
+                      <ul class="dropdown-menu" style="margin-right: 75%;">
                           <li>
                               <a href="{{ url('search-business') }}">Search Business</a>
                               <a href="{{ url('add-business') }}">Add Business</a>
@@ -166,7 +168,7 @@
                       <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                           Jobs <span class="caret"></span>
                       </a>
-                      <ul class="dropdown-menu">
+                      <ul class="dropdown-menu" style="margin-right: 75%;">
                           <li>
                               <a href="{{ url('jobs') }}">All Job</a>
                               <a href="{{ url('show-job') }}">Add Job</a>
@@ -174,20 +176,18 @@
                       </ul>
                   </li>
                 @endif
-                @if(1 == $loginUser->is_super_admin)
-                  <li><a href="{{ url('group-member') }}">Group Member</a></li>
-                @endif
+                <li><a href="{{ url('contacts') }}">Contact</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                         {{ Auth::user()->f_name }} <span class="caret"></span>
                     </a>
-                    <ul class="dropdown-menu">
+                    <ul class="dropdown-menu" style="margin-right: 75%;">
                         <li>
                             <a href="{{ url('notifications') }}">Notification</a>
-                            <a href="{{ url('contacts') }}">Contact</a>
                             @if(1 == $loginUser->is_super_admin)
                             <a href="{{ url('show-notification') }}">Create Notification</a>
                             <a href="{{ url('show-contact') }}">Create Contact</a>
+                            <a href="{{ url('group-member') }}">Group Member</a>
                             @endif
                             <a href="{{ url('logout') }}"
                                 onclick="event.preventDefault();
@@ -206,5 +206,12 @@
       </div>
     </nav>
     @yield('content')
+    <script type="text/javascript">
+      $(document).ready(function(){
+          setTimeout(function() {
+            $('.alert-success').fadeOut('fast');
+          }, 10000); // <-- time in milliseconds
+      });
+    </script>
 </body>
 </html>

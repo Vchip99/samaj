@@ -21,6 +21,15 @@ class MemberController extends Controller
     }
 
     /**
+     * Define your validation rules in a property in
+     * the controller to reuse the rules.
+     */
+    protected $validateMember = [
+            'f_name' => 'required',
+            'l_name' => 'required',
+        ];
+
+    /**
      * add member
      */
     protected function create(){
@@ -33,6 +42,12 @@ class MemberController extends Controller
      * store member
      */
     protected function store( Request $request){
+        $v = Validator::make($request->all(), $this->validateMember);
+        if ($v->fails())
+        {
+            return redirect()->back()->withErrors($v->errors())->withInput();
+        }
+
         DB::beginTransaction();
         try
         {
@@ -67,6 +82,13 @@ class MemberController extends Controller
      * update member
      */
     protected function update( Request $request){
+
+        $v = Validator::make($request->all(), $this->validateMember);
+        if ($v->fails())
+        {
+            return redirect()->back()->withErrors($v->errors())->withInput();
+        }
+
         DB::beginTransaction();
         try
         {
@@ -105,16 +127,20 @@ class MemberController extends Controller
                         }
                         BusinessDetails::deleteBusinessByFamilyId($member->family_id);
                         DB::commit();
-                        Auth::guard()->logout();
-                        $request->session()->invalidate();
-                        return redirect('/');
+                        if(1 == $loginUser->is_super_admin){
+                            return Redirect::to('home')->with('message', 'Member deleted successfully.');
+                        } else {
+                            Auth::guard()->logout();
+                            $request->session()->invalidate();
+                            return redirect('/');
+                        }
                     }
                 } else {
                     $path = 'user-documents/'.$member->id;
                     InputSanitise::delFolder($path);
                     $member->delete();
                     DB::commit();
-                    if($loginUser != $memberId){
+                    if($loginUser->id != $memberId){
                         return Redirect::to('home')->with('message', 'Member deleted successfully.');
                     } else {
                         Auth::guard()->logout();
@@ -136,7 +162,7 @@ class MemberController extends Controller
      * all members
      */
     protected function members(){
-        $members = User::where('is_member', 1)->where('id', '!=', Auth::user()->id)->get();
+        $members = User::where('is_member', 1)->get();
         return view('layouts.members', compact('members'));
     }
 

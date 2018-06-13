@@ -5,8 +5,14 @@
     <div class="row">
         <div class="col-md-10 col-md-offset-1" >
             <div class="home">
+                @if(Session::has('message'))
+                    <div class="alert alert-success" id="message">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ Session::get('message') }}
+                    </div>
+                @endif
                 <div class="row dashboard" >
-                <h4><strong>Dash Board</strong></h4>
+                <h4><strong>Family Head</strong></h4>
                 </div>
                 <div class="row profpic text-center" >
                     <a href="{{url('member')}}/{{$loginUser->id}}/edit">
@@ -22,7 +28,7 @@
                 <div class="row family_top">
                     <h4><strong>Family Members</strong></h4>
                 </div>
-                <div class="row" style="border-bottom: 1px solid black">
+                <div class="row" style="border-bottom: 1px solid black;">
                     @if(count($otherMembers) > 0)
                         @foreach($otherMembers as $otherMember)
                             <div class="col-md-4 col-sm-6 col-xs-6 col-1 text-center" >
@@ -47,23 +53,24 @@
                         @endforeach
                     @else
                         No Family Members
+                        <div style="min-height: 78px;"></div>
                     @endif
                 </div>
                 <div class="row family_top">
                     <h4><strong>Business</strong></h4>
                 </div>
-                <div class="row" style="border:2px solid #D3E0E9">
-                    @if(count($businesses) > 0)
+                <div class="row" style="border:2px solid #D3E0E9;">
+                     @if(count($businesses) > 0)
                         @foreach($businesses as $business)
                             <div class="col-md-6" style="border-right:2px solid #D3E0E9">
-                                <div class="row" >
+                                <div class="row" style="border-bottom: 2px solid #D3E0E9;">
                                     <div class="col-xs-6 col-2 " >
                                         <div style="margin:10px auto;" class="text-center">
                                             <a href="{{ url('business')}}/{{$business->id}}">
                                                 @if(!empty($business->logo))
-                                                    <img src="{{ asset($business->logo)}}" alt="business image" style="border:2px solid #D3E0E9">
+                                                    <img src="{{ asset($business->logo)}}" alt="business image" style="border:2px solid #D3E0E9" class="image">
                                                 @else
-                                                    <img src="{{ asset('images/business_logo.jpeg')}}" alt="business image" style="border:2px solid #D3E0E9">
+                                                    <img src="{{ asset('images/business_logo.jpeg')}}" alt="business image" style="border:2px solid #D3E0E9" class="image">
                                                 @endif
                                             </a>
                                         </div>
@@ -71,7 +78,7 @@
                                     <div class="col-xs-6 text-center col-2"  style="padding-top: 20px;">
                                         <a href="{{ url('business')}}/{{$business->id}}">
                                             <h4><strong>{{$business->name}}</strong></h4>
-                                            <h4>{{$business->businessCategory->name}}</h4>
+                                            <h4>{{$business->business_category}}</h4>
                                         </a>
                                     </div>
                                 </div>
@@ -79,10 +86,13 @@
                         @endforeach
                     @else
                         No Business
+                        <div style="min-height: 7px;"></div>
                     @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
+@include('layouts.footer')
+
 @endsection

@@ -12,7 +12,8 @@
             width:150px;
         }
         .topcontent{
-            padding-top:20px;
+            /*padding-top:20px;*/
+            padding:20px 20px;
         }
         .content{
             padding-top: 20px;
@@ -36,24 +37,33 @@
 @endsection
 @section('content')
 <div class="container">
-    <div class="row">
-        <div class="col-sm-8 memberinfotop col-sm-offset-2">
+    <div class="row" style="min-height: 760px !important;">
+        @if(1 == Auth::user()->is_super_admin)
+        <div class="col-md-8 memberinfotop col-md-offset-2">
+            <button class="btn btn-primary" style="float: right;" onClick="confirmDelete({{$business->id}});">Delete</button>
+            <form id="deleteBusiness_{{$business->id}}" action="{{url('delete-business')}}" method="POST" style="display: none;">
+              {{ csrf_field() }}
+              {{ method_field('DELETE') }}
+              <input type="hidden" name="business_id" value="{{$business->id}}">
+          </form>
+        </div>
+            <div class="col-md-8  col-md-offset-2">
+        @else
+            <div class="col-md-8 memberinfotop col-md-offset-2">
+        @endif
             <div style="border:1px solid black">
                 <div class="row memberinfo" >
-                    <div class="col-md-3 text-center">
+                    <div class="col-md-5 text-center">
                         @if(!empty($business->logo))
                             <img src="{{ asset($business->logo)}}" alt="business image" style="border:2px solid #D3E0E9">
                         @else
                             <img src="{{ asset('images/business_logo.jpeg')}}" alt="business image" style="border:2px solid #D3E0E9">
                         @endif
                     </div>
-                    <div class="col-md-5 text-center topcontent">
-                        <h4><strong>{{$business->name}}</strong></h4>
-                        <h4><strong>{{$business->businessCategory->name}}</strong></h4>
-                        @if(!empty($business->business_sub_category_id))
-                            <h4><strong>{{$business->businessSubcategory->name}}</strong></h4>
-                        @endif
-                        <p><strong>{{$business->website}}</strong></p>
+                    <div class="col-md-7 text-center topcontent" align="right;">
+                        <p><h4><strong>{{$business->name}}</strong></h4></p>
+                        <h5>{{$business->business_category}}</h5>
+                        <p>{{$business->website}}</p>
                     </div>
                 </div>
             </div>
@@ -64,26 +74,18 @@
                 <div class="row memberinfo" >
                     <div class="col-md-6">
                         <div class="row content">
-                            <div class="col-xs-5">
-                                <p><strong>Phone:</strong></p>
-                                <p><strong>Email:</strong></p>
-                                <div style="height:60px;width:100%;">
-                                    <p><strong>Address:</strong></p>
-                                </div>
-                            </div>
-                            <div class="col-xs-7">
-                                <p>{{($business->phone)?:'-'}}</p>
-                                <p>{{($business->email)?:'-'}}</p>
-                                <div style="height:60px;width:100%;">
-                                    <p>{{($business->address)?:'-'}}</p>
-                                </div>
-                            </div>
+                            <div style="width: 40%; float: left;"><strong>Phone:</strong></div><div style="width: 60%;  float: right;">{{($business->phone)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Email:</strong></div><div style="width: 60%;  float: right;">{{($business->email)?:'-'}}</div>
+                        </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Address:</strong></div><div style="width: 60%;  float: right;">{{($business->address)?:'-'}}</div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="row content text-center">
-                            <h4><strong>Description:</strong></h4>
-                            <div>{{($business->description)?:'-'}}</div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Description:</strong></div><div style="width: 60%;  float: right;">{{($business->description)?:'-'}}</div>
                         </div>
                     </div>
                 </div>
@@ -98,4 +100,15 @@
         </div>
     </div>
 </div>
+@include('layouts.footer')
+<script type="text/javascript">
+    function confirmDelete(id){
+        var message = 'Are You sure, you want to delete this business?';
+        if(confirm(message)){
+            formId = 'deleteBusiness_'+id;
+            document.getElementById(formId).submit();
+        }
+        return false;
+    }
+</script>
 @endsection

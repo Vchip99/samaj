@@ -44,9 +44,7 @@ class BusinessController extends Controller
      */
     protected function create(){
         $business = new BusinessDetails;
-        $businessCategories = BusinessCategory::all();
-        $subCategories = [];
-        return view('business.create', compact('businessCategories', 'business', 'subCategories'));
+        return view('business.create', compact('business'));
     }
 
     /**
@@ -82,13 +80,7 @@ class BusinessController extends Controller
     protected function edit($id){
         $business = BusinessDetails::find(json_decode($id));
         if(is_object($business) ){
-            $businessCategories = BusinessCategory::all();
-            if($business->business_sub_category_id > 0){
-                $subCategories = BusinessSubCategory::getSubCategoryByCategoryId($business->business_category_id);
-            } else {
-                $subCategories = [];
-            }
-            return view('business.create', compact('businessCategories', 'business', 'subCategories'));
+            return view('business.create', compact('business'));
         }
 
         return Redirect::to('add-business');
@@ -97,7 +89,7 @@ class BusinessController extends Controller
     /**
      * update business
      */
-    protected function update( Request $request){ //dd($request->all());
+    protected function update( Request $request){
         $v = Validator::make($request->all(), $this->validateBusiness);
         if ($v->fails())
         {
@@ -146,11 +138,11 @@ class BusinessController extends Controller
     }
 
     /**
-     * sub category
+     * category
      */
-    protected function getSubCategoryByCategoryId(Request $request){
-        $categoryId = $request->get('category_id');
-        return BusinessSubCategory::getSubCategoryByCategoryId($categoryId);
+    protected function getBusinessByCategory(Request $request){
+        $category = $request->get('category');
+        return BusinessDetails::getBusinessByCategory($category);
     }
 
     /**
@@ -158,8 +150,7 @@ class BusinessController extends Controller
      */
     protected function showAllBusiness(){
         $businesses = BusinessDetails::all();
-        $businessCategories = BusinessCategory::all();
-        return view('business.search', compact('businesses', 'businessCategories'));
+        return view('business.search', compact('businesses'));
     }
 
     /**
@@ -175,14 +166,8 @@ class BusinessController extends Controller
     protected function showBusiness($id){
         $business = BusinessDetails::find(json_decode($id));
         if(is_object($business)){
-            $businessCategories = BusinessCategory::all();
-            if($business->business_sub_category_id > 0){
-                $subCategories = BusinessSubCategory::getSubCategoryByCategoryId($business->business_category_id);
-            } else {
-                $subCategories = [];
-            }
             $previousUrl = url()->previous();
-            return view('business.show_business', compact('businessCategories', 'business', 'subCategories', 'previousUrl'));
+            return view('business.show_business', compact('business', 'previousUrl'));
         }
         return Redirect::to('search-business');
     }
