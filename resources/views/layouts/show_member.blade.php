@@ -152,15 +152,15 @@
             </div>
             <div>
                 <div class="row memberinfo">
-                    @if(!empty($familyBusiness->bio_data))
+                    @if(!empty($member->bio_data))
                     <div class="button1">
-                        <a href="{{asset($familyBusiness->bio_data)}}" download="" class="btn btn-success" id="myBtn"><span class="glyphicon glyphicon-download-alt">
+                        <a href="{{asset($member->bio_data)}}" download="" class="btn btn-success" id="myBtn"><span class="glyphicon glyphicon-download-alt">
                         </span> Bio Data</a>
                     </div>
                     @endif
-                    @if(!empty($familyBusiness->kundali))
+                    @if(!empty($member->kundali))
                     <div class="button1">
-                        <a href="{{asset($familyBusiness->bio_data)}}" download="" class="btn btn-success" id="myBtn"><span class="glyphicon glyphicon-download-alt">
+                        <a href="{{asset($member->kundali)}}" download="" class="btn btn-success" id="myBtn"><span class="glyphicon glyphicon-download-alt">
                         </span> Kundali</a>
                     </div>
                     @endif

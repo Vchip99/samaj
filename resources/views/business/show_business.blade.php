@@ -55,9 +55,9 @@
                 <div class="row memberinfo" >
                     <div class="col-md-5 text-center">
                         @if(!empty($business->logo))
-                            <img src="{{ asset($business->logo)}}" alt="business image" style="border:2px solid #D3E0E9">
+                            <img src="{{ asset($business->logo)}}" alt="business image" style="border:2px solid #D3E0E9" class="image">
                         @else
-                            <img src="{{ asset('images/business_logo.jpeg')}}" alt="business image" style="border:2px solid #D3E0E9">
+                            <img src="{{ asset('images/business_logo.jpeg')}}" alt="business image" style="border:2px solid #D3E0E9" class="image">
                         @endif
                     </div>
                     <div class="col-md-7 text-center topcontent" align="right;">
