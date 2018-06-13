@@ -68,7 +68,7 @@
                 <div class="form-group">
                     <label for="name" class="col-md-3 control-label">Name <sup>*</sup></label>
                     <div class="col-md-3">
-                        <input id="f_name" type="text" class="form-control" name="f_name" value="{{ (!empty($member->id))?$member->f_name:old('f_name') }}"  placeholder="first name" @if(!empty($member->id)) readonly @endif>
+                        <input id="f_name" type="text" class="form-control" name="f_name" value="{{ (!empty($member->id))?$member->f_name:old('f_name') }}"  placeholder="first name" @if(!empty($member->id)) readonly @endif required>
                         @if ($errors->has('f_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('f_name') }}</strong>
@@ -84,7 +84,7 @@
                         @endif
                     </div>
                     <div class="col-md-3">
-                        <input id="l_name" type="text" class="form-control" name="l_name" value="{{ (!empty($member->id))?$member->l_name:old('l_name') }}"  placeholder="last name" @if(!empty($member->id)) readonly @endif>
+                        <input id="l_name" type="text" class="form-control" name="l_name" value="{{ (!empty($member->id))?$member->l_name:old('l_name') }}"  placeholder="last name" @if(!empty($member->id)) readonly @endif required>
                         @if ($errors->has('l_name'))
                             <span class="help-block">
                                 <strong>{{ $errors->first('l_name') }}</strong>

@@ -52,6 +52,7 @@ class User extends Authenticatable
     }
 
     protected static function addMember(Request $request, $isUpdate=false){
+        // dd($request->all());
         $otherInputs = $request->except('_token', 'is_contact_private', 'married_status', 'is_marriage_candidate', 'is_same_address', 'gender');
         $inputCount = 0;
         foreach($otherInputs as $otherInput){
@@ -132,12 +133,16 @@ class User extends Authenticatable
         $member->fax = $fax;
         $member->dob = $dob;
         $member->gender = $gender;
-        if( 1 ==$member->is_member && !empty($marriedStatus)){
+        if( 1 ==$member->is_member){
             $member->married_status = $marriedStatus;
         }
         $member->spouse = $spouse;
-        if( 1 ==$member->is_member && !empty($isMarriageCandidate)){
-            $member->is_marriage_candidate = $isMarriageCandidate;
+        if( 1 ==$member->is_member){
+            if(1 == $marriedStatus){
+                $member->is_marriage_candidate = 0;
+            } else {
+                $member->is_marriage_candidate = $isMarriageCandidate;
+            }
         }
         $member->blood_group = $bloodGroup;
         $member->education = $education;

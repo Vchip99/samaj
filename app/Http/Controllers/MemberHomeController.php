@@ -50,7 +50,7 @@ class MemberHomeController extends Controller
      * show marriage members
      */
     protected function marriage(){
-        $members = User::where('is_marriage_candidate', 1)->orderBy('dob', 'desc')->get();
+        $members = User::where('is_marriage_candidate', 1)->where('married_status', 0)->orderBy('dob', 'desc')->get();
         return view('layouts.marriage', compact('members'));
     }
 
