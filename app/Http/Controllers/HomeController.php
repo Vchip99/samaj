@@ -40,7 +40,7 @@ class HomeController extends Controller
         }
         $memberType = $request->get('member_type');
         $mobile = InputSanitise::inputInt($request->get('mobile'));
-        $adminLogin = User::where('is_admin', 1)->where('mobile', $mobile)->first();
+        $adminLogin = User::where('is_admin', 1)->where('mobile','=', $mobile)->whereNotNull('mobile')->first();
         if(!is_object($adminLogin)){
             $memberLogin = User::where('is_admin', 0)->where('mobile', $mobile)->first();
             if(is_object($memberLogin)){
@@ -89,7 +89,7 @@ class HomeController extends Controller
             // if($userOtp == $serverOtp){
             if('123456' == $userOtp){
                 // login
-                $user = User::where('mobile', $mobile)->first();
+                $user = User::where('is_admin', 1)->where('mobile','=', $mobile)->whereNotNull('mobile')->first();
                 if(!is_object($user)){
                     if('member' == $memberType){
                         $nextAdminFamilyId = User::getNextAdminFamilyId();

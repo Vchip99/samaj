@@ -72,7 +72,7 @@ class MemberController extends Controller
         $memberId = json_decode($id);
         $member = User::find($memberId);
         $loginUser = Auth::user();
-        if(is_object($member) && ($loginUser->id == $member->id || $loginUser->family_id == $member->family_id )){
+        if(is_object($member) && $loginUser->family_id == $member->family_id && 1 == $loginUser->is_admin){
             return view('layouts.add_member', compact('member', 'loginUser'));
         }
         return Redirect::to('home');
