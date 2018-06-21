@@ -22,7 +22,13 @@
                         <img src="{{ asset('images/user.png')}}" class="img-circle image" >
                     @endif
                     <h3 style="text-align:center;color:black"><strong>{{$loginUser->f_name}} {{$loginUser->l_name}}</strong></h3>
-                    <p style="text-align:center;color:black"><strong>{{$loginUser->profession}}</strong></p>
+                    <p style="text-align:center;color:black"><strong>
+                        @if('Other' == $loginUser->profession)
+                            {{$loginUser->other_profession}}
+                        @else
+                            {{$loginUser->profession}}
+                        @endif
+                    </strong></p>
                     </a>
                 </div>
                 <div class="row family_top">
@@ -46,7 +52,17 @@
                                                 &nbsp;
                                             @endif
                                         </strong></h4>
-                                        <h5><strong id="m2">{{($otherMember->profession)?:'&nbsp;'}}</strong></h5>
+                                        <h5><strong id="m2">
+                                            @if(!empty($otherMember->profession))
+                                                @if('Other' == $otherMember->profession)
+                                                    {{$otherMember->other_profession}}
+                                                @else
+                                                    {{$otherMember->profession}}
+                                                @endif
+                                            @else
+                                                &nbsp;
+                                            @endif
+                                        </strong></h5>
                                     </a>
                                 </div>
                             </div>
@@ -78,7 +94,11 @@
                                     <div class="col-xs-6 text-center col-2"  style="padding-top: 20px;">
                                         <a href="{{ url('business')}}/{{$business->id}}">
                                             <h4><strong>{{$business->name}}</strong></h4>
-                                            <h4>{{$business->business_category}}</h4>
+                                            @if('Other' == $business->business_category)
+                                                <h4>{{$business->other_business}}</h4>
+                                            @else
+                                                <h4>{{$business->business_category}}</h4>
+                                            @endif
                                         </a>
                                     </div>
                                 </div>

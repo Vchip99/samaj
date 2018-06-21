@@ -12,7 +12,7 @@
 @endsection
 @section('content')
 <div class="container">
-    <div class="row" style="min-height: 760px !important;">
+    <div class="row" style="min-height: 782px !important;">
         <div class="col-md-10 ">
             <div class="container bloodGroup">
                 <div class="row">

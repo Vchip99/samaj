@@ -69,7 +69,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="topcontent">
-                            <input type="text" name="member" class="form-control"  placeholder="search member" onkeyup="searchMember(this.value);">
+                            <input type="text" name="member" id="member" class="form-control"  placeholder="search member" onkeyup="searchMember(this.value);">
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,15 @@
                                             &nbsp;
                                         @endif
                                     </strong></h5>
-                                    {{($member->profession)?:'&nbsp;'}}
+                                    @if(!empty($member->profession))
+                                        @if('Other' == $member->profession)
+                                            {{$member->other_profession}}
+                                        @else
+                                            {{$member->profession}}
+                                        @endif
+                                    @else
+                                        &nbsp;
+                                    @endif
                                 </a>
                             </div>
                         </div>
@@ -112,6 +120,9 @@
 </div>
 @include('layouts.footer')
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#member').focus();
+    });
     function searchProfessionMember(profession){
         var currentToken = $('meta[name="csrf-token"]').attr('content');
         if(profession){
@@ -139,15 +150,19 @@
                         if(obj.f_name){
                           var firstName = obj.f_name;
                         } else {
-                          var firstName = '';
+                          var firstName = '&nbsp;';
                         }
                         if(obj.l_name){
                           var lastName = obj.l_name;
                         } else {
-                          var lastName = '';
+                          var lastName = '&nbsp;';
                         }
                         if(obj.profession){
-                          var profession = obj.profession;
+                            if('Other' == obj.profession){
+                                var profession = obj.other_profession;
+                            } else {
+                                var profession = obj.profession;
+                            }
                         } else {
                           var profession = '&nbsp;';
                         }
@@ -159,6 +174,7 @@
                 } else {
                     allMember.innerHTML = 'No Result';
                 }
+                $('#member').focus();
             });
         } else if( 0 == member.length) {
             window.location.reload();
@@ -192,19 +208,23 @@
                         if(obj.f_name){
                           var firstName = obj.f_name;
                         } else {
-                          var firstName = '';
+                          var firstName = '&nbsp;';
                         }
                         if(obj.l_name){
                           var lastName = obj.l_name;
                         } else {
-                          var lastName = '';
+                          var lastName = '&nbsp;';
                         }
                         if(obj.profession){
-                          var profession = obj.profession;
+                          if('Other' == obj.profession){
+                                var profession = obj.other_profession;
+                            } else {
+                                var profession = obj.profession;
+                            }
                         } else {
-                          var profession = '';
+                          var profession = '&nbsp;';
                         }
-                        firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3><h4><strong>'+profession+'</strong></h4>';
+                        firstDivInnerHTML += '<h5><strong>'+firstName+' '+lastName+'</strong></h5>'+profession+'';
                         firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);
@@ -212,6 +232,7 @@
                 } else {
                     allMember.innerHTML = 'No Result';
                 }
+                $('#member').focus();
             });
         } else if( 0 == member.length) {
             window.location.reload();

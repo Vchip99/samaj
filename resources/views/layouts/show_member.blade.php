@@ -49,12 +49,13 @@
     <div class="row">
         @if(1 == Auth::user()->is_super_admin)
         <div class="col-md-8 memberinfotop col-md-offset-2">
-            <button class="btn btn-primary" style="float: right;" onClick="deleteMember({{$member->is_admin}},{{$member->id}});">Delete</button>
+            <button class="btn btn-primary" style="float: right; margin-left: 5px;" onClick="deleteMember({{$member->is_admin}},{{$member->id}});">Delete</button>
             <form id="deleteMember_{{$member->id}}" method="POST" action="{{ url('delete-member') }}">
                 {{ csrf_field() }}
                 {{ method_field('DELETE')}}
                 <input type="hidden" name="member_id" value="{{$member->id}}">
             </form>
+            <a class="btn btn-default" style="float: right;" href="{{url('member')}}/{{$member->id}}/edit" >Edit</a>
         </div>
             <div class="col-md-8  col-md-offset-2">
         @else
@@ -72,7 +73,13 @@
                     <div class="col-md-7 text-center topcontent">
                         <h4><strong>{{$member->f_name}} {{$member->l_name}}</strong></h4>
                         <h5><strong>{{$member->designation}}</strong></h5>
-                        <h5><strong>{{$member->profession}}</strong></h5>
+                        <h5><strong>
+                            @if('Other' == $member->profession)
+                                {{$member->other_profession}}
+                            @else
+                                {{$member->profession}}
+                            @endif
+                        </strong></h5>
                     </div>
                 </div>
             </div>

@@ -123,11 +123,20 @@ class User extends Authenticatable
         if( 0 ==$member->is_admin ){
             $member->admin_relation = $adminRelation;
             $member->mobile = $mobile;
+        } else {
+            $member->admin_relation = $member->admin_relation;
+            $member->mobile = $member->mobile;
         }
         if( 0 ==$member->is_super_admin ){
             $member->is_super_admin = 0;
+        } else {
+            $member->is_super_admin = 1;
         }
-        $member->family_id = $familyId;
+        if( 1 ==$loginUser->is_super_admin ){
+            $member->family_id = $member->family_id;
+        } else {
+            $member->family_id = $familyId;
+        }
         $member->is_contact_private = (empty($isContactPrivate))?0:$isContactPrivate;
         $member->land_line_no = $landLineNo;
         $member->fax = $fax;
@@ -241,7 +250,7 @@ class User extends Authenticatable
     protected static function searchMarriageMember(Request $request){
         $gender = $request->get('gender');
         $member = $request->get('member');
-        $result = static::where('is_marriage_candidate', 1);
+        $result = static::where('is_marriage_candidate', 1)->where('married_status', 0);
         if(!empty($gender) && 'All' != $gender){
             $result->where('gender', $gender);
         }
@@ -321,7 +330,7 @@ class User extends Authenticatable
      */
     protected static function searchMarriageMemberByGender(Request $request){
         $gender = $request->get('gender');
-        $result = static::where('is_marriage_candidate', 1);
+        $result = static::where('is_marriage_candidate', 1)->where('married_status', 0);
         if(!empty($gender) && 'All' != $gender){
             $result->where('gender', $gender);
         }

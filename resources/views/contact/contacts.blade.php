@@ -48,7 +48,7 @@
 @endsection
 @section('content')
 <div class="container top-margin">
-    <div class="row" style="min-height: 700px !important;">
+    <div class="row" style="min-height: 722px !important;">
         <div class="col-md-10 col-md-offset-1">
             <div class="">
                 @if(count($contacts) > 0)

@@ -119,7 +119,7 @@
                 <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
                     <label for="mobile" class="col-md-3 control-label">Mobile </label>
                     <div class="col-md-6">
-                        @if(1 == $loginUser->is_admin && $loginUser->id == $member->id)
+                        @if((1 == $loginUser->is_admin && $loginUser->id == $member->id) || 1 == $loginUser->is_super_admin )
                             {{$member->mobile}}
                         @elseif($loginUser->id != $member->id && 1 == $member->is_contact_private)
                             **********
@@ -627,7 +627,7 @@
                 <div class="form-group ">
                     <label for="admin_relation" class="col-md-3 control-label">Relation with Family Head</label>
                     <div class="col-md-6">
-                        @if($member->id == $loginUser->id && 1 == $loginUser->is_admin)
+                        @if(($member->id == $loginUser->id && 1 == $loginUser->is_admin) ||( 1 == $loginUser->is_super_admin && 1 == $member->is_admin))
                             Family Head
                         @else
                             <select class="form-control" name="admin_relation" @if(!empty($member->id)) disabled @endif>

@@ -62,7 +62,7 @@
                 <div class="form-group ">
                     <label for="" class="col-md-3 control-label">Business Category <sup>*</sup></label>
                     <div class="col-md-6">
-                        <select class="form-control" name="business_category" required>
+                        <select class="form-control" name="business_category" required onChange="toggleOtherBusiness(this);">
                             <option value="">Select Business Category</option>
                             <optgroup label="Accountant">
                                 <option value="Accountant" @if(!empty($business->id) && "Accountant" == $business->business_category ) selected @endif>Accountant</option>
@@ -179,6 +179,31 @@
                         @endif
                     </div>
                 </div>
+                @if(!empty($business->id) && 'Other' == $business->business_category)
+                    <div class="form-group"  id="otherBusiness">
+                        <label for="name" class="col-md-3 control-label">Other Business <sup>*</sup></label>
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control" name="other_business" value="{{ (!empty($business->id))?$business->other_business:old('other_business') }}"  placeholder="business name" >
+                            @if ($errors->has('other_business'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('other_business') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                @else
+                    <div class="form-group hide"  id="otherBusiness">
+                        <label for="name" class="col-md-3 control-label">Other Business <sup>*</sup></label>
+                        <div class="col-md-6">
+                            <input id="name" type="text" class="form-control" name="other_business" value="{{ (!empty($business->id))?$business->other_business:old('other_business') }}"  placeholder="business name" >
+                            @if ($errors->has('other_business'))
+                                <span class="help-block">
+                                    <strong>{{ $errors->first('other_business') }}</strong>
+                                </span>
+                            @endif
+                        </div>
+                    </div>
+                @endif
                 <div class="form-group">
                     <label for="name" class="col-md-3 control-label">Name <sup>*</sup></label>
                     <div class="col-md-6">
@@ -326,6 +351,14 @@
         } else {
             $('#moreDiv').addClass('hide');
             $(ele).text('Show More ...');
+        }
+    }
+
+    function toggleOtherBusiness(ele){
+        if('Other' == $(ele).val()){
+            document.getElementById('otherBusiness').classList.remove('hide');
+        } else {
+            document.getElementById('otherBusiness').classList.add('hide');
         }
     }
 </script>

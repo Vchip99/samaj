@@ -16,6 +16,7 @@ class CreateBusinessDetailsTable extends Migration
         Schema::create('business_details', function (Blueprint $table) {
             $table->increments('id');
             $table->string('business_category');
+            $table->string('other_business')->nullable();
             $table->string('name');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();

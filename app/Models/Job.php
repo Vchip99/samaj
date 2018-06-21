@@ -27,16 +27,27 @@ class Job extends Model
             if(!is_object($job)){
                 return false;
             }
-            if($job->member_id != $loginUser->id){
-                return false;
-            }
         } else {
             $job = new static;
         }
         $job->title = $title;
         $job->description = $description;
-        $job->member_id = $loginUser->id;
+        if($isUpdate && $jobId > 0 && 1 == $loginUser->is_super_admin){
+            $job->member_id = $job->member_id;
+        } else {
+            $job->member_id = $loginUser->id;
+        }
         $job->save();
         return $job;
+    }
+
+    protected static function deleteJobByMemberId($memberId){
+        $jobs = static::where('member_id',$memberId)->get();
+        if(is_object($jobs) && false == $jobs->isEmpty()){
+            foreach($jobs as $job){
+                $job->delete();
+            }
+        }
+        return;
     }
 }

@@ -78,8 +78,9 @@ class BusinessController extends Controller
      * edit business
      */
     protected function edit($id){
+        $loginUser = Auth::user();
         $business = BusinessDetails::find(json_decode($id));
-        if(is_object($business) ){
+        if(is_object($business)  && (($loginUser->family_id == $business->family_id && 1 == $loginUser->is_admin) || (1 == $loginUser->is_super_admin))){
             return view('business.create', compact('business'));
         }
 

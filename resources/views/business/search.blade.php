@@ -159,11 +159,14 @@
                                 <optgroup label="Wholesale Dealer">
                                     <option value="Wholesale Dealer" >Wholesale Dealer</option>
                                 </optgroup>
+                                <optgroup label="Other">
+                                    <option value="Other">Other</option>
+                                </optgroup>
                             </select>
                         </div>
                         <div class="col-md-3">
                             <div class="topcontent">
-                                <input type="text" name="business" class="form-control"  placeholder="search business" onfocus onkeyup="searchBusiness(this.value);" >
+                                <input type="text" name="business" id="business" class="form-control"  placeholder="search business" onfocus onkeyup="searchBusiness(this.value);" >
                             </div>
                         </div>
                     </div>
@@ -188,7 +191,11 @@
                                 <div class="col-xs-6 text-center col-2 cust-padding">
                                     <a href="{{ url('business')}}/{{$business->id}}">
                                         <h5><strong>{{$business->name}}</strong></h5>
-                                        {{$business->business_category}}
+                                        @if('Other' == $business->business_category)
+                                            {{$business->other_business}}
+                                        @else
+                                            {{$business->business_category}}
+                                        @endif
                                     </a>
                                 </div>
                             </div>
@@ -203,6 +210,9 @@
 </div>
 @include('layouts.footer')
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#business').focus();
+    });
     function getBusinessByCategory(category){
         var currentToken = $('meta[name="csrf-token"]').attr('content');
         if(category){
@@ -217,24 +227,31 @@
                     $.each(businesses, function(idx,obj){
                         var firstDiv = document.createElement('div');
                         firstDiv.className = 'col-md-6 border-style1';
-                        firstDivInnerHTML = '<div class="row" ><div class="col-xs-6 col-2 " ><div class="text-center cust-margin">';
+                        firstDivInnerHTML = '<div class="row" style="border-bottom: 2px solid #D3E0E9;"><div class="col-xs-6 col-2 " ><div class="text-center cust-margin">';
                         var urlStr = "{{url('business')}}/"+obj.id;
                         var imgStr = "{{ asset('')}}"+obj.logo;
                         var defaultImgStr = "{{ asset('images/business_logo.jpeg')}}";
                         firstDivInnerHTML += '<a href="'+urlStr+'" >';
                         if(obj.logo){
-                            firstDivInnerHTML += '<img src="'+imgStr+'" class="border-style" alt="business image">';
+                            firstDivInnerHTML += '<img src="'+imgStr+'" class="border-style image" alt="business image">';
                         } else {
-                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" class="border-style" alt="business image">';
+                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" class="border-style image" alt="business image">';
                         }
                         firstDivInnerHTML += '</a></div></div>';
-                        firstDivInnerHTML += '<div class="col-xs-6 text-center col-2 cust-padding"><a href="'+urlStr+'" ><h4><strong>'+obj.name+'</strong></h4><h4>'+obj.business_category+'</h4></a></div></div></div>';
+                        firstDivInnerHTML += '<div class="col-xs-6 text-center col-2 cust-padding"><a href="'+urlStr+'" ><h5><strong>'+obj.name+'</strong></h5>';
+                        if('Other' == obj.business_category){
+                            firstDivInnerHTML += obj.other_business;
+                        } else {
+                            firstDivInnerHTML += obj.business_category;
+                        }
+                        firstDivInnerHTML += '</a></div></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allBusiness.appendChild(firstDiv);
                     })
                 } else {
                     allBusiness.innerHTML = 'No Result';
                 }
+                $('#business').focus();
             });
         } else if( 0 == business.length) {
             window.location.reload();
@@ -266,13 +283,20 @@
                             firstDivInnerHTML += '<img src="'+defaultImgStr+'" class="border-style" alt="business image">';
                         }
                         firstDivInnerHTML += '</a></div></div>';
-                        firstDivInnerHTML += '<div class="col-xs-6 text-center col-2 cust-padding"><a href="'+urlStr+'" ><h4><strong>'+obj.name+'</strong></h4><h4>'+obj.business_category+'</h4></a></div></div></div>';
+                        firstDivInnerHTML += '<div class="col-xs-6 text-center col-2 cust-padding"><a href="'+urlStr+'" ><h5><strong>'+obj.name+'</strong></h5>';
+                        if('Other' == obj.business_category){
+                            firstDivInnerHTML += obj.other_business;
+                        } else {
+                            firstDivInnerHTML += obj.business_category;
+                        }
+                        firstDivInnerHTML += '</a></div></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allBusiness.appendChild(firstDiv);
                     })
                 } else {
                     allBusiness.innerHTML = 'No Result';
                 }
+                $('#business').focus();
             });
         } else if( 0 == business.length) {
             window.location.reload();

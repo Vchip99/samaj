@@ -61,11 +61,9 @@ class JobController extends Controller
      * edit job
      */
     protected function edit($id){
+        $loginUser = Auth::user();
         $job = Job::find(json_decode($id));
-        if(is_object($job)){
-            if($job->member_id != Auth::user()->id){
-                return Redirect::to('show-job');
-            }
+        if(is_object($job) && ($job->member_id == Auth::user()->id || 1 == $loginUser->is_super_admin)){
             return view('job.create', compact('job'));
         }
         return Redirect::to('show-job');
@@ -102,12 +100,12 @@ class JobController extends Controller
         try
         {
             if(is_object($job)){
-                if($job->member_id != Auth::user()->id){
-                    return Redirect::to('show-job');
+                if($job->member_id != Auth::user()->id && 0 == Auth::user()->is_super_admin){
+                    return back();
                 }
                 $job->delete();
                 DB::commit();
-                return Redirect::to('show-job')->with('message', 'job deleted successfully.');
+                return back()->with('message', 'job deleted successfully.');
             }
         }
         catch(\Exception $e)

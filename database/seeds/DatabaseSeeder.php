@@ -142,6 +142,54 @@ class DatabaseSeeder extends Seeder
               ['group_id' => 7,'sub_group_id' => 9,'name' => 'Promotional Head','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['group_id' => 7,'sub_group_id' => 9,'name' => 'Executive Member','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['group_id' => 7,'sub_group_id' => 9,'name' => 'Memberes','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 1,'sub_group_id' => 1,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 1,'sub_group_id' => 1,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 1,'sub_group_id' => 1,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 1,'sub_group_id' => 1,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 2,'sub_group_id' => 2,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 2,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 2,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 2,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 2,'sub_group_id' => 3,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 3,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 3,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 3,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 2,'sub_group_id' => 4,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 4,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 4,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 2,'sub_group_id' => 4,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 3,'sub_group_id' => 5,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 3,'sub_group_id' => 5,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 3,'sub_group_id' => 5,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 3,'sub_group_id' => 5,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 4,'sub_group_id' => 6,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 4,'sub_group_id' => 6,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 4,'sub_group_id' => 6,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 4,'sub_group_id' => 6,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 5,'sub_group_id' => 7,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 5,'sub_group_id' => 7,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 5,'sub_group_id' => 7,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 5,'sub_group_id' => 7,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 6,'sub_group_id' => 8,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 6,'sub_group_id' => 8,'name' => 'Chief Editor','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 6,'sub_group_id' => 8,'name' => 'Editor','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 6,'sub_group_id' => 8,'name' => 'Editorial board member','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 6,'sub_group_id' => 8,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 6,'sub_group_id' => 8,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 6,'sub_group_id' => 8,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+
+              ['group_id' => 7,'sub_group_id' => 9,'name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 7,'sub_group_id' => 9,'name' => 'Joint Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 7,'sub_group_id' => 9,'name' => 'Secretary Temple','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['group_id' => 7,'sub_group_id' => 9,'name' => 'Joint Sanghatan Mantri','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
         ]);
     }
 }

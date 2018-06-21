@@ -7,6 +7,7 @@ use Validator,DB,Redirect,Auth;
 use App\Libraries\InputSanitise;
 use App\Models\User;
 use App\Models\BusinessDetails;
+use App\Models\Job;
 
 class MemberController extends Controller
 {
@@ -72,7 +73,7 @@ class MemberController extends Controller
         $memberId = json_decode($id);
         $member = User::find($memberId);
         $loginUser = Auth::user();
-        if(is_object($member) && $loginUser->family_id == $member->family_id && 1 == $loginUser->is_admin){
+        if(is_object($member) && (($loginUser->family_id == $member->family_id && 1 == $loginUser->is_admin) || (1 == $loginUser->is_super_admin))){
             return view('layouts.add_member', compact('member', 'loginUser'));
         }
         return Redirect::to('home');
@@ -123,6 +124,7 @@ class MemberController extends Controller
                         foreach($familyMembers as $familyMember){
                             $path = 'user-documents/'.$familyMember->id;
                             InputSanitise::delFolder($path);
+                            Job::deleteJobByMemberId($familyMember->id);
                             $familyMember->delete();
                         }
                         BusinessDetails::deleteBusinessByFamilyId($member->family_id);

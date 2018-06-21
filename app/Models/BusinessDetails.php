@@ -15,7 +15,7 @@ class BusinessDetails extends Model
      * @var array
      */
     protected $fillable = [
-        'business_category','name','email','phone','website','logo','address','description','facebook','linkedin','youtube','google','google_location','family_id'
+        'business_category','other_business','name','email','phone','website','logo','address','description','facebook','linkedin','youtube','google','google_location','family_id'
     ];
 
     protected static function AddOrUpdateBusinessDetails(Request $request, $isUpdate=false){
@@ -30,9 +30,11 @@ class BusinessDetails extends Model
         $linkedin =  $request->get('linkedin');
         $youtube =  $request->get('youtube');
         $google =  $request->get('google');
+        $otherBusiness =  $request->get('other_business');
         $googleLocation =  $request->get('google_location');
-        $familyId = Auth::user()->family_id;
         $businessId =  $request->get('business_id');
+        $loginUser = Auth::user();
+        $familyId = $loginUser->family_id;
 
         if($isUpdate && $businessId > 0){
             $business = static::find($businessId);
@@ -44,6 +46,11 @@ class BusinessDetails extends Model
         }
 
         $business->business_category = $businessCategoryId;
+        if('Other' == $businessCategoryId){
+            $business->other_business = $otherBusiness;
+        } else {
+            $business->other_business = ' ';
+        }
         $business->name = $name;
         $business->email = $email;
         $business->phone = $phone;
@@ -55,7 +62,15 @@ class BusinessDetails extends Model
         $business->youtube = $youtube;
         $business->google = $google;
         $business->google_location = $googleLocation;
-        $business->family_id = $familyId;
+        if(1 == $loginUser->is_super_admin){
+            if( true == $isUpdate && $businessId > 0){
+                $business->family_id = $business->family_id;
+            } else {
+                $business->family_id = $familyId;
+            }
+        } else {
+            $business->family_id = $familyId;
+        }
         $business->save();
 
         if($request->exists('logo')){
@@ -84,7 +99,7 @@ class BusinessDetails extends Model
         if('All' != $category && !empty($category)){
             $result->where('business_category', $category);
         }
-        return $result->select('id','logo','name', 'business_category')->get();
+        return $result->select('id','logo','name', 'business_category', 'other_business')->get();
     }
 
     protected static function deleteBusinessByFamilyId($familyId){
@@ -110,7 +125,7 @@ class BusinessDetails extends Model
         if('All' != $category && !empty($category)){
             return static::where('business_category', $category)->get();
         } else{
-            return static::select('id','logo','name', 'business_category')->get();
+            return static::select('id','logo','name', 'business_category', 'other_business')->get();
         }
     }
 }

@@ -54,7 +54,7 @@
                     </div>
                     <div class="col-md-3">
                         <div class="topcontent">
-                            <input type="text" name="member" class="form-control"  placeholder="search member" onkeyup="searchMember(this.value);">
+                            <input type="text" name="member" id="member" class="form-control"  placeholder="search member" onkeyup="searchMember(this.value);">
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,9 @@
 </div>
 @include('layouts.footer')
 <script type="text/javascript">
-
+    $(document).ready(function() {
+        $('#member').focus();
+    });
     function searchMarriageionMember(gender){
         var currentToken = $('meta[name="csrf-token"]').attr('content');
         if(gender){
@@ -125,17 +127,17 @@
                         if(obj.f_name){
                           var firstName = obj.f_name;
                         } else {
-                          var firstName = '';
+                          var firstName = '&nbsp;';
                         }
                         if(obj.l_name){
                           var lastName = obj.l_name;
                         } else {
-                          var lastName = '';
+                          var lastName = '&nbsp;';
                         }
                         if(obj.dob){
                           var dobStr = obj.dob;
                         } else {
-                          var dobStr = '';
+                          var dobStr = '&nbsp;';
                         }
                         firstDivInnerHTML += '<h5><strong>'+firstName+' '+lastName+'</strong></h5>'+dobStr+'';
                         firstDivInnerHTML += '</a></div></div>';
@@ -145,6 +147,7 @@
                 } else {
                     allMember.innerHTML = 'No Result';
                 }
+                $('#member').focus();
             });
         } else if( 0 == member.length) {
             window.location.reload();
@@ -179,17 +182,17 @@
                         if(obj.f_name){
                           var firstName = obj.f_name;
                         } else {
-                          var firstName = '';
+                          var firstName = '&nbsp;';
                         }
                         if(obj.l_name){
                           var lastName = obj.l_name;
                         } else {
-                          var lastName = '';
+                          var lastName = '&nbsp;';
                         }
                         if(obj.dob){
                           var dobStr = obj.dob;
                         } else {
-                          var dobStr = '';
+                          var dobStr = '&nbsp;';
                         }
                         firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3><h4><strong>'+dobStr+'</strong></h4>';
                         firstDivInnerHTML += '</a></div></div>';
@@ -199,6 +202,7 @@
                 } else {
                     allMember.innerHTML = 'No Result';
                 }
+                $('#member').focus();
             });
         } else if( 0 == member.length) {
             window.location.reload();

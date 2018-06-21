@@ -40,12 +40,13 @@
     <div class="row" style="min-height: 760px !important;">
         @if(1 == Auth::user()->is_super_admin)
         <div class="col-md-8 memberinfotop col-md-offset-2">
-            <button class="btn btn-primary" style="float: right;" onClick="confirmDelete({{$business->id}});">Delete</button>
+            <button class="btn btn-primary" style="float: right; margin-left: 5px;" onClick="confirmDelete({{$business->id}});">Delete</button>
             <form id="deleteBusiness_{{$business->id}}" action="{{url('delete-business')}}" method="POST" style="display: none;">
               {{ csrf_field() }}
               {{ method_field('DELETE') }}
               <input type="hidden" name="business_id" value="{{$business->id}}">
           </form>
+          <a class="btn btn-default" style="float: right;" href="{{url('business')}}/{{$business->id}}/edit" >Edit</a>
         </div>
             <div class="col-md-8  col-md-offset-2">
         @else
@@ -62,7 +63,11 @@
                     </div>
                     <div class="col-md-7 text-center topcontent" align="right;">
                         <p><h4><strong>{{$business->name}}</strong></h4></p>
-                        <h5>{{$business->business_category}}</h5>
+                        @if('Other' == $business->business_category)
+                            <h5>{{$business->other_business}}</h5>
+                        @else
+                            <h5>{{$business->business_category}}</h5>
+                        @endif
                         <p>{{$business->website}}</p>
                     </div>
                 </div>

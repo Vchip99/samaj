@@ -14,10 +14,10 @@
         <div class="">
             <div class="panel panel-default">
                 <div class="panel-body" style="min-height: 680px !important;">
-                <div align="center"  style="border-bottom: 1px solid black; text-transform:uppercase;"><label>{{$groupName}}</label></div>
+                <div align="center"  style="text-transform:uppercase;"><label>{{$groupName}}</label></div>
                 @if(!empty($panchayatSubGroup[$groupId]) &&count($panchayatSubGroup[$groupId]) > 0)
                     @foreach($panchayatSubGroup[$groupId] as $subGroupId => $panchayatSubGroup)
-                        <div class="row" style="border-bottom: 1px solid black">
+                        <div class="row" style="border-top: 1px solid black">
                             <div align="center"><label>{{$panchayatSubGroup}}</label></div>
                             @if(count($groupPositions) > 0)
                                 @foreach($groupPositions[$groupId][$subGroupId] as $positionId => $groupPosition)
