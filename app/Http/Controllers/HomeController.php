@@ -94,16 +94,21 @@ class HomeController extends Controller
                     if('member' == $memberType){
                         $nextAdminFamilyId = User::getNextAdminFamilyId();
                         $user = User::create([
+                            'f_name' => 'First',
+                            'l_name' => 'Last Name',
                             'mobile' => $mobile,
                             'is_admin' => 1,
                             'is_super_admin' => 0,
                             'is_member' => 1,
                             'family_id' => $nextAdminFamilyId,
                             'is_contact_private' => 0,
+                            'dob' => '1947-08-15',
                             'admin_relation' => 'Admin',
                         ]);
                     } else {
                         $user = User::create([
+                            'f_name' => 'First',
+                            'l_name' => 'Last Name',
                             'mobile' => $mobile,
                             'is_admin' => 1,
                             'is_super_admin' => 0,
@@ -112,6 +117,7 @@ class HomeController extends Controller
                             'is_contact_private' => 0,
                             'is_marriage_candidate' => 1,
                             'married_status' => 0,
+                            'dob' => '1947-08-15',
                             'admin_relation' => 'Admin',
                         ]);
                     }

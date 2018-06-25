@@ -77,7 +77,11 @@
                             @if('Other' == $member->profession)
                                 {{$member->other_profession}}
                             @else
-                                {{$member->profession}}
+                                @if(!empty($member->profession))
+                                    {{$member->profession}}
+                                @else
+                                    Profession
+                                @endif
                             @endif
                         </strong></h5>
                     </div>

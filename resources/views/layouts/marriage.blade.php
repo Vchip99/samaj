@@ -194,7 +194,7 @@
                         } else {
                           var dobStr = '&nbsp;';
                         }
-                        firstDivInnerHTML += '<h3><strong>'+firstName+' '+lastName+'</strong></h3><h4><strong>'+dobStr+'</strong></h4>';
+                        firstDivInnerHTML += '<h5><strong>'+firstName+' '+lastName+'</strong></h5>'+dobStr+'';
                         firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);

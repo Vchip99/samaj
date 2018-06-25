@@ -99,12 +99,16 @@
                                     </strong></h5>
                                     @if(!empty($member->profession))
                                         @if('Other' == $member->profession)
-                                            {{$member->other_profession}}
+                                            @if(strlen($member->other_profession) > 15)
+                                                {{substr($member->other_profession,0,15)}}...
+                                            @else
+                                                {{$member->other_profession}}
+                                            @endif
                                         @else
                                             {{$member->profession}}
                                         @endif
                                     @else
-                                        &nbsp;
+                                        Profession
                                     @endif
                                 </a>
                             </div>
@@ -159,12 +163,17 @@
                         }
                         if(obj.profession){
                             if('Other' == obj.profession){
-                                var profession = obj.other_profession;
+                                var strProfession = obj.other_profession;
+                                if(strProfession.length > 15){
+                                    var profession = strProfession.substr(0, 15)+'...';
+                                } else {
+                                    var profession = strProfession;
+                                }
                             } else {
                                 var profession = obj.profession;
                             }
                         } else {
-                          var profession = '&nbsp;';
+                          var profession = 'Profession';
                         }
                         firstDivInnerHTML += '<h5><strong>'+firstName+' '+lastName+'</strong></h5>'+profession+'';
                         firstDivInnerHTML += '</a></div></div>';
@@ -216,13 +225,18 @@
                           var lastName = '&nbsp;';
                         }
                         if(obj.profession){
-                          if('Other' == obj.profession){
-                                var profession = obj.other_profession;
+                            if('Other' == obj.profession){
+                                var strProfession = obj.other_profession;
+                                if(strProfession.length > 15){
+                                    var profession = strProfession.substr(0, 15)+'...';
+                                } else {
+                                    var profession = strProfession;
+                                }
                             } else {
                                 var profession = obj.profession;
                             }
                         } else {
-                          var profession = '&nbsp;';
+                          var profession = 'Profession';
                         }
                         firstDivInnerHTML += '<h5><strong>'+firstName+' '+lastName+'</strong></h5>'+profession+'';
                         firstDivInnerHTML += '</a></div></div>';

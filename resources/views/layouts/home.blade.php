@@ -55,7 +55,11 @@
                                         <h5><strong id="m2">
                                             @if(!empty($otherMember->profession))
                                                 @if('Other' == $otherMember->profession)
-                                                    {{$otherMember->other_profession}}
+                                                    @if(strlen($otherMember->other_profession) > 15)
+                                                        {{substr($otherMember->other_profession,0,15)}}...
+                                                    @else
+                                                        {{$otherMember->other_profession}}
+                                                    @endif
                                                 @else
                                                     {{$otherMember->profession}}
                                                 @endif
