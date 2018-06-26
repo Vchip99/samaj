@@ -99,10 +99,14 @@
                                     </strong></h5>
                                     @if(!empty($member->profession))
                                         @if('Other' == $member->profession)
-                                            @if(strlen($member->other_profession) > 15)
-                                                {{substr($member->other_profession,0,15)}}...
+                                            @if(!empty($member->other_profession))
+                                                @if(strlen($member->other_profession) > 15)
+                                                    {{substr($member->other_profession,0,15)}}...
+                                                @else
+                                                    {{$member->other_profession}}
+                                                @endif
                                             @else
-                                                {{$member->other_profession}}
+                                                Profession
                                             @endif
                                         @else
                                             {{$member->profession}}
@@ -163,11 +167,15 @@
                         }
                         if(obj.profession){
                             if('Other' == obj.profession){
-                                var strProfession = obj.other_profession;
-                                if(strProfession.length > 15){
-                                    var profession = strProfession.substr(0, 15)+'...';
+                                if(obj.other_profession){
+                                    var strProfession = obj.other_profession;
+                                    if(strProfession.length > 15){
+                                        var profession = strProfession.substr(0, 15)+'...';
+                                    } else {
+                                        var profession = strProfession;
+                                    }
                                 } else {
-                                    var profession = strProfession;
+                                    var profession = 'Profession';
                                 }
                             } else {
                                 var profession = obj.profession;
@@ -179,7 +187,7 @@
                         firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);
-                    })
+                    });
                 } else {
                     allMember.innerHTML = 'No Result';
                 }
@@ -226,11 +234,15 @@
                         }
                         if(obj.profession){
                             if('Other' == obj.profession){
-                                var strProfession = obj.other_profession;
-                                if(strProfession.length > 15){
-                                    var profession = strProfession.substr(0, 15)+'...';
+                                if(obj.other_profession){
+                                    var strProfession = obj.other_profession;
+                                    if(strProfession.length > 15){
+                                        var profession = strProfession.substr(0, 15)+'...';
+                                    } else {
+                                        var profession = strProfession;
+                                    }
                                 } else {
-                                    var profession = strProfession;
+                                    var profession = 'Profession';
                                 }
                             } else {
                                 var profession = obj.profession;
@@ -242,7 +254,7 @@
                         firstDivInnerHTML += '</a></div></div>';
                         firstDiv.innerHTML = firstDivInnerHTML;
                         allMember.appendChild(firstDiv);
-                    })
+                    });
                 } else {
                     allMember.innerHTML = 'No Result';
                 }
