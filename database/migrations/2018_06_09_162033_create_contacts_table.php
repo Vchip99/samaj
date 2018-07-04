@@ -18,6 +18,7 @@ class CreateContactsTable extends Migration
             $table->string('name');
             $table->string('phone');
             $table->text('description')->nullable();
+            $table->tinyInteger('is_amravati_city')->default(1);
             $table->timestamps();
         });
     }

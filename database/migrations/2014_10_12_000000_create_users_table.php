@@ -56,7 +56,9 @@ class CreateUsersTable extends Migration
             $table->string('group_6')->nullable();
             $table->string('group_7')->nullable();
             $table->string('job_location')->nullable();
-            $table->string('linkedin_profile')->nullable();
+            $table->string('group_8')->nullable();
+            $table->string('group_9')->nullable();
+            $table->string('app_formation')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

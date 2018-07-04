@@ -55,7 +55,7 @@ class ContactController extends Controller
         catch(\Exception $e)
         {
             DB::rollback();
-            return back()->withErrors('something went wrong for store contact.');
+            return back()->withErrors('something went wrong while store contact.');
         }
         return Redirect::to('show-contact');
     }
@@ -87,7 +87,7 @@ class ContactController extends Controller
         catch(\Exception $e)
         {
             DB::rollback();
-            return back()->withErrors('something went wrong for update contact');
+            return back()->withErrors('something went wrong while update contact');
         }
         return Redirect::to('show-contact');
     }
@@ -110,7 +110,7 @@ class ContactController extends Controller
         catch(\Exception $e)
         {
             DB::rollback();
-            return back()->withErrors('something went wrong for delete contact.');
+            return back()->withErrors('something went wrong while delete contact.');
         }
         return Redirect::to('show-contact');
     }
@@ -121,5 +121,13 @@ class ContactController extends Controller
     protected function contacts(){
         $contacts = Contact::all();
         return view('contact.contacts', compact('contacts'));
+    }
+
+    protected function getContactByCity(Request $request){
+        return Contact::getContactByCity($request);
+    }
+
+    protected function searchContact(Request $request){
+        return Contact::searchContact($request);
     }
 }

@@ -8,6 +8,7 @@ use App\Libraries\InputSanitise;
 use App\Models\User;
 use App\Models\BusinessDetails;
 use App\Models\Job;
+use App\Models\Suggestion;
 
 class MemberController extends Controller
 {
@@ -28,6 +29,12 @@ class MemberController extends Controller
     protected $validateMember = [
             'f_name' => 'required',
             'l_name' => 'required',
+        ];
+    protected $validateAdmin = [
+            'f_name' => 'required',
+            'l_name' => 'required',
+            'mobile' => 'required|regex:/[0-9]{10}/|digits:10|unique:users',
+            'is_member' => 'required',
         ];
 
     /**
@@ -165,7 +172,16 @@ class MemberController extends Controller
      */
     protected function members(){
         $members = User::where('is_member', 1)->get();
-        return view('layouts.members', compact('members'));
+        $loginUser = Auth::user();
+        return view('layouts.members', compact('members','loginUser'));
+    }
+
+    /**
+     * todays Birtday
+     */
+    protected function todaysBirtday(){
+        $members = User::where('is_member', 1)->whereDay('dob', date('d'))->whereMonth('dob', date('m'))->get();
+        return view('layouts.todays_birtday', compact('members'));
     }
 
     /**
@@ -248,4 +264,99 @@ class MemberController extends Controller
     protected function searchMarriageMemberByGender(Request $request){
         return User::searchMarriageMemberByGender($request);
     }
+
+    protected function createAdmin(){
+        return view('layouts.create_admin');
+    }
+
+    protected function storeAdmin(Request $request){
+        $v = Validator::make($request->all(), $this->validateAdmin);
+        if ($v->fails())
+        {
+            return redirect()->back()->withErrors($v->errors())->withInput();
+        }
+        $fName = $request->get('f_name');
+        $lName = $request->get('l_name');
+        $mobile = $request->get('mobile');
+        $isMember = $request->get('is_member');
+        DB::beginTransaction();
+        try
+        {
+            if(1 == $isMember){
+                $nextAdminFamilyId = User::getNextAdminFamilyId();
+            } else {
+                $nextAdminFamilyId = 0;
+            }
+            $user = User::create([
+                'f_name' => $fName,
+                'l_name' => $lName,
+                'mobile' => $mobile,
+                'is_admin' => 1,
+                'is_super_admin' => 0,
+                'is_member' => $isMember,
+                'family_id' => $nextAdminFamilyId,
+                'is_contact_private' => 0,
+                'dob' => '1947-08-15',
+                'admin_relation' => 'Admin',
+            ]);
+            if(is_object($user)){
+                DB::commit();
+                return Redirect::to('create-admin')->with('message', 'Admin created successfully.');
+            }
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return back()->withErrors('something went wrong.');
+        }
+        return Redirect::to('create-admin');
+    }
+
+    protected function createSuggestion(){
+        return view('layouts.create_suggestion');
+    }
+
+    protected function storeSuggestion(Request $request){
+        DB::beginTransaction();
+        try
+        {
+            $suggestion = Suggestion::addContact($request);
+            if(is_object($suggestion)){
+                DB::commit();
+                return Redirect::to('create-suggestion')->with('message', 'Suggestion created successfully.');
+            }
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return back()->withErrors($e->message());
+        }
+        return Redirect::to('create-suggestion');
+    }
+
+    protected function suggestions(){
+        $suggestions = Suggestion::join('users', 'users.id', '=', 'suggestions.member_id')->select('suggestions.*','users.f_name','users.l_name', 'users.mobile')->orderBy('suggestions.id', 'desc')->get();
+        return view('layouts.suggestions', compact('suggestions'));
+    }
+
+    protected function deleteSuggestion(Request $request){
+        $id = json_decode($request->get('suggestion_id'));
+        DB::beginTransaction();
+        try
+        {
+            $suggestion = Suggestion::find($id);
+            if(is_object($suggestion)){
+                $suggestion->delete();
+                DB::commit();
+                return Redirect::to('suggestions')->with('message', 'Suggestion deleted successfully.');
+            }
+        }
+        catch(\Exception $e)
+        {
+            DB::rollback();
+            return back()->withErrors('something went wrong.');
+        }
+        return Redirect::to('suggestions');
+    }
+
 }

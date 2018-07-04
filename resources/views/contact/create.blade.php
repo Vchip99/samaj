@@ -81,6 +81,18 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="address" class="col-md-3 control-label">&nbsp;</label>
+                    <div class="col-md-6">
+                    @if(!empty($contact->id))
+                        <input type="radio" name="is_amravati_city" value="1" @if(1 == $contact->is_amravati_city)checked="true" @endif> Amravati City &nbsp;&nbsp;
+                        <input type="radio" name="is_amravati_city" value="0" @if(0 == $contact->is_amravati_city)checked="true" @endif> Other City
+                    @else
+                        <input type="radio" name="is_amravati_city" value="1" checked="true"> Amravati City &nbsp;&nbsp;
+                        <input type="radio" name="is_amravati_city" value="0"> Other City
+                    @endif
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="description" class="col-md-3 control-label">Description</label>
                     <div class="col-md-6">
                         <textarea class="form-control" name="description">{{ (!empty($contact->id))?$contact->description:old('description') }}</textarea>

@@ -107,7 +107,7 @@
                             <div style="width: 40%; float: left;"><strong>Landline no.:</strong></div><div style="width: 60%;  float: right;">{{($member->land_line_no)?:'-'}}</div>
                         </div>
                         <div class="row content">
-                            <div style="width: 40%; float: left;"><strong>DOB:</strong></div><div style="width: 60%;  float: right;">{{($member->dob)?:'-'}}</div>
+                            <div style="width: 40%; float: left;"><strong>DOB:</strong></div><div style="width: 60%;  float: right;">{{($member->dob)?date('d-m-Y', strtotime($member->dob)):'-'}}</div>
                         </div>
                     </div>
                     <div class="col-md-6">

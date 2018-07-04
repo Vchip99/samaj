@@ -16,7 +16,7 @@
         <div class="col-md-10 ">
             <div class="container bloodGroup">
                 <div class="row">
-                    <div class="col-md-4 top">
+                    <div class="col-md-3 top">
                         <div class="form-group">
                             <label class="control-label">Blood Group</label>
                             <select class="form-control" name="blood_group" onChange="searchBloodMember(this.value);">
@@ -42,10 +42,10 @@
                         <div class="col-md-4 col-sm-6 col-xs-6 col-1 text-center" >
                             <div class="member1 text-center">
                                 <a href="{{url('member')}}/{{$member->id}}" >
-                                    @if(!empty($member->photo))
-                                        <img src="{{ asset($member->photo)}}" alt="member1 image" class="image img-circle" >
+                                    @if(!empty($member->photo) && is_file($member->photo))
+                                        <img src="{{ asset($member->photo)}}" alt="{{$member->f_name}} {{$member->l_name}}" class="image img-circle" >
                                     @else
-                                        <img src="{{ asset('images/user.png')}}" alt="member1 image" class="image img-circle" >
+                                        <img src="{{ asset('images/user.png')}}" alt="{{$member->f_name}} {{$member->l_name}}" class="image img-circle" >
                                     @endif
                                     @if(!empty($member->f_name) || !empty($member->l_name))
                                         <h5><strong>{{$member->f_name}} {{$member->l_name}}</strong></h5>
@@ -86,9 +86,9 @@
                         var defaultImgStr = "{{ asset('images/user.png')}}";
                         firstDivInnerHTML += '<a href="'+urlStr+'" >';
                         if(obj.photo){
-                            firstDivInnerHTML += '<img src="'+imgStr+'" alt="member1 image" class="image img-circle" >';
+                            firstDivInnerHTML += '<img src="'+imgStr+'" alt="'+obj.f_name+' '+obj.l_name+'" class="image img-circle" >';
                         } else {
-                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" alt="member1 image" class="image img-circle" >';
+                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" alt="'+obj.f_name+' '+obj.l_name+'" class="image img-circle" >';
                         }
                         if(obj.f_name){
                           var firstName = obj.f_name;

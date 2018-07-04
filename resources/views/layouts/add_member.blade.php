@@ -119,10 +119,17 @@
                 <div class="form-group{{ $errors->has('mobile') ? ' has-error' : '' }}">
                     <label for="mobile" class="col-md-3 control-label">Mobile </label>
                     <div class="col-md-6">
-                        @if((1 == $loginUser->is_admin && $loginUser->id == $member->id) || 1 == $loginUser->is_super_admin )
-                            {{$member->mobile}}
-                        @elseif($loginUser->id != $member->id && 1 == $member->is_contact_private)
-                            **********
+                        @if(!empty($member->id))
+                            @if($loginUser->id != $member->id && 1 == $member->is_contact_private)
+                                **********
+                            @else
+                                @if(!empty($member->email))
+                                    {{ $member->mobile }}
+                                    <input type="hidden" class="form-control" name="mobile" value="{{ $member->mobile }}" placeholder="10 digit mobile number" pattern="[0-9]{10}" readonly>
+                                @else
+                                    <input type="text" class="form-control" name="mobile" value="{{ $member->mobile }}" placeholder="10 digit mobile number" pattern="[0-9]{10}" readonly>
+                                @endif
+                            @endif
                         @else
                             <input id="mobile" type="phone" class="form-control" name="mobile" value="{{ (!empty($member->id))?$member->mobile:old('mobile') }}"  placeholder="10 digit mobile number" pattern="[0-9]{10}" @if(!empty($member->id)) readonly @endif>
                             @if ($errors->has('mobile'))

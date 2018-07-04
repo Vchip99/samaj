@@ -31,7 +31,7 @@ Route::get('/marriage', 'MemberHomeController@marriage');
 // super admin group member
 Route::get('/group-member', 'MemberHomeController@groupMember');
 Route::post('/get-sub-groups-by-group-id', 'MemberHomeController@getSubGroupsByGroupId');
-Route::post('/get-position-by-group-id-by-sub-group-id', 'MemberHomeController@getPositionByGroupIdBySubGroupId');
+// Route::post('/get-position-by-group-id-by-sub-group-id', 'MemberHomeController@getPositionByGroupIdBySubGroupId');
 Route::post('/associate-group', 'MemberHomeController@associateGroup');
 Route::get('/panchayat', 'MemberHomeController@panchayat');
 Route::get('/navyuvak-mandal', 'MemberHomeController@navyuvakMandal');
@@ -40,6 +40,8 @@ Route::get('/varishth-nagrik', 'MemberHomeController@varishthNagrik');
 Route::get('/jilha-sangathan', 'MemberHomeController@jilhaSangathan');
 Route::get('/seva-manch', 'MemberHomeController@sevaManch');
 Route::get('/aadhar-samity', 'MemberHomeController@aadharSamity');
+Route::get('/maheshwary-group8', 'MemberHomeController@maheshwaryGroup8');
+Route::get('/maheshwary-group9', 'MemberHomeController@maheshwaryGroup9');
 Route::post('/get-group-member-by-id', 'MemberHomeController@getGroupMemberById');
 
 Route::get('/show-notification', 'NotificationController@show');
@@ -57,6 +59,9 @@ Route::get('/contact/{id}/edit', 'ContactController@edit');
 Route::put('/update-contact', 'ContactController@update');
 Route::delete('/delete-contact', 'ContactController@delete');
 Route::get('/contacts', 'ContactController@contacts');
+Route::post('/get-contact-by-city', 'ContactController@getContactByCity');
+Route::post('/search-contact', 'ContactController@searchContact');
+
 
 Route::get('/show-job', 'JobController@show');
 Route::get('/create-job', 'JobController@create');
@@ -82,7 +87,13 @@ Route::post('/search-blood', 'MemberController@searchBlood');
 Route::post('/search-marriage-member', 'MemberController@searchMarriageMember');
 Route::post('/search-member-by-profession', 'MemberController@searchMemberByProfession');
 Route::post('/search-marriage-member-by-gender', 'MemberController@searchMarriageMemberByGender');
-
+Route::get('/todays-birtday', 'MemberController@todaysBirtday');
+Route::get('/create-admin', 'MemberController@createAdmin');
+Route::post('/create-admin', 'MemberController@storeAdmin');
+Route::get('/create-suggestion', 'MemberController@createSuggestion');
+Route::post('/create-suggestion', 'MemberController@storeSuggestion');
+Route::get('/suggestions', 'MemberController@suggestions');
+Route::delete('/delete-suggestion', 'MemberController@deleteSuggestion');
 
 
 // business
@@ -96,3 +107,11 @@ Route::delete('/delete-business', 'BusinessController@delete');
 Route::get('/search-business', 'BusinessController@showAllBusiness');
 Route::post('/search-business', 'BusinessController@searchBusiness');
 Route::get('/business/{id}', 'BusinessController@showBusiness');
+
+	//group-description
+
+Route::get('/group-description', 'GroupDescriptionController@show');
+Route::get('/create-description', 'GroupDescriptionController@create');
+Route::post('/create-description', 'GroupDescriptionController@store');
+Route::get('/description/{id}/edit', 'GroupDescriptionController@edit');
+Route::put('/update-description', 'GroupDescriptionController@update');

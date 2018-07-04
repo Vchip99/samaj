@@ -4,13 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\MessageController;
-use Validator,DB,Redirect,Auth,Cache;
+use Validator,DB,Redirect,Auth,Cache,Session;
 use App\Libraries\InputSanitise;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\SubGroup;
 use App\Models\Position;
 use App\Models\BusinessDetails;
+use App\Models\GroupDescription;
 
 class MemberHomeController extends Controller
 {
@@ -51,13 +52,18 @@ class MemberHomeController extends Controller
      */
     protected function marriage(){
         $members = User::where('is_marriage_candidate', 1)->where('married_status', 0)->orderBy('dob', 'desc')->get();
-        return view('layouts.marriage', compact('members'));
+        $groom = User::where('is_marriage_candidate', 1)->where('married_status', 0)->where('gender', 'M')->count();
+        $bride = User::where('is_marriage_candidate', 1)->where('married_status', 0)->where('gender', 'F')->count();
+        $loginUser = Auth::user();
+        return view('layouts.marriage', compact('members','groom','bride','loginUser'));
     }
 
     protected function groupMember(){
         $members = User::where('is_member', 1)->get();
         $groups = Group::all();
-        return view('layouts.group_member', compact('members', 'groups'));
+        $subgroups = [];
+        $positions = Position::all();
+        return view('layouts.group_member', compact('members', 'groups', 'positions', 'subgroups'));
     }
 
     protected function getSubGroupsByGroupId(Request $request){
@@ -69,9 +75,6 @@ class MemberHomeController extends Controller
     }
 
     protected function associateGroup(Request $request){
-        if(empty($request->get('members'))){
-            return back()->withErrors('Please select member');
-        }
         if(empty($request->get('group'))){
             return back()->withErrors('Please select group');
         }
@@ -86,7 +89,7 @@ class MemberHomeController extends Controller
         {
             User::associateGroupToMember($request);
             DB::commit();
-            return Redirect::to('group-member')->with('message', 'Position associated to member successfully.');
+            return Redirect::to('group-member')->with('message', 'Position associated to members successfully.');
         }
         catch(\Exception $e)
         {
@@ -107,7 +110,8 @@ class MemberHomeController extends Controller
         $memberPositions = $result['memberPositions'];
         $panchayatSubGroup = $result['panchayatSubGroup'];
         $groupPositions = $result['groupPositions'];
-        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName'));
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName', 'description'));
     }
 
     protected function navyuvakMandal(Request $request){
@@ -122,7 +126,8 @@ class MemberHomeController extends Controller
         $memberPositions = $result['memberPositions'];
         $panchayatSubGroup = $result['panchayatSubGroup'];
         $groupPositions = $result['groupPositions'];
-        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName'));
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName', 'description'));
     }
 
     protected function mahilaMandal(Request $request){
@@ -137,7 +142,8 @@ class MemberHomeController extends Controller
         $memberPositions = $result['memberPositions'];
         $panchayatSubGroup = $result['panchayatSubGroup'];
         $groupPositions = $result['groupPositions'];
-        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName'));
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName', 'description'));
     }
 
     protected function varishthNagrik(Request $request){
@@ -152,7 +158,8 @@ class MemberHomeController extends Controller
         $memberPositions = $result['memberPositions'];
         $panchayatSubGroup = $result['panchayatSubGroup'];
         $groupPositions = $result['groupPositions'];
-        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName'));
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName', 'description'));
     }
 
     protected function jilhaSangathan(Request $request){
@@ -167,7 +174,8 @@ class MemberHomeController extends Controller
         $memberPositions = $result['memberPositions'];
         $panchayatSubGroup = $result['panchayatSubGroup'];
         $groupPositions = $result['groupPositions'];
-        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName'));
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions', 'groupName', 'description'));
     }
 
     protected function sevaManch(Request $request){
@@ -182,7 +190,8 @@ class MemberHomeController extends Controller
         $memberPositions = $result['memberPositions'];
         $panchayatSubGroup = $result['panchayatSubGroup'];
         $groupPositions = $result['groupPositions'];
-        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName'));
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName', 'description'));
     }
 
 
@@ -198,12 +207,44 @@ class MemberHomeController extends Controller
         $memberPositions = $result['memberPositions'];
         $panchayatSubGroup = $result['panchayatSubGroup'];
         $groupPositions = $result['groupPositions'];
-        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName'));
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName', 'description'));
+    }
+
+    protected function maheshwaryGroup8(Request $request){
+        $result = $this->getGroupMembers(8,'group_8');
+        $groupId = $result['groupId'];
+        $groupObj = Group::where('id',$groupId)->first();
+        if(is_object($groupObj)){
+            $groupName = $groupObj->name;
+        } else {
+            $groupName = '';
+        }
+        $memberPositions = $result['memberPositions'];
+        $panchayatSubGroup = $result['panchayatSubGroup'];
+        $groupPositions = $result['groupPositions'];
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName', 'description'));
+    }
+
+    protected function maheshwaryGroup9(Request $request){
+        $result = $this->getGroupMembers(9,'group_9');
+        $groupId = $result['groupId'];
+        $groupObj = Group::where('id',$groupId)->first();
+        if(is_object($groupObj)){
+            $groupName = $groupObj->name;
+        } else {
+            $groupName = '';
+        }
+        $memberPositions = $result['memberPositions'];
+        $panchayatSubGroup = $result['panchayatSubGroup'];
+        $groupPositions = $result['groupPositions'];
+        $description = GroupDescription::find($groupId);
+        return view('layouts.panchayat', compact('groupId','memberPositions', 'panchayatSubGroup', 'groupPositions','groupName', 'description'));
     }
 
     protected function getGroupMembers($groupId,$groupColumn){
         $members = User::where('is_member', 1)->whereNotNull($groupColumn)->get();
-        $levels = [];
         $memberPositions = [];
         $panchayatSubGroup = [];
         $groupPositions = [];
@@ -211,27 +252,45 @@ class MemberHomeController extends Controller
             foreach($members as $member){
                 if(!empty($member->$groupColumn)){
                     $arrExplode = explode('|', $member->$groupColumn);
-                    $levels[$arrExplode[0]][] = $arrExplode[1];
-                    $memberPositions[$arrExplode[1]][$member->id] = [
-                        'id' => $member->id,
-                        'name' => $member->f_name.' '.$member->l_name,
-                        'photo' => $member->photo,
-                    ];
+                    if(isset($arrExplode[0]) && isset($arrExplode[1])){
+                        $memberPositions[$arrExplode[0]][$arrExplode[1]][$member->id] = [
+                            'id' => $member->id,
+                            'name' => $member->f_name.' '.$member->l_name,
+                            'photo' => $member->photo,
+                        ];
+                    }
                 }
             }
         }
-        if(count($levels) > 0){
-            $subgroups = SubGroup::whereIn('id', array_keys($levels))->get();
-            if(is_object($subgroups) && false == $subgroups->isEmpty()){
-                foreach($subgroups as $subgroup){
-                    $panchayatSubGroup[$subgroup->group_id][$subgroup->id] = $subgroup->name;
+        if(2 == $groupId){
+            $members = User::where('is_member', 1)->whereNotNull('app_formation')->get();
+            if(count($members) > 0){
+                foreach($members as $member){
+                    if(!empty($member->app_formation)){
+                        $arrExplode = explode('|', $member->app_formation);
+                        if(isset($arrExplode[0]) && isset($arrExplode[1])){
+                            $memberPositions[$arrExplode[0]][$arrExplode[1]][$member->id] = [
+                                'id' => $member->id,
+                                'name' => $member->f_name.' '.$member->l_name,
+                                'photo' => $member->photo,
+                            ];
+                        }
+                    }
                 }
             }
-            $positions = Position::whereIn('sub_group_id', array_keys($panchayatSubGroup[$groupId]))->get();
-            if(is_object($positions) && false == $positions->isEmpty()){
-                foreach($positions as $position){
-                    $groupPositions[$position->group_id][$position->sub_group_id][$position->id] = $position->name;
-                }
+        }
+        ksort($memberPositions);
+        $subgroups = SubGroup::where('group_id', $groupId)->get();
+        if(is_object($subgroups) && false == $subgroups->isEmpty()){
+            foreach($subgroups as $subgroup){
+                $panchayatSubGroup[$subgroup->group_id][$subgroup->id] = $subgroup->name;
+            }
+        }
+
+        $positions = Position::all();
+        if(is_object($positions) && false == $positions->isEmpty()){
+            foreach($positions as $position){
+                $groupPositions[$position->id] = $position->name;
             }
         }
         $result['groupId'] = $groupId;
@@ -250,19 +309,35 @@ class MemberHomeController extends Controller
             '5' => 'group_5',
             '6' => 'group_6',
             '7' => 'group_7',
+            '8' => 'group_8',
+            '9' => 'group_9',
         ];
         $groupId = $request->get('group');
         $subgroupId = $request->get('subgroup');
         $positionId = $request->get('position');
         $groupColumn = $groups[$groupId];
-        $members = User::where('is_member', 1)->whereNotNull($groupColumn)->get();
         $positionMembers = [];
-        if(count($members) > 0){
-            foreach($members as $member){
-                if(!empty($member->$groupColumn)){
-                    $arrExplode = explode('|', $member->$groupColumn);
-                    if($subgroupId == $arrExplode[0] && $positionId == $arrExplode[1]){
-                        $positionMembers[] = $member->id;
+        if(12 == $subgroupId){
+            $members = User::where('is_member', 1)->whereNotNull('app_formation')->get();
+            if(count($members) > 0){
+                foreach($members as $member){
+                    if(!empty($member->app_formation)){
+                        $arrExplode = explode('|', $member->app_formation);
+                        if($subgroupId == $arrExplode[0] && $positionId == $arrExplode[1]){
+                            $positionMembers[] = $member->id;
+                        }
+                    }
+                }
+            }
+        } else {
+            $members = User::where('is_member', 1)->whereNotNull($groupColumn)->get();
+            if(count($members) > 0){
+                foreach($members as $member){
+                    if(!empty($member->$groupColumn)){
+                        $arrExplode = explode('|', $member->$groupColumn);
+                        if($subgroupId == $arrExplode[0] && $positionId == $arrExplode[1]){
+                            $positionMembers[] = $member->id;
+                        }
                     }
                 }
             }

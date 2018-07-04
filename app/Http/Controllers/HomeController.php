@@ -42,28 +42,32 @@ class HomeController extends Controller
         $mobile = InputSanitise::inputInt($request->get('mobile'));
         $adminLogin = User::where('is_admin', 1)->where('mobile','=', $mobile)->whereNotNull('mobile')->first();
         if(!is_object($adminLogin)){
-            $memberLogin = User::where('is_admin', 0)->where('mobile', $mobile)->first();
+            $memberLogin = User::where('is_admin', 0)->where('mobile', $mobile)->whereNotNull('mobile')->first();
             if(is_object($memberLogin)){
                 return back()->withErrors('Only admin can login. please use admin mobile no.');
+            } else {
+                return back()->withErrors('Only family head can login. if you are family head and login first time then, please contact Giridhar Rathi-1234567890 or Sachin Rathi-1234567891 .');
             }
         } else {
             if('non-member' == $memberType && 1 == $adminLogin->is_member){
-                return back()->withErrors('Given mobile no is registered as member. So please select type as a member while login.');
+                return back()->withErrors('Given mobile no. is registered as member. So please select type as a member while login.');
             } else if('member' == $memberType && 0 == $adminLogin->is_member){
-                return back()->withErrors('Given mobile no is registered as non-member. So please select type as a non-member while login.');
+                return back()->withErrors('Given mobile no. is registered as non-member. So please select type as a non-member while login.');
             }
         }
-        Cache::put('mobile', $mobile, 5);
-        Cache::put('selected_type', $memberType, 5);
+        // Cache::put('mobile', $mobile, 5);
+        // Cache::put('selected_type', $memberType, 5);
         // dd($request->all());
-        // $message = new MessageController;
-        // $response = $message->sendOtp($mobile,$memberType);
+        $message = new MessageController;
+        $response = $message->sendOtp($mobile,$memberType);
+        // dd($response);
         // if(is_object(json_decode($response)) && 'success' == json_decode($response)->status){
-        //    return Redirect::to('get-otp')->with('message', 'Otp send successfully to your mobile no.');
-        // } else {
-        //     return back()->withErrors('something went wrong while sendOtp.');
-        // }
-        return Redirect::to('get-otp')->with('message', 'Please enter otp:123456.');
+        if($response){
+           return Redirect::to('get-otp')->with('message', 'Otp send successfully to your mobile no.');
+        } else {
+            return back()->withErrors('something went wrong while sendOtp.');
+        }
+        // return Redirect::to('get-otp')->with('message', 'Please enter otp:123456.');
     }
 
     /**
@@ -81,62 +85,28 @@ class HomeController extends Controller
      */
     protected function checkOtp(Request $request){
         $mobile = Cache::get('mobile');
-        // $serverOtp = Cache::get($mobile);
+        $serverOtp = Cache::get($mobile);
         $memberType = Cache::get('selected_type');
-        // if(!empty($mobile) && !empty($serverOtp) && !empty($memberType)){
+        if(!empty($mobile) && !empty($serverOtp) && !empty($memberType)){
             $userOtp = $request->get('otp');
-            $isNewRecord = false;
-            // if($userOtp == $serverOtp){
-            if('123456' == $userOtp){
+            // $isNewRecord = false;
+            if($userOtp == $serverOtp){
+            // if('123456' == $userOtp){
                 // login
                 $user = User::where('is_admin', 1)->where('mobile','=', $mobile)->whereNotNull('mobile')->first();
                 if(!is_object($user)){
-                    if('member' == $memberType){
-                        $nextAdminFamilyId = User::getNextAdminFamilyId();
-                        $user = User::create([
-                            'f_name' => 'First',
-                            'l_name' => 'Last Name',
-                            'mobile' => $mobile,
-                            'is_admin' => 1,
-                            'is_super_admin' => 0,
-                            'is_member' => 1,
-                            'family_id' => $nextAdminFamilyId,
-                            'is_contact_private' => 0,
-                            'dob' => '1947-08-15',
-                            'admin_relation' => 'Admin',
-                        ]);
-                    } else {
-                        $user = User::create([
-                            'f_name' => 'First',
-                            'l_name' => 'Last Name',
-                            'mobile' => $mobile,
-                            'is_admin' => 1,
-                            'is_super_admin' => 0,
-                            'is_member' => 0,
-                            'family_id' => 0,
-                            'is_contact_private' => 0,
-                            'is_marriage_candidate' => 1,
-                            'married_status' => 0,
-                            'dob' => '1947-08-15',
-                            'admin_relation' => 'Admin',
-                        ]);
-                    }
-                    $isNewRecord = true;
+                    return Redirect::to('login')->withErrors('Member does not exists.');
                 }
                 Auth::login($user);
                 Cache::forget($mobile);
                 Cache::forget('selected_type');
                 Cache::forget('mobile');
-                if(true == $isNewRecord){
-                    return Redirect::to('member/'.$user->id.'/edit')->with('message', 'Welcome Dear');
-                } else {
-                    return Redirect::to('home')->with('message', 'Welcome Dear');
-                }
+                return Redirect::to('home')->with('message', 'Welcome Dear');
             } else {
                 return Redirect::to('login')->withErrors('Entered otp is wrong.');
             }
-        // } else {
-        //     return Redirect::to('login')->withErrors('Something went wrong while checkOtp.');
-        // }
+        } else {
+            return Redirect::to('login')->withErrors('Something went wrong while checkOtp.');
+        }
     }
 }

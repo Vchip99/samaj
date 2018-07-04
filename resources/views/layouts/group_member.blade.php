@@ -56,19 +56,29 @@
                         <div style="margin-bottom: 10px">
                             <select class="form-control" name="subgroup" id="subgroup" onChange="selectPosition(this);">
                                 <option value="">Select Sub Group</option>
+                                @if(count($subgroups) > 0)
+                                    @foreach($subgroups as $subgroup)
+                                        <option value="{{$subgroup->id}}">{{$subgroup->name}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div style="margin-bottom: 10px">
                             <select class="form-control" name="position" id="position" onChange="checkMember(this);">
-                                <option value="">Select Position</option>
+                                <option value="0">Select Position</option>
+                                @if(count($positions) > 0)
+                                    @foreach($positions as $position)
+                                        <option value="{{$position->id}}">{{$position->name}}</option>
+                                    @endforeach
+                                @endif
                             </select>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div style="margin-bottom: 10px">
-                            <input type="text" name="member" class="form-control"  placeholder="search member" onkeyup="searchMember(this.value);">
+                            <input type="text" name="member" id="member" class="form-control"  placeholder="search member" onkeyup="searchMember(this.value);">
                         </div>
                     </div>
                 </div>
@@ -76,10 +86,10 @@
             <div class="row">
                 <div class="panel panel-default" style="min-height: 542px !important;">
                     @if(count($members) > 0)
-                    <div class="panel-body scrollable-panel" id="allMember">
+                    <div class="panel-body scrollable-panel" id="allMember" style="min-height: 540px !important;">
                         @foreach($members as $member)
-                            <div class="">
-                                <input type="checkbox" name="members[]" id="member_{{$member->id}}" value="{{$member->id}}">{{$member->f_name}} {{$member->l_name}}
+                            <div class="member" id="div_member_{{$member->id}}" >
+                                <input type="checkbox" name="members[]" id="member_{{$member->id}}" value="{{$member->id}}">{{$member->f_name}} {{$member->m_name}} {{$member->l_name}}
                             </div>
                         @endforeach
                     </div>
@@ -96,6 +106,9 @@
 </div>
 @include('layouts.footer')
 <script type="text/javascript">
+    $(document).ready(function() {
+        $('#member').focus();
+    });
     function checkMember(ele){
         var group = document.getElementById('group').value;
         var subgroup = document.getElementById('subgroup').value;
@@ -134,38 +147,8 @@
     }
 
     function selectPosition(ele){
-        var subgroup = parseInt($(ele).val());
-        var group = document.getElementById('group').value;
-        var currentToken = $('meta[name="csrf-token"]').attr('content');
-        if(group > 0 && subgroup > 0){
-            $.ajax({
-                method:'POST',
-                url: "{{url('get-position-by-group-id-by-sub-group-id')}}",
-                data:{_token:currentToken,group_id:group,sub_group_id:subgroup}
-            }).done(function( positions ) {
-                select = document.getElementById('position');
-                select.innerHTML = '';
-                var opt = document.createElement('option');
-                opt.value = '';
-                opt.innerHTML = 'Select Position';
-                select.appendChild(opt);
-                if( 0 < positions.length){
-                  $.each(positions, function(idx, obj) {
-                      var opt = document.createElement('option');
-                      opt.value = obj.id;
-                      opt.innerHTML = obj.name;
-                      select.appendChild(opt);
-                  });
-                }
-            });
-        } else {
-            select = document.getElementById('position');
-            select.innerHTML = '';
-            var opt = document.createElement('option');
-            opt.value = '';
-            opt.innerHTML = 'Select Position';
-            select.appendChild(opt);
-        }
+        document.getElementById("position").value = 0;
+        $('input[type="checkbox"]').prop('checked', '');
     }
 
     function selectSubgroup(ele){
@@ -194,43 +177,33 @@
             });
         } else {
             select = document.getElementById('subgroup');
-                select.innerHTML = '';
-                var opt = document.createElement('option');
-                opt.value = '';
-                opt.innerHTML = 'Select Sub Group';
-                select.appendChild(opt);
+            select.innerHTML = '';
+            var opt = document.createElement('option');
+            opt.value = '';
+            opt.innerHTML = 'Select Sub Group';
+            select.appendChild(opt);
         }
-        select = document.getElementById('position');
-        select.innerHTML = '';
-        var opt = document.createElement('option');
-        opt.value = '';
-        opt.innerHTML = 'Select Position';
-        select.appendChild(opt);
+        document.getElementById("position").value = 0;
+        $('input[type="checkbox"]').prop('checked', '');
     }
 
     function searchMember(member){
         var currentToken = $('meta[name="csrf-token"]').attr('content');
-        if(member.length > 2){
+        if(member.length > 0){
             $.ajax({
                 method:'POST',
                 url: "{{url('search-member')}}",
                 data:{_token:currentToken,member:member}
             }).done(function( members ) {
-                var allMember = document.getElementById('allMember');
-                allMember.innerHTML = '';
+                $('div.member').addClass('hide');
                 if(members.length > 0){
                     $.each(members, function(idx,obj){
-                        var firstDiv = document.createElement('div');
-                        firstDiv.className = '';
-                        firstDiv.innerHTML = '<input type="checkbox" name="members[]" id="member_'+obj.id+'" value="'+obj.id+'">'+obj.f_name+''+obj.l_name;
-                        allMember.appendChild(firstDiv);
+                        $('#div_member_'+obj.id).removeClass('hide');
                     })
-                } else {
-                    allMember.innerHTML = 'No Result';
                 }
             });
         } else if( 0 == member.length) {
-            window.location.reload();
+            $('div.member').removeClass('hide');
         }
     }
 </script>

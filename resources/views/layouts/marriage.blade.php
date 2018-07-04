@@ -57,6 +57,11 @@
                             <input type="text" name="member" id="member" class="form-control"  placeholder="search member" onkeyup="searchMember(this.value);">
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        @if(1 == $loginUser->is_admin && 1 == $loginUser->is_super_admin)
+                            <h3>Grooms:{{$groom}} Brides:{{$bride}}</h3>
+                        @endif
+                    </div>
                 </div>
                 <div class="row">
                     <hr>
@@ -70,10 +75,10 @@
                         <div class="col-md-4 col-sm-6 col-xs-6 col-1 text-center" >
                             <div class="member1 text-center">
                                 <a href="{{url('member')}}/{{$member->id}}" >
-                                    @if(!empty($member->photo))
-                                        <img src="{{ asset($member->photo)}}" alt="member1 image" class="image img-circle" >
+                                    @if(!empty($member->photo) && is_file($member->photo))
+                                        <img src="{{ asset($member->photo)}}" alt="{{$member->f_name}} {{$member->l_name}}" class="image img-circle" >
                                     @else
-                                        <img src="{{ asset('images/user.png')}}" alt="member1 image" class="image img-circle" >
+                                        <img src="{{ asset('images/user.png')}}" alt="{{$member->f_name}} {{$member->l_name}}" class="image img-circle" >
                                     @endif
                                     <h5><strong>
                                         @if(!empty($member->f_name) || !empty($member->l_name))
@@ -82,7 +87,7 @@
                                             &nbsp;
                                         @endif
                                     </strong></h5>
-                                    {{($member->dob)?:'&nbsp;'}}
+                                    {{($member->dob)?date('d-m-Y', strtotime($member->dob)):'&nbsp;'}}
                                 </a>
                             </div>
                         </div>
@@ -120,9 +125,9 @@
                         var defaultImgStr = "{{ asset('images/user.png')}}";
                         firstDivInnerHTML += '<a href="'+urlStr+'" >';
                         if(obj.photo){
-                            firstDivInnerHTML += '<img src="'+imgStr+'" alt="member1 image" class="image img-circle" >';
+                            firstDivInnerHTML += '<img src="'+imgStr+'" alt="'+obj.f_name+' '+obj.l_name+'" class="image img-circle" >';
                         } else {
-                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" alt="member1 image" class="image img-circle" >';
+                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" alt="'+obj.f_name+' '+obj.l_name+'" class="image img-circle" >';
                         }
                         if(obj.f_name){
                           var firstName = obj.f_name;
@@ -135,7 +140,7 @@
                           var lastName = '&nbsp;';
                         }
                         if(obj.dob){
-                          var dobStr = obj.dob;
+                          var dobStr = format_time(new Date(obj.dob));
                         } else {
                           var dobStr = '&nbsp;';
                         }
@@ -175,9 +180,9 @@
                         var defaultImgStr = "{{ asset('images/user.png')}}";
                         firstDivInnerHTML += '<a href="'+urlStr+'" >';
                         if(obj.photo){
-                            firstDivInnerHTML += '<img src="'+imgStr+'" alt="member1 image" class="image img-circle" >';
+                            firstDivInnerHTML += '<img src="'+imgStr+'" alt="'+obj.f_name+' '+obj.l_name+'" class="image img-circle" >';
                         } else {
-                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" alt="member1 image" class="image img-circle" >';
+                            firstDivInnerHTML += '<img src="'+defaultImgStr+'" alt="'+obj.f_name+' '+obj.l_name+'" class="image img-circle" >';
                         }
                         if(obj.f_name){
                           var firstName = obj.f_name;
@@ -190,7 +195,7 @@
                           var lastName = '&nbsp;';
                         }
                         if(obj.dob){
-                          var dobStr = obj.dob;
+                          var dobStr = format_time(new Date(obj.dob));
                         } else {
                           var dobStr = '&nbsp;';
                         }
@@ -207,6 +212,25 @@
         } else if( 0 == member.length) {
             window.location.reload();
         }
+    }
+
+    function format_time(date_obj) {
+        // formats a javascript Date object into a 12h AM/PM time string
+        var day = date_obj.getDate();
+        var month = date_obj.getMonth()+1;
+        var year = date_obj.getFullYear();
+        var hour = date_obj.getHours();
+        var minute = date_obj.getMinutes();
+        var amPM = (hour > 11) ? " PM" : " AM";
+        if(hour > 12) {
+          hour -= 12;
+        } else if(hour == 0) {
+          hour = "12";
+        }
+        if(minute < 10) {
+          minute = "0" + minute;
+        }
+        return day+"-"+month+"-"+year;
     }
 </script>
 @endsection

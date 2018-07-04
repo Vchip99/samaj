@@ -144,11 +144,23 @@
                             <a href="{{ url('jilha-sangathan') }}">Maheshwari Jilha Sangathan</a>
                             <a href="{{ url('seva-manch') }}">Maheshwari Seva Manch</a>
                             <a href="{{ url('aadhar-samity') }}">Maheshwari Aadhar Samity</a>
+                            <a href="{{ url('maheshwary-group8') }}">Maheshwari Group 8</a>
+                            <a href="{{ url('maheshwary-group9') }}">Maheshwari Group 9</a>
                         </li>
                     </ul>
                 </li>
                 @if(1 == $loginUser->is_member)
-                  <li><a href="{{ url('members') }}"><span class="glyphicon glyphicon-user"></span>Members</a></li>
+                  <!-- <li><a href="{{ url('members') }}"><span class="glyphicon glyphicon-user"></span>Members</a></li> -->
+                  <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown">Members <span class="caret"></span>
+                      </a>
+                      <ul class="dropdown-menu" style="margin-right: 75%;">
+                          <li>
+                              <a href="{{ url('members') }}">All Member</a>
+                              <a href="{{ url('todays-birtday') }}">Todays Birtday</a>
+                          </li>
+                      </ul>
+                  </li>
                 @endif
                 <li><a href="{{ url('marriage') }}"><span class="glyphicon"></span>Parinay</a></li>
                 @if(1 == $loginUser->is_member)
@@ -176,18 +188,22 @@
                       </ul>
                   </li>
                 @endif
-                <li><a href="{{ url('contacts') }}">Contact</a></li>
+                <li><a href="{{ url('contacts') }}">Contacts</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                         {{ Auth::user()->f_name }} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" style="margin-right: 75%;">
                         <li>
-                            <a href="{{ url('notifications') }}">Notification</a>
+                            <a href="{{ url('notifications') }}">Notifications</a>
+                            <a href="{{ url('create-suggestion') }}">Create Suggestion</a>
                             @if(1 == $loginUser->is_super_admin)
+                            <a href="{{ url('suggestions') }}">Suggestions</a>
                             <a href="{{ url('show-notification') }}">Create Notification</a>
                             <a href="{{ url('show-contact') }}">Create Contact</a>
-                            <a href="{{ url('group-member') }}">Group Member</a>
+                            <a href="{{ url('group-member') }}">Group Members</a>
+                            <a href="{{ url('group-description') }}">Group Description</a>
+                            <a href="{{ url('create-admin') }}">Create Admin</a>
                             @endif
                             <a href="{{ url('logout') }}"
                                 onclick="event.preventDefault();

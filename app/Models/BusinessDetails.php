@@ -95,6 +95,7 @@ class BusinessDetails extends Model
     protected static function searchBusiness($request){
     	$name = $request->get('business');
         $category = $request->get('business_category');
+        $city = $request->get('city');
     	$result = static::where('name', 'like', '%'.$name.'%');
         if('All' != $category && !empty($category)){
             $result->where('business_category', $category);

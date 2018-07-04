@@ -87,10 +87,21 @@
                         <div class="row content">
                             <div style="width: 40%; float: left;"><strong>Address:</strong></div><div style="width: 60%;  float: right;">{{($business->address)?:'-'}}</div>
                         </div>
+                        <div class="row content">
+                            <div style="width: 40%; float: left;"><strong>Description:</strong></div><div style="width: 60%;  float: right;">{{($business->description)?:'-'}}</div>
+                        </div>
                     </div>
                     <div class="col-md-6">
                         <div class="row content">
-                            <div style="width: 40%; float: left;"><strong>Description:</strong></div><div style="width: 60%;  float: right;">{{($business->description)?:'-'}}</div>
+                            <div style="width: 40%; float: left;"><strong>Family:</strong></div><div style="width: 60%;  float: right;">
+                                @if(count($familyMembers) > 0)
+                                    @foreach($familyMembers as $familyMember)
+                                        <p>{{$familyMember->f_name}} {{$familyMember->l_name}}</p>
+                                    @endforeach
+                                @else
+                                    -
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>

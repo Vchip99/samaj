@@ -38,6 +38,12 @@
         .cust-padding{
             padding-top: 20px;
         }
+        .topcontent{
+            margin-top:10px;
+            margin-bottom: 10px;
+            border:1px solid black;
+
+        }
     </style>
 @endsection
 @section('content')
@@ -48,126 +54,129 @@
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="col-md-3">
-                            <!-- <select class="form-control" name="business_category" id="business_category">
-                                <option value="">Select Business Category</option>
-                                <option value="All">All</option>
-                            </select> -->
-                            <select class="form-control" name="business_category" id="business_category" onChange="getBusinessByCategory(this.value);">
-                                <option value="">Select Business Category</option>
-                                <option value="All">All</option>
-                                <optgroup label="Accountant">
-                                    <option value="Accountant" >Accountant</option>
-                                </optgroup>
-                                <optgroup label="Advocate">
-                                    <option value="Advocate" >Advocate</option>
-                                </optgroup>
-                                <optgroup label="Architect">
-                                    <option value="Architect" >Architect</option>
-                                </optgroup>
-                                <optgroup label="Bichayat/Decoration">
-                                    <option value="Bichayat/Decoration" >Bichayat/Decoration</option>
-                                </optgroup>
-                                <optgroup label="Broker">
-                                    <option value="Cotton(Broker)" >Cotton(Broker)</option>
-                                    <option value="Finance(Broker)" >Finance(Broker)</option>
-                                    <option value="Grain(Broker)" >Grain(Broker)</option>
-                                    <option value="LIC Agent" >LIC Agent</option>
-                                    <option value="Property(Broker)" >Property(Broker)</option>
-                                    <option value="Share(Broker)" >Share(Broker)</option>
-                                </optgroup>
-                                <optgroup label="Builder & Land developer">
-                                    <option value="Builder & Land developer" >Builder & Land developer</option>
-                                </optgroup>
-                                <optgroup label="CA">
-                                    <option value="CA" >CA</option>
-                                </optgroup>
-                                <optgroup label="Catering">
-                                    <option value="Catering" >Catering</option>
-                                </optgroup>
-                                <optgroup label="Cloth Store">
-                                    <option value="Cloth Store" >Cloth Store</option>
-                                </optgroup>
-                                <optgroup label="Coaching Classes">
-                                    <option value="Coaching Classes" >Coaching Classes</option>
-                                </optgroup>
-                                <optgroup label="Designer Graphics and Other">
-                                    <option value="Designer Graphics and Other" >Designer Graphics and Other</option>
-                                </optgroup>
-                                <optgroup label="Dealer">
-                                    <option value="Bike/Car(Dealer)" >Bike/Car(Dealer)</option>
-                                    <option value="Laptop(Dealer)" >Laptop(Dealer)</option>
-                                    <option value="Mobile(Dealer)" >Mobile(Dealer)</option>
-                                    <option value="TV/Refrigerator(Dealer)" >TV/Refrigerator(Dealer)</option>
-                                </optgroup>
-                                <optgroup label="Doctor">
-                                    <option value="Doctor" >Doctor</option>
-                                </optgroup>
-                                <optgroup label="Electrical">
-                                    <option value="Electrical" >Electrical</option>
-                                </optgroup>
-                                <optgroup label="Event Management">
-                                    <option value="Event Management" >Event Management</option>
-                                </optgroup>
-                                <optgroup label="General Store">
-                                    <option value="General Store" >General Store</option>
-                                </optgroup>
-                                <optgroup label="Grain Merchant">
-                                    <option value="Grain Merchant" >Grain Merchant</option>
-                                </optgroup>
-                                <optgroup label="Hardware">
-                                    <option value="Hardware" >Hardware</option>
-                                </optgroup>
-                                <optgroup label="Industry">
-                                    <option value="Industry" >Industry</option>
-                                </optgroup>
-                                <optgroup label="Kirana">
-                                    <option value="Kirana" >Kirana</option>
-                                </optgroup>
-                                <optgroup label="Medical">
-                                    <option value="Medical" >Medical</option>
-                                </optgroup>
-                                <optgroup label="Politician">
-                                    <option value="Politician" >Politician</option>
-                                </optgroup>
-                                <optgroup label="Printing & Designing">
-                                    <option value="Printing & Designing" >Printing & Designing</option>
-                                </optgroup>
-                                <optgroup label="Related to Software Services">
-                                    <option value="Related to Software Services" >Related to Software Services</option>
-                                </optgroup>
-                                <optgroup label="Restaurant">
-                                    <option value="Restaurant" >Restaurant</option>
-                                </optgroup>
-                                <optgroup label="Sonaar (Work in Gold & Silver)">
-                                    <option value="Sonaar (Work in Gold & Silver)" >Sonaar (Work in Gold & Silver)</option>
-                                </optgroup>
-                                <optgroup label="Sweet Mart">
-                                    <option value="Sweet Mart" >Sweet Mart</option>
-                                </optgroup>
-                                <optgroup label="Trainer">
-                                    <option value="Trainer" >Trainer</option>
-                                </optgroup>
-                                <optgroup label="Transport">
-                                    <option value="Transport" >Transport</option>
-                                </optgroup>
-                                <optgroup label="Travel Agent">
-                                    <option value="Travel Agent" >Travel Agent</option>
-                                </optgroup>
-                                <optgroup label="Water Can">
-                                    <option value="Water Can" >Water Can</option>
-                                </optgroup>
-                                <optgroup label="Wholesale Dealer">
-                                    <option value="Wholesale Dealer" >Wholesale Dealer</option>
-                                </optgroup>
-                                <optgroup label="Other">
-                                    <option value="Other">Other</option>
-                                </optgroup>
-                            </select>
+                            <div class="topcontent">
+                                <select class="form-control" name="business_category" id="business_category" onChange="getBusinessByCategory(this.value);">
+                                    <option value="">Select Business Category</option>
+                                    <option value="All">All</option>
+                                    <optgroup label="Accountant">
+                                        <option value="Accountant" >Accountant</option>
+                                    </optgroup>
+                                    <optgroup label="Advocate">
+                                        <option value="Advocate" >Advocate</option>
+                                    </optgroup>
+                                    <optgroup label="Architect">
+                                        <option value="Architect" >Architect</option>
+                                    </optgroup>
+                                    <optgroup label="Bichayat/Decoration">
+                                        <option value="Bichayat/Decoration" >Bichayat/Decoration</option>
+                                    </optgroup>
+                                    <optgroup label="Broker">
+                                        <option value="Cotton(Broker)" >Cotton(Broker)</option>
+                                        <option value="Finance(Broker)" >Finance(Broker)</option>
+                                        <option value="Grain(Broker)" >Grain(Broker)</option>
+                                        <option value="LIC Agent" >LIC Agent</option>
+                                        <option value="Property(Broker)" >Property(Broker)</option>
+                                        <option value="Share(Broker)" >Share(Broker)</option>
+                                    </optgroup>
+                                    <optgroup label="Builder & Land developer">
+                                        <option value="Builder & Land developer" >Builder & Land developer</option>
+                                    </optgroup>
+                                    <optgroup label="CA">
+                                        <option value="CA" >CA</option>
+                                    </optgroup>
+                                    <optgroup label="Catering">
+                                        <option value="Catering" >Catering</option>
+                                    </optgroup>
+                                    <optgroup label="Cloth Store">
+                                        <option value="Cloth Store" >Cloth Store</option>
+                                    </optgroup>
+                                    <optgroup label="Coaching Classes">
+                                        <option value="Coaching Classes" >Coaching Classes</option>
+                                    </optgroup>
+                                    <optgroup label="Designer Graphics and Other">
+                                        <option value="Designer Graphics and Other" >Designer Graphics and Other</option>
+                                    </optgroup>
+                                    <optgroup label="Dealer">
+                                        <option value="Bike/Car(Dealer)" >Bike/Car(Dealer)</option>
+                                        <option value="Laptop(Dealer)" >Laptop(Dealer)</option>
+                                        <option value="Mobile(Dealer)" >Mobile(Dealer)</option>
+                                        <option value="TV/Refrigerator(Dealer)" >TV/Refrigerator(Dealer)</option>
+                                    </optgroup>
+                                    <optgroup label="Doctor">
+                                        <option value="Doctor" >Doctor</option>
+                                    </optgroup>
+                                    <optgroup label="Electrical">
+                                        <option value="Electrical" >Electrical</option>
+                                    </optgroup>
+                                    <optgroup label="Event Management">
+                                        <option value="Event Management" >Event Management</option>
+                                    </optgroup>
+                                    <optgroup label="General Store">
+                                        <option value="General Store" >General Store</option>
+                                    </optgroup>
+                                    <optgroup label="Grain Merchant">
+                                        <option value="Grain Merchant" >Grain Merchant</option>
+                                    </optgroup>
+                                    <optgroup label="Hardware">
+                                        <option value="Hardware" >Hardware</option>
+                                    </optgroup>
+                                    <optgroup label="Industry">
+                                        <option value="Industry" >Industry</option>
+                                    </optgroup>
+                                    <optgroup label="Kirana">
+                                        <option value="Kirana" >Kirana</option>
+                                    </optgroup>
+                                    <optgroup label="Medical">
+                                        <option value="Medical" >Medical</option>
+                                    </optgroup>
+                                    <optgroup label="Politician">
+                                        <option value="Politician" >Politician</option>
+                                    </optgroup>
+                                    <optgroup label="Printing & Designing">
+                                        <option value="Printing & Designing" >Printing & Designing</option>
+                                    </optgroup>
+                                    <optgroup label="Related to Software Services">
+                                        <option value="Related to Software Services" >Related to Software Services</option>
+                                    </optgroup>
+                                    <optgroup label="Restaurant">
+                                        <option value="Restaurant" >Restaurant</option>
+                                    </optgroup>
+                                    <optgroup label="Sonaar (Work in Gold & Silver)">
+                                        <option value="Sonaar (Work in Gold & Silver)" >Sonaar (Work in Gold & Silver)</option>
+                                    </optgroup>
+                                    <optgroup label="Sweet Mart">
+                                        <option value="Sweet Mart" >Sweet Mart</option>
+                                    </optgroup>
+                                    <optgroup label="Trainer">
+                                        <option value="Trainer" >Trainer</option>
+                                    </optgroup>
+                                    <optgroup label="Transport">
+                                        <option value="Transport" >Transport</option>
+                                    </optgroup>
+                                    <optgroup label="Travel Agent">
+                                        <option value="Travel Agent" >Travel Agent</option>
+                                    </optgroup>
+                                    <optgroup label="Water Can">
+                                        <option value="Water Can" >Water Can</option>
+                                    </optgroup>
+                                    <optgroup label="Wholesale Dealer">
+                                        <option value="Wholesale Dealer" >Wholesale Dealer</option>
+                                    </optgroup>
+                                    <optgroup label="Other">
+                                        <option value="Other">Other</option>
+                                    </optgroup>
+                                </select>
+                            </div>
                         </div>
                         <div class="col-md-3">
                             <div class="topcontent">
                                 <input type="text" name="business" id="business" class="form-control"  placeholder="search business" onfocus onkeyup="searchBusiness(this.value);" >
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            @if(1 == $loginUser->is_admin && 1 == $loginUser->is_super_admin)
+                                <h3>Total Businesses:{{count($businesses)}}</h3>
+                            @endif
                         </div>
                     </div>
                 </form>
@@ -253,8 +262,6 @@
                 }
                 $('#business').focus();
             });
-        } else if( 0 == business.length) {
-            window.location.reload();
         }
     }
     function searchBusiness(business){

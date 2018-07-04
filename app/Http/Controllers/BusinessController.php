@@ -151,7 +151,8 @@ class BusinessController extends Controller
      */
     protected function showAllBusiness(){
         $businesses = BusinessDetails::all();
-        return view('business.search', compact('businesses'));
+        $loginUser = Auth::user();
+        return view('business.search', compact('businesses', 'loginUser'));
     }
 
     /**
@@ -168,7 +169,8 @@ class BusinessController extends Controller
         $business = BusinessDetails::find(json_decode($id));
         if(is_object($business)){
             $previousUrl = url()->previous();
-            return view('business.show_business', compact('business', 'previousUrl'));
+            $familyMembers = User::getMembersByFamilyId($business->family_id);
+            return view('business.show_business', compact('business', 'previousUrl', 'familyMembers'));
         }
         return Redirect::to('search-business');
     }

@@ -17,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'gotra','f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'is_super_admin', 'is_member', 'family_id', 'is_contact_private', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'kundali', 'blood_group', 'education','profession', 'other_profession', 'designation','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary','group_1','group_2','group_3','group_4','group_5','group_6', 'group_7', 'job_location', 'linkedin_profile'
+        'gotra','f_name', 'm_name', 'l_name', 'user_id', 'email', 'mobile', 'is_admin', 'is_super_admin', 'is_member', 'family_id', 'is_contact_private', 'land_line_no', 'fax', 'dob', 'gender', 'photo','married_status', 'spouse', 'is_marriage_candidate', 'bio_data', 'kundali', 'blood_group', 'education','profession', 'other_profession', 'designation','website', 'address', 'state', 'city', 'pin', 'admin_relation', 'anniversary','group_1','group_2','group_3','group_4','group_5','group_6', 'group_7', 'job_location', 'group_8', 'group_9', 'app_formation'
     ];
 
     /**
@@ -95,8 +95,6 @@ class User extends Authenticatable
         $pin =  $request->get('pin');
         $anniversary =  $request->get('anniversary');
         $jobLocation =  $request->get('job_location');
-        // $googleProfile =  $request->get('google_profile');
-        $linkedinProfile =  $request->get('linkedin_profile');
         $adminRelation =  $request->get('admin_relation');
         $isSameAddress =  $request->get('is_same_address');
         $loginUser = Auth::user();
@@ -133,7 +131,11 @@ class User extends Authenticatable
             $member->is_super_admin = 1;
         }
         if( 1 ==$loginUser->is_super_admin ){
-            $member->family_id = $member->family_id;
+            if(isset($member->id)){
+                $member->family_id = $member->family_id;
+            } else {
+                $member->family_id = $familyId;
+            }
         } else {
             $member->family_id = $familyId;
         }
@@ -176,8 +178,6 @@ class User extends Authenticatable
         }
         $member->anniversary = $anniversary;
         $member->job_location = $jobLocation;
-        // $member->google_profile = $googleProfile;
-        $member->linkedin_profile = $linkedinProfile;
         $member->save();
 
         $path = 'user-documents/'.$member->id;
@@ -291,24 +291,61 @@ class User extends Authenticatable
         $subgroup = $request->get('subgroup');
         $position = $request->get('position');
         $memberIds = $request->get('members');
-        foreach($memberIds as $memberId) {
-            $user = static::find($memberId);
+        if(12 == $subgroup){
+            $groupStr = 'app_formation';
+            $positionStr = $subgroup.'|'.$position;
+            User::where($groupStr, $positionStr)->update([$groupStr => ' ']);
+        } else {
+            $positionStr = $subgroup.'|'.$position;
             if(1 == $group){
-                $user->group_1 = $subgroup.'|'.$position;
+                $groupStr = 'group_1';
             } else if(2 == $group){
-                $user->group_2 = $subgroup.'|'.$position;
+                $groupStr = 'group_2';
             } else if(3 == $group){
-                $user->group_3 = $subgroup.'|'.$position;
+                $groupStr = 'group_3';
             } else if(4 == $group){
-                $user->group_4 = $subgroup.'|'.$position;
+                $groupStr = 'group_4';
             } else if(5 == $group){
-                $user->group_5 = $subgroup.'|'.$position;
+                $groupStr = 'group_5';
             } else if(6 == $group){
-                $user->group_6 = $subgroup.'|'.$position;
+                $groupStr = 'group_6';
             } else if(7 == $group){
-                $user->group_7 = $subgroup.'|'.$position;
+                $groupStr = 'group_7';
+            } else if(8 == $group){
+                $groupStr = 'group_8';
+            } else if(9 == $group){
+                $groupStr = 'group_9';
             }
-            $user->save();
+            User::where($groupStr, $positionStr)->update([$groupStr => ' ']);
+        }
+        if(count($memberIds) > 0){
+            if(12 == $subgroup){
+                $groupStr = 'app_formation';
+                $positionStr = $subgroup.'|'.$position;
+                User::whereIn('id', $memberIds)->update([$groupStr => $positionStr]);
+            } else {
+                $positionStr = $subgroup.'|'.$position;
+                if(1 == $group){
+                    $groupStr = 'group_1';
+                } else if(2 == $group){
+                    $groupStr = 'group_2';
+                } else if(3 == $group){
+                    $groupStr = 'group_3';
+                } else if(4 == $group){
+                    $groupStr = 'group_4';
+                } else if(5 == $group){
+                    $groupStr = 'group_5';
+                } else if(6 == $group){
+                    $groupStr = 'group_6';
+                } else if(7 == $group){
+                    $groupStr = 'group_7';
+                } else if(8 == $group){
+                    $groupStr = 'group_8';
+                } else if(9 == $group){
+                    $groupStr = 'group_9';
+                }
+                User::whereIn('id', $memberIds)->update([$groupStr => $positionStr]);
+            }
         }
         return;
     }
