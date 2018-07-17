@@ -359,4 +359,12 @@ class MemberController extends Controller
         return Redirect::to('suggestions');
     }
 
+    /**
+     * todays Anniversary
+     */
+    protected function todaysAnniversary(){
+        $members = User::where('is_member', 1)->whereDay('anniversary', date('d'))->whereMonth('anniversary', date('m'))->get();
+        return view('layouts.todays_anniversary', compact('members'));
+    }
+
 }

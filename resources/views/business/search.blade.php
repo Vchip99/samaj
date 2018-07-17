@@ -173,7 +173,7 @@
                                 <input type="text" name="business" id="business" class="form-control"  placeholder="search business" onfocus onkeyup="searchBusiness(this.value);" >
                             </div>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             @if(1 == $loginUser->is_admin && 1 == $loginUser->is_super_admin)
                                 <h3>Total Businesses:{{count($businesses)}}</h3>
                             @endif

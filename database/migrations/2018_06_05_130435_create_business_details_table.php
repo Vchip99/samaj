@@ -32,6 +32,18 @@ class CreateBusinessDetailsTable extends Migration
             $table->integer('family_id');
             $table->timestamps();
         });
+        Schema::create('adds', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('photo');
+            $table->date('start_date');
+            $table->date('end_date');
+            $table->timestamps();
+        });
+        Schema::create('register_users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->text('registration_id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -42,5 +54,7 @@ class CreateBusinessDetailsTable extends Migration
     public function down()
     {
         Schema::dropIfExists('business_details');
+        Schema::dropIfExists('adds');
+        Schema::dropIfExists('register_users');
     }
 }

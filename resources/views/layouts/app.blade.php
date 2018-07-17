@@ -130,7 +130,7 @@
             @endphp
             <ul class="nav navbar-nav navbar-right">
               @if(is_object($loginUser))
-                <li class="active"><a href="{{ url('home') }}"><span class="glyphicon glyphicon-home"></span>Home</a></li>
+                <li class=""><a href="{{ url('home') }}"><span class="glyphicon glyphicon-home"></span>Home</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <span class="glyphicon"></span> Maheshwari<span class="caret"></span>
@@ -158,6 +158,7 @@
                           <li>
                               <a href="{{ url('members') }}">All Member</a>
                               <a href="{{ url('todays-birtday') }}">Todays Birtday</a>
+                              <a href="{{ url('todays-anniversary') }}">Todays Anniversary</a>
                           </li>
                       </ul>
                   </li>
@@ -204,6 +205,7 @@
                             <a href="{{ url('group-member') }}">Group Members</a>
                             <a href="{{ url('group-description') }}">Group Description</a>
                             <a href="{{ url('create-admin') }}">Create Admin</a>
+                            <a href="{{ url('show-ad') }}">Create Ad</a>
                             @endif
                             <a href="{{ url('logout') }}"
                                 onclick="event.preventDefault();

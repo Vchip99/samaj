@@ -94,7 +94,7 @@ Route::get('/create-suggestion', 'MemberController@createSuggestion');
 Route::post('/create-suggestion', 'MemberController@storeSuggestion');
 Route::get('/suggestions', 'MemberController@suggestions');
 Route::delete('/delete-suggestion', 'MemberController@deleteSuggestion');
-
+Route::get('/todays-anniversary', 'MemberController@todaysAnniversary');
 
 // business
 Route::get('/add-business', 'BusinessController@show');
@@ -115,3 +115,11 @@ Route::get('/create-description', 'GroupDescriptionController@create');
 Route::post('/create-description', 'GroupDescriptionController@store');
 Route::get('/description/{id}/edit', 'GroupDescriptionController@edit');
 Route::put('/update-description', 'GroupDescriptionController@update');
+
+// ads
+Route::get('/show-ad', 'AddController@show');
+Route::get('/create-ad', 'AddController@create');
+Route::post('/create-ad', 'AddController@store');
+Route::get('/ad/{id}/edit', 'AddController@edit');
+Route::put('/update-ad', 'AddController@update');
+Route::delete('/delete-ad', 'AddController@delete');
