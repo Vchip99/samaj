@@ -44,7 +44,7 @@ class DeleteNotificationsJobsAds extends Command
         set_time_limit(0);
         $notificationDueDate = date('Y-m-d', strtotime("-30 days"));
         $jobDueDate = date('Y-m-d', strtotime("-15 days"));
-        $today = date('Y-m-d');
+        $yesterday = date('Y-m-d', strtotime("-1 day"));
         DB::beginTransaction();
         try
         {
@@ -67,7 +67,7 @@ class DeleteNotificationsJobsAds extends Command
                 DB::commit();
             }
             // delete ads
-            $adds = Add::whereDate('end_date', '=',$today)->get();
+            $adds = Add::whereDate('end_date', '=',$yesterday)->get();
             if(is_object($adds) && false == $adds->isEmpty()){
                 $this->info('Ad delete started.');
                 foreach($adds as $add){

@@ -300,6 +300,25 @@ class MemberController extends Controller
                 'admin_relation' => 'Admin',
             ]);
             if(is_object($user)){
+                $memberCount = $request->get('member_count');
+                if($memberCount > 0 && 1 == $isMember && $nextAdminFamilyId > 0){
+                    for($i=1; $i <= $memberCount ;$i++){
+                        $fMName = $request->get('f_name_'.$i);
+                        $lMName = $request->get('l_name_'.$i);
+                        if(!empty($fMName) && !empty($lMName)){
+                            User::create([
+                                'f_name' => $fMName,
+                                'l_name' => $lMName,
+                                'is_admin' => 0,
+                                'is_super_admin' => 0,
+                                'is_member' => $isMember,
+                                'family_id' => $nextAdminFamilyId,
+                                'is_contact_private' => 0,
+                                'dob' => '1947-08-15'
+                            ]);
+                        }
+                    }
+                }
                 DB::commit();
                 return Redirect::to('create-admin')->with('message', 'Admin created successfully.');
             }
