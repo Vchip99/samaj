@@ -14,13 +14,13 @@ class DatabaseSeeder extends Seeder
         DB::table('groups')->insert([
               ['id' => 1,'name' => 'Maheshwari Panchayat','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['id' => 2,'name' => 'Navyuvak Mandal','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
-              ['id' => 3,'name' => 'Mahila Mandal','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['id' => 3,'name' => 'Mahila Sanghathan','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['id' => 4,'name' => 'Varishth Nagrik','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['id' => 5,'name' => 'Maheshwari Jilha Sangathan','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['id' => 6,'name' => 'Maheshwari Seva Manch','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['id' => 7,'name' => 'Maheshwari Aadhar Samati','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
-              ['id' => 8,'name' => 'Maheshwari Group 8','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
-              ['id' => 9,'name' => 'Maheshwari Group 9','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['id' => 8,'name' => 'Mahesh Seva Samiti','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['id' => 9,'name' => 'Maheshwari Shiksha Samiti','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
         ]);
 
         DB::table('sub_groups')->insert([
@@ -51,7 +51,7 @@ class DatabaseSeeder extends Seeder
               ['name' => 'Promotional Head','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['name' => 'Executive Member','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['name' => 'Memberes','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
-              ['name' => 'IIP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
+              ['name' => 'IPP','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['name' => 'Chief Editor','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['name' => 'Editor','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],
               ['name' => 'Editorial board member','created_at' => date('Y-m-d h:i:s'),'updated_at' => date('Y-m-d h:i:s')],

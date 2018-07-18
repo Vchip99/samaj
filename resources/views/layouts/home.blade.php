@@ -1,5 +1,4 @@
 @extends('layouts.app')
-
 @section('content')
 <div class="container">
     <div class="row">
@@ -12,7 +11,7 @@
                     </div>
                 @endif
                 <div class="row dashboard" >
-                <h4><strong>Family Head</strong></h4>
+                    <h4><strong>Family Head</strong>@if(1 == $loginUser->is_super_admin)<span style="float: right;">Apps Count-{{$loginUser->registeredUserCount()}}</span>@endif</h4>
                 </div>
                 <div class="row profpic text-center" >
                     <a href="{{url('member')}}/{{$loginUser->id}}/edit">
@@ -117,5 +116,4 @@
         </div>
     </div>
 </div>
-
 @endsection

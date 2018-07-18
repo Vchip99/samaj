@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Http\Request;
-use Auth,File,Redirect;
+use Auth,File,Redirect,DB;
 
 class User extends Authenticatable
 {
@@ -372,5 +372,12 @@ class User extends Authenticatable
             $result->where('gender', $gender);
         }
         return $result->select('id', 'f_name','l_name','photo', 'dob')->orderBy('dob', 'desc')->get();
+    }
+
+    /**
+     * registered user count
+     */
+    public function registeredUserCount(){
+        return DB::table('register_users')->count();
     }
 }
