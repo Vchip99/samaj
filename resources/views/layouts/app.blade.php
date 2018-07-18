@@ -139,13 +139,13 @@
                         <li>
                             <a href="{{ url('panchayat') }}">Maheshwari Panchayat</a>
                             <a href="{{ url('navyuvak-mandal') }}">Navyuvak Mandal</a>
-                            <a href="{{ url('mahila-mandal') }}">Mahila Mandal</a>
+                            <a href="{{ url('mahila-mandal') }}">Mahila Sanghathan</a>
                             <a href="{{ url('varishth-nagrik') }}">Varishth Nagrik</a>
                             <a href="{{ url('jilha-sangathan') }}">Maheshwari Jilha Sangathan</a>
                             <a href="{{ url('seva-manch') }}">Maheshwari Seva Manch</a>
                             <a href="{{ url('aadhar-samity') }}">Maheshwari Aadhar Samity</a>
-                            <a href="{{ url('maheshwary-group8') }}">Maheshwari Group 8</a>
-                            <a href="{{ url('maheshwary-group9') }}">Maheshwari Group 9</a>
+                            <a href="{{ url('maheshwary-group8') }}">Mahesh Seva Samiti</a>
+                            <a href="{{ url('maheshwary-group9') }}">Maheshwari Shiksha Samiti</a>
                         </li>
                     </ul>
                 </li>
